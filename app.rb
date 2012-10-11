@@ -36,15 +36,11 @@ module LeoTamer
       redirect "/login"
     end
   
-    get "/js/*.js" do |script|
-      coffee script.to_sym
-    end
-  
     get "*/favicon.ico" do
       404
     end
   
-    get "/*" do |temp|
+    get "/*.html" do |temp|
       haml temp.to_sym
     end
   end
