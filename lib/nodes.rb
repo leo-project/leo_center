@@ -5,7 +5,7 @@ module LeoTamer
     class Error < StandardError; end
 
     configure do
-      @@nodes = LeoFSManager::Client.new("localhost:10020")
+      @@nodes = LeoFSManager::Client.new(*Config[:managers])
     end
     
     get "/nodes/list.json" do

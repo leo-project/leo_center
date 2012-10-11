@@ -1,6 +1,7 @@
 require "sinatra/base"
 require "json"
 require "haml"
+require_relative "lib/config"
 require_relative "lib/nodes"
 
 module LeoTamer
