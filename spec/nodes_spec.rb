@@ -26,7 +26,7 @@ describe LeoTamer::Nodes do
     end
   end
   
-  describe "/nodes/node_status.json" do
+  describe "/nodes/status.json" do
     Member = {
       type: String,
       node: String,
@@ -36,7 +36,7 @@ describe LeoTamer::Nodes do
       joined_at: String
     }
     
-    before(:all) { get_json "/nodes/node_status.json" }
+    before(:all) { get_json "/nodes/status.json" }
 
     it "returns valid format" do
       should be_a Hash
