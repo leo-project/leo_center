@@ -77,7 +77,13 @@
           reader: {
             type: 'json',
             root: 'data'
-          }
+          },
+          // disabe unused params
+          noCache: false,
+          limitParam: undefined,
+          pageParam: undefined,
+          sortParam: undefined,
+          startParam: undefined
         },
         autoLoad: true
       });
