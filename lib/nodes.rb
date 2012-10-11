@@ -5,7 +5,6 @@ module LeoTamer
     class Error < StandardError; end
 
     configure do
-      set :lock, true
       @@nodes = LeoFSManager::Client.new("localhost:10020")
     end
     
