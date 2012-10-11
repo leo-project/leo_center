@@ -1,0 +1,7 @@
+ES_Root = "lib/elasticsearch"
+
+Logstash_Root = "lib/logstash"
+
+role :tamer, "localhost"
+role :es, "localhost"
+role :logstash, "localhost"

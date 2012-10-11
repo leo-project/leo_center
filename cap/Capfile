@@ -1,0 +1,10 @@
+require 'open-uri'
+require 'resolv-replace' # for timeout in open-uri
+require 'timeout'
+require 'capistrano_colors' rescue warn "You can use 'capistrano_colors' gem."
+require 'progressbar'
+
+default_run_options[:pty] = true
+
+load "config"
+load "deploy"

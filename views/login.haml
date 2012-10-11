@@ -1,0 +1,18 @@
+!!!
+%head
+  %title login
+  :css
+    body {
+      text-align: center;
+    }
+%body
+  %form{ name: "login", method: "POST", action: "login" }
+    %img{ src: "http://www.leofs.org/assets/img/leofs-logo-0.png", width: 600 }
+    %br
+    User ID
+    %input{ type: "text", name: "user_id" }
+    %br
+    Password
+    %input{ type: "password", name: "password" }
+    %br
+    %input{ type: "submit", value: "Login" }
