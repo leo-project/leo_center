@@ -23,6 +23,12 @@
             type: 'json',
             root: 'data'
           }
+          // disable unused params
+          noCache: false,
+          limitParam: undefined,
+          pageParam: undefined,
+          sortParam: undefined,
+          startParam: undefined
         },
         autoLoad: true
       });
