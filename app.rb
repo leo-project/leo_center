@@ -1,8 +1,6 @@
 require "sinatra/base"
 require "json"
 require "haml"
-require "coffee-script"
-require "coffee-filter"
 require_relative "lib/nodes"
 
 module LeoTamer
