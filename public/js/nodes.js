@@ -17,6 +17,7 @@
     layout: "border",
     initComponent: function() {
       var detail_store, groupingFeature, node_grid, node_grid_dblclick, node_store, status, status_store;
+
       node_store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Nodes",
         groupField: 'type',
@@ -30,6 +31,7 @@
         },
         autoLoad: true
       });
+
       status = function(val) {
         var src;
         switch (val) {
@@ -47,10 +49,12 @@
         }
         return "<img class='status' src='" + src + "'> " + val;
       };
+
       groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
         groupHeaderTpl: '{name} ({rows.length} node{[values.rows.length > 1 ? "s" : ""]})',
         hideGroupedHeader: true
       });
+
       status_store = Ext.create("Ext.data.Store", {
         fields: ["status"],
         data: [
@@ -69,6 +73,7 @@
           }
         ]
       });
+
       detail_store = Ext.create("Ext.data.ArrayStore", {
         model: "LeoTamer.model.NameValue",
         proxy: {
@@ -81,6 +86,7 @@
         },
         autoLoad: true
       });
+
       node_grid_dblclick = function(self, record, item, index, event) {
         console.log(self, record, item, index, event);
         return Ext.create('Ext.window.Window', {
@@ -140,6 +146,7 @@
           ]
         }).show();
       };
+
       node_grid = Ext.create("Ext.grid.Panel", {
         title: 'nodes',
         store: node_store,
@@ -193,6 +200,7 @@
           itemdblclick: node_grid_dblclick
         }
       });
+
       Ext.apply(this, {
         defaults: {
           split: true
