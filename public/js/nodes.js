@@ -22,13 +22,19 @@
           reader: {
             type: 'json',
             root: 'data'
-          }
+          },
           // disable unused params
           noCache: false,
           limitParam: undefined,
           pageParam: undefined,
           sortParam: undefined,
-          startParam: undefined
+          startParam: undefined,
+          listeners: {
+            exception: function(self, response, operation) {
+              console.log(self, response, operation);
+              alert("Error on: \'" + self.url + "\'\n" + response.responseText);
+            }
+          }
         },
         autoLoad: true
       });
@@ -89,7 +95,13 @@
           limitParam: undefined,
           pageParam: undefined,
           sortParam: undefined,
-          startParam: undefined
+          startParam: undefined,
+          listeners: {
+            exception: function(self, response, operation) {
+              console.log(self, response, operation);
+              alert("Error on: \'" + self.url + "\'\n" + response.responseText);
+            }
+          }
         },
         autoLoad: true
       });
