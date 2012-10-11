@@ -10,7 +10,7 @@ module LeoTamer
     use Nodes
     use Rack::Session::Cookie,
       :expire_after => 60*60*24*14, # 2 weeks
-      :secret => "aria-tools"
+      :secret => "leo_tamer"
   
     before do
       if !session[:user_id] && request.path != "/login"
