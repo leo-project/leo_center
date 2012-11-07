@@ -49,9 +49,11 @@ module LeoTamer
         { :name => "log_dir", :value => node_stat.log_dir },
         { :name => "ring_cur", :value => node_stat.ring_cur },
         { :name => "ring_prev", :value => node_stat.ring_prev },
+        { :name => "total_mem_usage", :value => node_stat.total_mem_usage },
         { :name => "system_mem_usage", :value => node_stat.system_mem_usage },
         { :name => "procs_mem_usage", :value => node_stat.procs_mem_usage },
         { :name => "ets_mem_usage", :value => node_stat.ets_mem_usage },
+        { :name => "num_of_procs", :value => node_stat.num_of_procs }
       ]
 
       { :data => result }.to_json
