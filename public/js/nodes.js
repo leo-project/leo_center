@@ -1,5 +1,4 @@
 (function() {
-
   Ext.define('LeoTamer.model.Nodes', {
     extend: 'Ext.data.Model',
     fields: ["type", "node", "status", "ring_hash_current", "ring_hash_previous", "joined_at"]
@@ -11,7 +10,7 @@
     title: "Node Status",
     layout: "border",
     initComponent: function() {
-      var detail_store, groupingFeature, node_grid, node_grid_dblclick, node_store, status, status_store;
+      var detail_store, groupingFeature, node_grid, node_grid_dblclick, node_store, status, operation_store;
 
       node_store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Nodes",
@@ -30,6 +29,9 @@
           sortParam: undefined,
           startParam: undefined,
           listeners: {
+            load: function() {
+              node_grid.getSelectionModel().selectFirstRow();
+            },
             exception: function(self, response, operation) {
               console.log(self, response, operation);
               alert("Error on: \'" + self.url + "\'\n" + response.responseText);
@@ -62,21 +64,15 @@
         hideGroupedHeader: true
       });
 
-      status_store = Ext.create("Ext.data.Store", {
+      operation_store = Ext.create("Ext.data.Store", {
         fields: ["status"],
         data: [
           {
-            status: "attached"
+            status: "Resume"
           }, {
-            status: "running"
+            status: "Suspend"
           }, {
-            status: "restarted"
-          }, {
-            status: "suspended"
-          }, {
-            status: "downed"
-          }, {
-            status: "stopped"
+            status: "Detach"
           }
         ]
       });
@@ -106,8 +102,65 @@
         autoLoad: true
       });
 
-      node_grid_dblclick = function(self, record, item, index, event) {
+      node_confirm_change_status = function() {
+        Ext.Msg.on("beforeshow",  function (win) {
+          win.defaultFocus = 2; // set default focus to "No" button
+        });
+        msg = "Are you sure to change status from running to suspended?"
+        Ext.Msg.show({
+          title: "title", 
+          msg: msg,
+          buttons: Ext.Msg.YESNO,
+          icon: Ext.Msg.WARNING,
+          fn: function(btn) {
+            if (btn == "yes") {
+              alert("foo");
+            }
+          }
+        });
+      }
+
+      node_send_command = function() {
+        node = node_grid.getSelectionModel().getSelection()[0].data;
+        console.log(node);
+        Ext.create('Ext.window.Window', {
+          title: "System Operation: " + node.node,
+          items: [
+            {
+              xtype: "panel",
+              padding: "0 0 10 0",
+              items: {
+                xtype: "combo",
+                store: operation_store,
+                labelWidth: 200,
+                fieldLabel: "Select Operation Command",
+                displayField: "status",
+                valueField: "status",
+                emptyText: "Select Command",
+                editable: false,
+                listeners: {
+                  afterrender: function(self) {
+                    // return self.setValue(record.data.status);
+                  }
+                }
+              }
+            }
+          ],
+          buttons: [{
+            text: "Apply",
+            handler: node_confirm_change_status
+          }]
+        }).show()
+      }
+
+      node_grid_select = function(self, record, item, index, event) {
         console.log(self, record, item, index, event);
+        status = "Status: " + record.data.status
+        Ext.getCmp("node_status").update(status);
+        detail_store.load({ 
+          params: { node: record.data.node }
+        });
+/*
         return Ext.create('Ext.window.Window', {
           title: record.data.node,
           width: 600,
@@ -129,16 +182,13 @@
                     return self.setValue(record.data.status);
                   }
                 }
-              }
-              /* XXX: it will be used
+              },
               buttons: [{
-                text: "OK",
-                handler: ->
-              }, {
-                text: "Cancel",
-                handler: ->
+                text: "Edit Status",
+                handler: function() {
+                  node_send_command(record.data.status);
+                }
               }]
-              */
             }, {
               xtype: 'grid',
               forceFit: true,
@@ -164,14 +214,48 @@
             }
           ]
         }).show();
+*/
       };
+
+      node_status = Ext.create("Ext.Panel", {
+        title: "status",
+        region: "east",
+        width: 300,
+        items: [
+          {
+            xtype: "panel",
+            id: "node_status",
+            buttons: [{
+              text: "Change Status",
+              handler: function() {
+               //node_confirm_change_status();
+                node_send_command();
+              }
+            }]
+          }, {
+            xtype: 'grid',
+            title: "defail information",
+            forceFit: true,
+            hideHeaders: true,
+            columns: [
+              {
+                dataIndex: "name",
+                text: "Name"
+              }, {
+                dataIndex: "value",
+                text: "Value"
+              }
+            ],
+            store: detail_store
+          }
+        ]
+      });
 
       node_grid = Ext.create("Ext.grid.Panel", {
         title: 'nodes',
         store: node_store,
         region: "center",
         forceFit: true,
-        layout: "fit",
         features: [groupingFeature],
         viewConfig: {
           trackOver: false
@@ -213,18 +297,22 @@
           }
         ],
         listeners: {
-          viewready: function() {
-            return this.getSelectionModel().select(0);
+          // select first row on load
+          render : function(self){
+            self.store.on('load', function(store, records, options){
+              self.getSelectionModel().select(0);
+            });
           },
-          itemdblclick: node_grid_dblclick
+          select: node_grid_select
         }
       });
 
       Ext.apply(this, {
-        defaults: {
-          split: true
-        },
-        items: node_grid
+        defaults: { split: true },
+        items: [
+          node_grid,
+          node_status
+        ]
       });
 
       return this.callParent(arguments);
