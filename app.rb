@@ -5,6 +5,8 @@ require "haml"
 
 module LeoTamer
   class App < Sinatra::Base
+    class Error < StandardError; end
+
     register Sinatra::Namespace
     use Rack::Session::Cookie,
       :expire_after => 60*60*24*14, # 2 weeks

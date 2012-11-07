@@ -2,8 +2,6 @@ require 'leofs_manager_client'
 
 module LeoTamer
   class App
-    class Error < StandardError; end
-
     configure do
       @@nodes = LeoFSManager::Client.new(*Config[:managers])
     end
@@ -43,8 +41,8 @@ module LeoTamer
       end
   
       get "/detail.json" do
-        node_name = params[:node] || "storage_0@127.0.0.1" # dummy
-        node_stat = @@nodes.status(node_name).node_stat
+        node = params[:node] || "storage_0@127.0.0.1" # dummy
+        node_stat = @@nodes.status(node).node_stat
         
         result = [
           { :name => "log_dir", :value => node_stat.log_dir },
@@ -58,6 +56,17 @@ module LeoTamer
         ]
   
         { :data => result }.to_json
+      end
+
+      put "/exec.json" do
+        node = params[:node]
+        command = params[:command].to_sym
+
+        case command
+        when :resume, :suspend, :detach
+          @@nodes.__send__(command, node)
+        else
+        end
       end
     end
   end
