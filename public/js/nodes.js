@@ -122,8 +122,7 @@
 
       node_send_command = function() {
         node = node_grid.getSelectionModel().getSelection()[0].data;
-        console.log(node);
-        
+
         command_combo = Ext.create("Ext.form.ComboBox", {
             store: operation_store,
             labelWidth: 200,
@@ -158,11 +157,14 @@
 
       node_grid_select = function(self, record, item, index, event) {
         console.log(self, record, item, index, event);
-        name = "Node Name: " + record.data.node;
-        node_status = "Status: " + status_renderer(record.data.status);
-        Ext.getCmp("node_status").update(name + "<br>" + node_status);
+        name = record.data.node;
+        status = record.data.status;
+        node_status.setTitle("status of " + name);
+        name_line = "Node Name: " + record.data.node;
+        status_line = "Status: " + status_renderer(record.data.status);
+        Ext.getCmp("node_status").update(name_line + "<br>" + status_line);
         detail_store.load({ 
-          params: { node: record.data.node }
+          params: { node: name }
         });
       };
 

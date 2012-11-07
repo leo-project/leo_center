@@ -6,6 +6,7 @@ gem "rack-test"
 
 # LeoTamer
 gem "sinatra"
+gem "sinatra-contrib"
 gem "haml"
 
 # lib/leofs.rb

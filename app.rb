@@ -1,12 +1,11 @@
 require "sinatra/base"
+require "sinatra/namespace"
 require "json"
 require "haml"
-require_relative "lib/config"
-require_relative "lib/nodes"
 
 module LeoTamer
   class App < Sinatra::Base
-    use Nodes
+    register Sinatra::Namespace
     use Rack::Session::Cookie,
       :expire_after => 60*60*24*14, # 2 weeks
       :secret => "leo_tamer"
@@ -44,3 +43,6 @@ module LeoTamer
     end
   end
 end
+
+require_relative "lib/config"
+require_relative "lib/nodes"
