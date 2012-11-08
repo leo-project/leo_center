@@ -22,6 +22,10 @@ class LeoTamer < Sinatra::Base
     end
   end
 
+  error do
+    env['sinatra.error'].message
+  end
+
   get "/" do
     haml :index
   end
@@ -38,10 +42,6 @@ class LeoTamer < Sinatra::Base
   get "/logout" do
     session.clear
     redirect "/login"
-  end
-
-  get "*/favicon.ico" do
-    404
   end
 
   get "/*.html" do |temp|

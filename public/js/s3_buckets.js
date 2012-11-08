@@ -82,7 +82,6 @@
               method: "POST",
               params: { bucket: value },
               success: function(response, opts) {
-                console.log(response, opts)
                 title = "Add Bucket"
                 msg = "bucket '" + value + "' is added successfully."
                 Ext.Msg.show({
