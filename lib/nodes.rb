@@ -47,6 +47,7 @@ class LeoTamer
         :log_dir, :ring_cur, :ring_prev, :total_mem_usage,
         :system_mem_usage, :procs_mem_usage, :ets_mem_usage, :num_of_procs
       ]
+
       result = properties.map do |property|
         { :name => property, :value => node_stat.__send__(property) }
       end

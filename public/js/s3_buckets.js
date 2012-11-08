@@ -1,4 +1,9 @@
 (function() {
+  Ext.define('LeoTamer.model.Buckets', {
+    extend: 'Ext.data.Model',
+    fields: ["name", "owner", "created_at"]
+  });
+
   Ext.define("LeoTamer.S3Buckets", {
     extend: "Ext.panel.Panel",
     id: "s3_related_panel",
@@ -14,17 +19,57 @@
         hideGroupedHeader: true
       });
 
+      node_store = Ext.create("Ext.data.Store", {
+        model: "LeoTamer.model.Buckets",
+        groupField: "owner",
+        proxy: {
+          type: 'ajax',
+          url: 's3_buckets/list.json',
+          reader: {
+            type: 'json',
+            root: 'data'
+          },
+          // disable unused params
+          noCache: false,
+          limitParam: undefined,
+          pageParam: undefined,
+          sortParam: undefined,
+          startParam: undefined,
+          listeners: {
+            load: function() {
+              node_grid.getSelectionModel().selectFirstRow();
+            },
+            exception: function(self, response, operation) {
+              console.log(self, response, operation);
+              alert("Error on: \'" + self.url + "\'\n" + response.responseText);
+            }
+          }
+        },
+        autoLoad: true
+      });
+
       bucket_grid = Ext.create("Ext.grid.Panel", {
         title: "Buckets",
         region: "center",
         forceFit: true,
         features: [ bucket_grid_grouping ],
+        store: node_store,
+        tbar: [{
+          xtype: "textfield",
+          fieldLabel: "Bucket Name:",
+          labelWidth: 75,
+          listeners: {
+            change: function(self, new_value) {
+              node_store.clearFilter();
+              node_store.filter("name", new RegExp(new_value));
+            }
+          }
+        }],
         columns: [
-          { header: "Bucket", dataIndex: "Bucket" },
+          { header: "Bucket", dataIndex: "name" },
           { header: "Owner", dataIndex: "owner" },
           { header: "Created At", dataIndex: "created_at" }
-        ],
-        data: []
+        ]
       });
 
       bucket_sub_grid = Ext.create("Ext.grid.Panel", {
@@ -40,9 +85,8 @@
       });
 
       Ext.apply(this, {
-        // defaults: { flex: 3 },
         tbar: [
-          { text: "Edit Buckets" }
+          { text: "Add Bucket" }
         ],
         items: [
           bucket_grid,

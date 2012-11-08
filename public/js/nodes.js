@@ -249,8 +249,8 @@
         tbar: [
           {
             xtype: "textfield",
-            fieldLabel: "Filter:",
-            labelWidth: 50,
+            fieldLabel: "Node Name:",
+            labelWidth: 75,
             listeners: {
               change: function(self, new_value) {
                 node_store.clearFilter();
