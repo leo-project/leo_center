@@ -6,36 +6,19 @@
     layout: "border",
 
     initComponent: function() {
-      var access_key_store, access_key_grid;
-      var endpoint_store, endpoint_grid;
+      var bucket_grid_grouping;
       var bucket_store, bucket_grid;
 
-      access_key_grid = Ext.create("Ext.grid.Panel", {
-        title: "Access Keys",
-        region: "north",
-        forceFit: true,
-        columns: [
-          { header: "Owner", dataIndex: "owner" },
-          { header: "Access Key", dataIndex: "access_key" }
-        ],
-        data: []
-      });
-
-      endpoint_grid = Ext.create("Ext.grid.Panel", {
-        title: "Endpoints",
-        region: "center",
-        forceFit: true,
-        columns: [
-          { header: "Endpoint", dataIndex: "endpoint" },
-          { header: "Created At", dataIndex: "created_at" }
-        ],
-        data: []
+      bucket_grid_grouping = Ext.create('Ext.grid.feature.Grouping', {
+        groupHeaderTpl: '{name} ({rows.length} bucket{[values.rows.length > 1 ? "s" : ""]})',
+        hideGroupedHeader: true
       });
 
       bucket_grid = Ext.create("Ext.grid.Panel", {
         title: "Buckets",
-        region: "south",
+        region: "center",
         forceFit: true,
+        features: [ bucket_grid_grouping ],
         columns: [
           { header: "Bucket", dataIndex: "Bucket" },
           { header: "Owner", dataIndex: "owner" },
@@ -44,19 +27,26 @@
         data: []
       });
 
+      bucket_sub_grid = Ext.create("Ext.grid.Panel", {
+        title: "Details",
+        region: "east",
+        width: 300,
+        forceFit: true,
+        columns: [
+          { header: "Name", dataIndex: "name" },
+          { header: "Value", dataIndex: "value" },
+        ],
+        data: []
+      });
+
       Ext.apply(this, {
-        defaults: { 
-          flex: 3
-        },
+        // defaults: { flex: 3 },
         tbar: [
-          { text: "Edit Keys" },
-          { text: "Edit Endpoints" },
           { text: "Edit Buckets" }
         ],
         items: [
-          access_key_grid,
-          endpoint_grid,
-          bucket_grid
+          bucket_grid,
+          bucket_sub_grid
         ]
       });
 

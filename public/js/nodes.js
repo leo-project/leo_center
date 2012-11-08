@@ -52,7 +52,8 @@
 
       do_send_command = function(node, command) {
         Ext.Ajax.request({
-          url: "node/exec.json",
+          url: "nodes/exec.json",
+          method: "POST",
           params: {
             node: node,
             command: command
@@ -218,7 +219,7 @@
         store: node_store,
         region: "center",
         forceFit: true,
-        features: [node_grid_grouping],
+        features: [ node_grid_grouping ],
         viewConfig: {
           trackOver: false
         },
