@@ -11,7 +11,7 @@ module LeoTamer
     use Rack::Session::Cookie,
       :expire_after => 60*60*24*14, # 2 weeks
       :secret => "leo_tamer"
-  
+ 
     before do
       if !session[:user_id] && request.path != "/login"
         redirect "/login"

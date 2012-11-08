@@ -64,8 +64,9 @@ module LeoTamer
 
         case command
         when :resume, :suspend, :detach
-          @@nodes.__send__(command, node)
+          # @@nodes.__send__(command, node)
         else
+          raise Error, "invalid operation command: #{command}"
         end
       end
     end
