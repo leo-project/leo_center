@@ -4,12 +4,6 @@
     id: "s3_related_panel",
     title: "S3 Related",
     layout: "border",
-    /*
-    layout: {
-      type: "vbox",
-      align: 'stretch',
-      //pack: 'start',
-    }, */
 
     initComponent: function() {
       var access_key_store, access_key_grid;
