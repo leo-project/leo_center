@@ -80,11 +80,17 @@
             Ext.Ajax.request({
               url: "s3_buckets/add_bucket",
               method: "POST",
-              params: {
-                bucket: value
-              },
-              success: function(response) {
-                //TODO
+              params: { bucket: value },
+              success: function(response, opts) {
+                console.log(response, opts)
+                title = "Add Bucket"
+                msg = "bucket '" + value + "' is added successfully."
+                Ext.Msg.show({
+                  title: title,
+                  msg: msg,
+                  buttons: Ext.Msg.OK,
+                  icon: Ext.Msg.INFO
+                });
               },
               failure: function(response, opts) {
                 //TODO
