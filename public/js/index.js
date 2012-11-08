@@ -13,7 +13,7 @@
     
     node_status = Ext.create("LeoTamer.Nodes");
 
-    s3_related = Ext.create("LeoTamer.S3Related");
+    s3_related = Ext.create("LeoTamer.S3Buckets");
 
     tabs = Ext.create("Ext.TabPanel", {
       region: "center",
