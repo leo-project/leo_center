@@ -54,6 +54,11 @@
         defaults: { 
           flex: 3
         },
+        tbar: [
+          { text: "Edit Keys" },
+          { text: "Edit Endpoints" },
+          { text: "Edit Buckets" }
+        ],
         items: [
           access_key_grid,
           endpoint_grid,

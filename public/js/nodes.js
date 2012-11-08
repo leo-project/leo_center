@@ -6,9 +6,11 @@
 
   Ext.define("LeoTamer.Nodes", {
     extend: "Ext.panel.Panel",
-    id: "nodes_panel",
+
     title: "Node Status",
+    id: "nodes_panel",
     layout: "border",
+
     initComponent: function() {
       var operation_store, detail_store;
       var do_send_command, confirm_send_command, send_command;
@@ -122,6 +124,7 @@
         title: "status",
         region: "east",
         width: 300,
+        resizable: false,
         items: [
           {
             xtype: "panel",
@@ -271,7 +274,6 @@
       });
 
       Ext.apply(this, {
-        defaults: { split: true },
         items: [
           node_grid,
           node_status_panel
