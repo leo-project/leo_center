@@ -3,7 +3,7 @@ require 'leofs_manager_client'
 module LeoTamer
   class App
     configure do
-      @@nodes = LeoFSManager::Client.new(*Config[:managers])
+      @@nodes ||= LeoFSManager::Client.new(*Config[:managers])
     end
 
     namespace "/nodes" do
