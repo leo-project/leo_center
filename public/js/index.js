@@ -13,13 +13,18 @@
     
     node_status = Ext.create("LeoTamer.Nodes");
 
+    s3_related = Ext.create("LeoTamer.S3Related");
+
     tabs = Ext.create("Ext.TabPanel", {
       region: "center",
       activeTab: 0,
       defaults: {
         bodyPadding: 10
       },
-      items: [node_status]
+      items: [
+        node_status,
+        s3_related
+      ]
     });
 
     return viewport = Ext.create("Ext.Viewport", {

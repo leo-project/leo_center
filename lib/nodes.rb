@@ -43,17 +43,14 @@ module LeoTamer
       get "/detail.json" do
         node = params[:node] || "storage_0@127.0.0.1" # dummy
         node_stat = @@nodes.status(node).node_stat
-        
-        result = [
-          { :name => "log_dir", :value => node_stat.log_dir },
-          { :name => "ring_cur", :value => node_stat.ring_cur },
-          { :name => "ring_prev", :value => node_stat.ring_prev },
-          { :name => "total_mem_usage", :value => node_stat.total_mem_usage },
-          { :name => "system_mem_usage", :value => node_stat.system_mem_usage },
-          { :name => "procs_mem_usage", :value => node_stat.procs_mem_usage },
-          { :name => "ets_mem_usage", :value => node_stat.ets_mem_usage },
-          { :name => "num_of_procs", :value => node_stat.num_of_procs }
+
+        properties = [
+          :log_dir, :ring_cur, :ring_prev, :total_mem_usage,
+          :system_mem_usage, :procs_mem_usage, :ets_mem_usage, :num_of_procs
         ]
+        result = properties.map do |property|
+          { :name => property, :value => node_stat.__send__(property) }
+        end
   
         { :data => result }.to_json
       end
