@@ -18,15 +18,11 @@
       var node_grid_grouping, node_store, node_grid_select, node_grid;
 
       operation_store = Ext.create("Ext.data.Store", {
-        fields: ["status"],
+        fields: [ "status" ],
         data: [
-          {
-            status: "resume"
-          }, {
-            status: "suspend"
-          }, {
-            status: "detach"
-          }
+          { status: "resume" },
+          { status: "suspend" },
+          { status: "detach" }
         ]
       });
 
