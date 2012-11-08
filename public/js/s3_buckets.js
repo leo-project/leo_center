@@ -72,6 +72,28 @@
         ]
       });
 
+      add_bucket = function() {
+        title = "Add New Bucket";
+        msg = "Please input bucket name"
+        Ext.Msg.prompt(title, msg, function(btn, value) {
+          if (btn == "ok") {
+            Ext.Ajax.request({
+              url: "s3_buckets/add_bucket",
+              method: "POST",
+              params: {
+                bucket: value
+              },
+              success: function(response) {
+                //TODO
+              },
+              failure: function(response, opts) {
+                //TODO
+              }
+            })
+          }
+        })
+      }
+
       bucket_sub_grid = Ext.create("Ext.grid.Panel", {
         title: "Details",
         region: "east",
@@ -86,7 +108,10 @@
 
       Ext.apply(this, {
         tbar: [
-          { text: "Add Bucket" }
+          { 
+            text: "Add Bucket",
+            handler: add_bucket
+          }
         ],
         items: [
           bucket_grid,
