@@ -1,27 +1,27 @@
 (function() {
-  Ext.define('LeoTamer.model.Credentials', {
+  Ext.define('LeoTamer.model.Endpoints', {
     extend: 'Ext.data.Model',
-    fields: ["user", "access_key_id"]
+    fields: ["endpoint", "created_at"]
   });
 
-  Ext.define("LeoTamer.Credentials", {
+  Ext.define("LeoTamer.Endpoints", {
     extend: "Ext.panel.Panel",
-    id: "credentials",
-    title: "Credentials",
+    id: "endpoints",
+    title: "endpoints",
     layout: "border",
     border: false,
 
     initComponent: function() {
-      var credential_store, credential_grid;
+      var bucket_store, bucket_grid;
 
-      credential_store = Ext.create("Ext.data.Store", {
-        model: "LeoTamer.model.Buckets",
+      endpoint_store = Ext.create("Ext.data.Store", {
+        model: "LeoTamer.model.Endpoints",
         groupField: "owner",
         data: [], //XXX: for mock
         /*
         proxy: {
           type: 'ajax',
-          url: 'credentials/list.json',
+          url: 'endpoints/list.json',
           reader: {
             type: 'json',
             root: 'data'
@@ -46,18 +46,18 @@
         autoLoad: true
       });
 
-      add_user = function() {
-        title = "Add New User";
+      add_endpoint = function() {
+        title = "Add New Endpoint";
         msg = "Please input user name"
         Ext.Msg.prompt(title, msg, function(btn, value) {
           if (btn == "ok") {
             Ext.Ajax.request({
-              url: "credentials/add_user",
+              url: "endpoints/add_endpoint",
               method: "POST",
-              params: { user: value },
+              params: { endpoint: value },
               success: function(response, opts) {
-                title = "Add User"
-                msg = "user '" + value + "' is added successfully."
+                title = "Add Endpoint"
+                msg = "endpoint '" + value + "' is added successfully."
                 Ext.Msg.show({
                   title: title,
                   msg: msg,
@@ -73,11 +73,11 @@
         })
       }
 
-      credential_grid = Ext.create("Ext.grid.Panel", {
+      endpoint_grid = Ext.create("Ext.grid.Panel", {
         region: "center",
         border: false,
         forceFit: true,
-        store: credential_store,
+        store: endpoint_store,
         tbar: [{
           xtype: "textfield",
           fieldLabel: "User Name:",
@@ -90,8 +90,8 @@
             }
           }
         },"-", {
-          text: "Add User",
-          handler: add_user
+          text: "Add Endpoint",
+          handler: add_endpoint
         }],
         columns: [
           { header: "User", dataIndex: "name", width: 600 },
@@ -100,7 +100,7 @@
       });
 
       Ext.apply(this, {
-        items: credential_grid
+        items: endpoint_grid
       });
 
       return this.callParent(arguments);
