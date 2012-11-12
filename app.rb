@@ -52,4 +52,5 @@ end
 require_relative "lib/config"
 require_relative "lib/nodes"
 require_relative "lib/buckets"
+require_relative "lib/endpoints"
 require_relative "lib/credentials"
