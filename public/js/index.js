@@ -13,9 +13,7 @@
     
     node_status = Ext.create("LeoTamer.Nodes");
 
-    s3_buckets = Ext.create("LeoTamer.S3Buckets");
-    
-    credentials = Ext.create("LeoTamer.Credentials");
+    admin = Ext.create("LeoTamer.Admin");
 
     tabs = Ext.create("Ext.TabPanel", {
       region: "center",
@@ -25,8 +23,7 @@
       },
       items: [
         node_status,
-        s3_buckets,
-        credentials
+        admin
       ]
     });
 

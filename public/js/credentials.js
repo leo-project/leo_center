@@ -9,6 +9,7 @@
     id: "credentials",
     title: "Credentials",
     layout: "border",
+    border: false,
 
     initComponent: function() {
       var bucket_store, bucket_grid;
@@ -45,28 +46,6 @@
         autoLoad: true
       });
 
-      credential_grid = Ext.create("Ext.grid.Panel", {
-        title: "Credentials",
-        region: "center",
-        // forceFit: true,
-        store: credential_store,
-        tbar: [{
-          xtype: "textfield",
-          fieldLabel: "User Name:",
-          labelWidth: 75,
-          listeners: {
-            change: function(self, new_value) {
-              node_store.clearFilter();
-              node_store.filter("user", new RegExp(new_value));
-            }
-          }
-        }],
-        columns: [
-          { header: "User", dataIndex: "name", width: 600 },
-          { header: "Access Key ID", dataIndex: "access_key_id", width: 600 }
-        ]
-      });
-
       add_user = function() {
         title = "Add New User";
         msg = "Please input user name"
@@ -94,11 +73,32 @@
         })
       }
 
-      Ext.apply(this, {
-        tbar: [{ 
+      credential_grid = Ext.create("Ext.grid.Panel", {
+        region: "center",
+        border: false,
+        forceFit: true,
+        store: credential_store,
+        tbar: [{
+          xtype: "textfield",
+          fieldLabel: "User Name:",
+          labelWidth: 75,
+          listeners: {
+            change: function(self, new_value) {
+              node_store.clearFilter();
+              node_store.filter("user", new RegExp(new_value));
+            }
+          }
+        },"-", {
           text: "Add User",
           handler: add_user
         }],
+        columns: [
+          { header: "User", dataIndex: "name", width: 600 },
+          { header: "Access Key ID", dataIndex: "access_key_id", width: 600 }
+        ]
+      });
+
+      Ext.apply(this, {
         items: credential_grid
       });
 

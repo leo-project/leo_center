@@ -6,10 +6,10 @@
 
   Ext.define("LeoTamer.S3Buckets", {
     extend: "Ext.panel.Panel",
-    id: "s3_related_panel",
-    title: "S3 Buckets",
-    maxWidth: 1000,
+    id: "buckets_panel",
+    title: "Buckets",
     layout: "border",
+    border: false,
 
     initComponent: function() {
       var bucket_grid_grouping;
@@ -49,30 +49,6 @@
         autoLoad: true
       });
 
-      bucket_grid = Ext.create("Ext.grid.Panel", {
-        title: "Buckets",
-        region: "center",
-        maxWidth: 600,
-        forceFit: true,
-        features: [ bucket_grid_grouping ],
-        store: bucket_store,
-        tbar: [{
-          xtype: "textfield",
-          fieldLabel: "Bucket Name:",
-          labelWidth: 75,
-          listeners: {
-            change: function(self, new_value) {
-              bucket_store.clearFilter();
-              bucket_store.filter("name", new RegExp(new_value));
-            }
-          }
-        }],
-        columns: [
-          { header: "Bucket", dataIndex: "name" },
-          { header: "Created At", dataIndex: "created_at" }
-        ]
-      });
-
       add_bucket = function() {
         title = "Add New Bucket";
         msg = "Please input bucket name"
@@ -98,7 +74,35 @@
             })
           }
         })
-      }
+      };
+
+      bucket_grid = Ext.create("Ext.grid.Panel", {
+        region: "center",
+        border: false,
+        forceFit: true,
+        features: [ bucket_grid_grouping ],
+        store: bucket_store,
+        tbar: [{
+          xtype: "textfield",
+          fieldLabel: "Bucket Name:",
+          labelWidth: 75,
+          listeners: {
+            change: function(self, new_value) {
+              bucket_store.clearFilter();
+              bucket_store.filter("name", new RegExp(new_value));
+            }
+          }
+        },"-", {
+          text: "Add Bucket",
+          handler: add_bucket
+        }],
+        columns: [
+          { header: "Bucket", dataIndex: "name" },
+          { header: "Created At", dataIndex: "created_at" }
+        ]
+      });
+
+
 
       bucket_sub_grid = Ext.create("Ext.grid.Panel", {
         title: "Details",
@@ -113,12 +117,6 @@
       });
 
       Ext.apply(this, {
-        tbar: [
-          { 
-            text: "Add Bucket",
-            handler: add_bucket
-          }
-        ],
         items: [
           bucket_grid,
           bucket_sub_grid

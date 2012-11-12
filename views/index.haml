@@ -12,11 +12,21 @@
     %script{:src => "js/nodes.js", :type => "text/javascript"}
     %script{:src => "js/s3_buckets.js", :type => "text/javascript"}
     %script{:src => "js/credentials.js", :type => "text/javascript"}
+    %script{:src => "js/admin.js", :type => "text/javascript"}
     -# %script{:src => "js/logs.js", :type => "text/javascript"}
     -# %script{:src => "js/users.js", :type => "text/javascript"}
     -# %script{:src => "js/preferences.js", :type => "text/javascript"}
     %script{:src => "js/index.js", :type => "text/javascript"}
     :css
+      #admin_grid .x-grid-row {
+        height: 50px;
+      }
+
+      #admin_grid .x-grid-row td {
+        font-size: medium;
+        padding: 5px;
+      }
+
       img.status {
         vertical-align: bottom;
       }
