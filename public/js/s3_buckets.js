@@ -25,7 +25,7 @@
         groupField: "owner",
         proxy: {
           type: 'ajax',
-          url: 's3_buckets/list.json',
+          url: 'buckets/list.json',
           reader: {
             type: 'json',
             root: 'data'
@@ -55,7 +55,7 @@
         Ext.Msg.prompt(title, msg, function(btn, value) {
           if (btn == "ok") {
             Ext.Ajax.request({
-              url: "s3_buckets/add_bucket",
+              url: "buckets/add_bucket",
               method: "POST",
               params: { bucket: value },
               success: function(response, opts) {

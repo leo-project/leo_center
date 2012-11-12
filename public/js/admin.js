@@ -9,7 +9,7 @@
       s3_buckets = Ext.create("LeoTamer.S3Buckets");
       credentials = Ext.create("LeoTamer.Credentials");
 
-      store = Ext.create("Ext.data.Store", {
+      admin_store = Ext.create("Ext.data.Store", {
         fields: ["name"],
         data: [
           { name: "Buckets" },
@@ -18,23 +18,23 @@
         ],
       });
 
-      grid = Ext.create("Ext.grid.Panel", {
+      admin_grid = Ext.create("Ext.grid.Panel", {
         title: "Menu",
         region: "west",
         id: "admin_grid",
         width: 200,
         forceFit: true,
         hideHeaders: true,
-        store: store,
+        store: admin_store,
         columns: [{ dataIndex: "name" }],
         listeners: {
           select: function(self, record, index) {
-            start.getLayout().setActiveItem(index);
+            admin_card.getLayout().setActiveItem(index);
           }
         }
       });
 
-      start = Ext.create("Ext.panel.Panel", {
+      admin_card = Ext.create("Ext.panel.Panel", {
         region: "center",
         layout: "card",
         activeItem: 0,
@@ -46,8 +46,8 @@
 
       Ext.apply(this, {
         items: [
-          grid,
-          start
+          admin_grid,
+          admin_card
         ]
       });
 

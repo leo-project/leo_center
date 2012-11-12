@@ -1,11 +1,7 @@
 (function() {
   Highcharts.setOptions({
-    credits: {
-      enabled: false
-    },
-    global: {
-      useUTC: false
-    }
+    credits: { enabled: false },
+    global: { useUTC: false }
   });
 
   Ext.onReady(function() {
@@ -18,9 +14,7 @@
     tabs = Ext.create("Ext.TabPanel", {
       region: "center",
       activeTab: 0,
-      defaults: {
-        bodyPadding: 10
-      },
+      defaults: { bodyPadding: 5 },
       items: [
         node_status,
         admin
