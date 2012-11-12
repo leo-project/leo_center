@@ -8,6 +8,7 @@
     extend: "Ext.panel.Panel",
     id: "s3_related_panel",
     title: "S3 Buckets",
+    maxWidth: 1000,
     layout: "border",
 
     initComponent: function() {
@@ -19,7 +20,7 @@
         hideGroupedHeader: true
       });
 
-      node_store = Ext.create("Ext.data.Store", {
+      bucket_store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Buckets",
         groupField: "owner",
         proxy: {
@@ -51,23 +52,23 @@
       bucket_grid = Ext.create("Ext.grid.Panel", {
         title: "Buckets",
         region: "center",
+        maxWidth: 600,
         forceFit: true,
         features: [ bucket_grid_grouping ],
-        store: node_store,
+        store: bucket_store,
         tbar: [{
           xtype: "textfield",
           fieldLabel: "Bucket Name:",
           labelWidth: 75,
           listeners: {
             change: function(self, new_value) {
-              node_store.clearFilter();
-              node_store.filter("name", new RegExp(new_value));
+              bucket_store.clearFilter();
+              bucket_store.filter("name", new RegExp(new_value));
             }
           }
         }],
         columns: [
           { header: "Bucket", dataIndex: "name" },
-          { header: "Owner", dataIndex: "owner" },
           { header: "Created At", dataIndex: "created_at" }
         ]
       });

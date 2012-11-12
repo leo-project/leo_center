@@ -9,7 +9,7 @@ class LeoTamer
     get "/list.json" do
       { 
         data: @@manager.status.node_list.map do |node|
-          {name: node.node }
+          { name: node.node }
         end
       }.to_json
     end

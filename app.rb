@@ -52,3 +52,4 @@ end
 require_relative "lib/config"
 require_relative "lib/nodes"
 require_relative "lib/s3_buckets"
+require_relative "lib/credentials"
