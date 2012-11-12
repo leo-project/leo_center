@@ -7,13 +7,14 @@
 
     initComponent: function() {
       buckets = Ext.create("LeoTamer.Buckets");
+      endpoints = Ext.create("LeoTamer.Endpoints");
       credentials = Ext.create("LeoTamer.Credentials");
 
       admin_store = Ext.create("Ext.data.Store", {
         fields: ["name"],
         data: [
           { name: "Buckets" },
-          //{ name: "Endpoints" },
+          { name: "Endpoints" },
           { name: "Credentials" }
         ],
       });
@@ -40,7 +41,8 @@
         activeItem: 0,
         items: [
           buckets,
-          credentials,
+          endpoints,
+          credentials
         ]
       });
 

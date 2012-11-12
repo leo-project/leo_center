@@ -94,8 +94,8 @@
           handler: add_endpoint
         }],
         columns: [
-          { header: "User", dataIndex: "name", width: 600 },
-          { header: "Access Key ID", dataIndex: "access_key_id", width: 600 }
+          { header: "Endpoint", dataIndex: "endpoint", width: 600 },
+          { header: "Created At", dataIndex: "created_at", width: 600 }
         ]
       });
 
