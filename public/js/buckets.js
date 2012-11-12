@@ -4,7 +4,7 @@
     fields: ["name", "owner", "created_at"]
   });
 
-  Ext.define("LeoTamer.S3Buckets", {
+  Ext.define("LeoTamer.Buckets", {
     extend: "Ext.panel.Panel",
     id: "buckets_panel",
     title: "Buckets",

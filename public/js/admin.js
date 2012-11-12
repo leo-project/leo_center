@@ -6,7 +6,7 @@
     layout: "border",
 
     initComponent: function() {
-      s3_buckets = Ext.create("LeoTamer.S3Buckets");
+      buckets = Ext.create("LeoTamer.Buckets");
       credentials = Ext.create("LeoTamer.Credentials");
 
       admin_store = Ext.create("Ext.data.Store", {
@@ -39,7 +39,7 @@
         layout: "card",
         activeItem: 0,
         items: [
-          s3_buckets,
+          buckets,
           credentials,
         ]
       });
