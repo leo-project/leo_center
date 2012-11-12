@@ -16,9 +16,6 @@
 
       endpoint_store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Endpoints",
-        groupField: "owner",
-        data: [], //XXX: for mock
-        /*
         proxy: {
           type: 'ajax',
           url: 'endpoints/list.json',
@@ -42,13 +39,12 @@
             }
           }
         },
-        */
         autoLoad: true
       });
 
       add_endpoint = function() {
         title = "Add New Endpoint";
-        msg = "Please input user name"
+        msg = "Please input endpoint name"
         Ext.Msg.prompt(title, msg, function(btn, value) {
           if (btn == "ok") {
             Ext.Ajax.request({
@@ -80,13 +76,13 @@
         store: endpoint_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "User Name:",
-          labelWidth: 75,
+          fieldLabel: "Endpoint Name:",
+          labelWidth: 100,
           listeners: {
             change: function(self, new_value) {
               store = self.getStore();
               store.clearFilter();
-              store.filter("user", new RegExp(new_value));
+              store.filter("endpoint", new RegExp(new_value));
             }
           }
         },"-", {

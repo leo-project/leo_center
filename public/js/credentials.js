@@ -15,7 +15,7 @@
       var credential_store, credential_grid;
 
       credential_store = Ext.create("Ext.data.Store", {
-        model: "LeoTamer.model.Buckets",
+        model: "LeoTamer.model.Credentials",
         groupField: "owner",
         data: [], //XXX: for mock
         /*
