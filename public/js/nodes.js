@@ -126,6 +126,7 @@
           {
             xtype: "panel",
             id: "node_status",
+            border: false,
             buttons: [{
               text: "System Operation",
               handler: send_command
@@ -133,6 +134,7 @@
           }, {
             xtype: 'grid',
             title: "defail information",
+            border: false,
             forceFit: true,
             hideHeaders: true,
             columns: [
