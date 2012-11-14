@@ -7,6 +7,7 @@ class LeoTamer
 
   namespace "/credentials" do
     get "/list.json" do
+      #TODO
       nil
     end
   end
