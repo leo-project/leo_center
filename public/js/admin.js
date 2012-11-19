@@ -19,6 +19,22 @@
         ],
       });
 
+      set_icon = function(value) {
+        img = undefined
+        switch(value) {
+          case "Buckets":
+            img = "<img src='images/bucket16.png'> ";
+            break;
+          case "Endpoints":
+            img = "<img src='images/endpoint16.png'> ";
+            break;
+          case "Credentials":
+            img = "<img src='images/credential16.png'> ";
+            break;
+        }
+        return img + value;
+      }
+
       admin_grid = Ext.create("Ext.grid.Panel", {
         title: "Menu",
         region: "west",
@@ -27,7 +43,10 @@
         forceFit: true,
         hideHeaders: true,
         store: admin_store,
-        columns: [{ dataIndex: "name" }],
+        columns: [{
+          dataIndex: "name",
+          renderer: set_icon
+        }],
         listeners: {
           select: function(self, record, index) {
             admin_card.getLayout().setActiveItem(index);

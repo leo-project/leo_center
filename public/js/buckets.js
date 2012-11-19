@@ -93,7 +93,8 @@
             }
           }
         },"-", {
-          text: "Add Bucket", //TODO: use icon
+          text: "Add Bucket",
+          icon: "images/add16.png",
           handler: add_bucket
         }],
         columns: [

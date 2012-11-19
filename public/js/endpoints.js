@@ -86,7 +86,8 @@
             }
           }
         },"-", {
-          text: "Add Endpoint", //TODO: use icon
+          text: "Add Endpoint",
+          icon: "images/add16.png",
           handler: add_endpoint
         }],
         columns: [

@@ -90,7 +90,8 @@
             }
           }
         },"-", {
-          text: "Add User", //TODO: use icon
+          text: "Add User",
+          icon: "images/add16.png",
           handler: add_user
         }],
         columns: [
