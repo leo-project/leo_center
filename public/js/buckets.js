@@ -84,8 +84,8 @@
         store: bucket_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "filter:",
-          labelWidth: 75,
+          fieldLabel: "Filter:",
+          labelWidth: 35,
           listeners: {
             change: function(self, new_value) {
               bucket_store.clearFilter();

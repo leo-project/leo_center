@@ -12,17 +12,18 @@
     layout: "border",
 
     initComponent: function() {
-      var operation_store, detail_store;
+      var command_store, detail_store;
       var do_send_command, confirm_send_command, send_command;
       var node_status_panel, status_renderer;
       var node_grid_grouping, node_store, node_grid_select, node_grid;
 
-      operation_store = Ext.create("Ext.data.Store", {
-        fields: [ "status" ],
+      command_store = Ext.create("Ext.data.Store", {
+        fields: [ "command" ],
         data: [
-          { status: "resume" },
-          { status: "suspend" },
-          { status: "detach" }
+          { command: "none" },
+          { command: "resume" },
+          { command: "suspend" },
+          { command: "detach" }
         ]
       });
 
@@ -91,22 +92,25 @@
         node = node_grid.getSelectionModel().getSelection()[0].data;
 
         command_combo = Ext.create("Ext.form.ComboBox", {
-            store: operation_store,
-            labelWidth: 200,
-            fieldLabel: "Select Operation Command",
-            displayField: "status",
-            valueField: "status",
+            store: command_store,
+            labelWidth: 125,
+            fieldLabel: "Execute Command",
+            displayField: "command",
+            valueField: "command",
             emptyText: "Select Command",
+            allowBlank: false,
             editable: false
         });
 
         command_select_window = Ext.create('Ext.window.Window', {
-          title: "System Operation: " + node.node,
+          title: node.node,
           items: command_combo,
           buttons: [{
             text: "Apply",
             handler: function() {
-              confirm_send_command(node.node, command_combo.getRawValue());
+              command = command_combo.getRawValue()
+              if (command != "none")
+                confirm_send_command(node.node, command);
             }
           }, {
             text: "Cancel",
@@ -127,8 +131,9 @@
             xtype: "panel",
             id: "node_status",
             border: false,
+            padding: "5",
             buttons: [{
-              text: "System Operation",
+              text: "Change Status",
               handler: send_command
             }]
           }, {
@@ -220,7 +225,7 @@
       };
 
       node_grid = Ext.create("Ext.grid.Panel", {
-        title: 'nodes',
+        title: 'Nodes',
         store: node_store,
         region: "center",
         forceFit: true,
@@ -254,8 +259,8 @@
         tbar: [
           {
             xtype: "textfield",
-            fieldLabel: "Node Name:",
-            labelWidth: 75,
+            fieldLabel: "Filter:",
+            labelWidth: 35,
             listeners: {
               change: function(self, new_value) {
                 node_store.clearFilter();

@@ -80,8 +80,8 @@
         store: credential_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "filter:",
-          labelWidth: 75,
+          fieldLabel: "Filter:",
+          labelWidth: 35,
           listeners: {
             change: function(self, new_value) {
               store = self.getStore();

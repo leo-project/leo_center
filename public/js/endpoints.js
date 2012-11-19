@@ -7,7 +7,7 @@
   Ext.define("LeoTamer.Endpoints", {
     extend: "Ext.panel.Panel",
     id: "endpoints",
-    title: "endpoints",
+    title: "Endpoints",
     layout: "border",
     border: false,
 
@@ -76,8 +76,8 @@
         store: endpoint_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "filter:",
-          labelWidth: 100,
+          fieldLabel: "Filter:",
+          labelWidth: 35,
           listeners: {
             change: function(self, new_value) {
               store = self.getStore();
