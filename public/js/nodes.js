@@ -160,6 +160,9 @@
           case "stop":
             src = "images/cross.gif";
             break;
+          case "attached":
+            src = "images/cross.gif";
+            break;
           case "suspended":
             src = "images/error.gif";
             break;
