@@ -76,7 +76,7 @@
         store: endpoint_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "Endpoint Name:",
+          fieldLabel: "filter:",
           labelWidth: 100,
           listeners: {
             change: function(self, new_value) {
@@ -86,7 +86,7 @@
             }
           }
         },"-", {
-          text: "Add Endpoint",
+          text: "Add Endpoint", //TODO: use icon
           handler: add_endpoint
         }],
         columns: [

@@ -84,7 +84,7 @@
         store: bucket_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "Bucket Name:",
+          fieldLabel: "filter:",
           labelWidth: 75,
           listeners: {
             change: function(self, new_value) {
@@ -93,7 +93,7 @@
             }
           }
         },"-", {
-          text: "Add Bucket",
+          text: "Add Bucket", //TODO: use icon
           handler: add_bucket
         }],
         columns: [

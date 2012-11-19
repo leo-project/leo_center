@@ -80,7 +80,7 @@
         store: credential_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "User Name:",
+          fieldLabel: "filter:",
           labelWidth: 75,
           listeners: {
             change: function(self, new_value) {
@@ -90,7 +90,7 @@
             }
           }
         },"-", {
-          text: "Add User",
+          text: "Add User", //TODO: use icon
           handler: add_user
         }],
         columns: [
