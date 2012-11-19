@@ -80,8 +80,8 @@
         store: credential_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "Filter:",
-          labelWidth: 35,
+          fieldLabel: "<img src='images/filter16.png'> Filter:",
+          labelWidth: 50,
           listeners: {
             change: function(self, new_value) {
               store = self.getStore();
