@@ -67,6 +67,7 @@
                   buttons: Ext.Msg.OK,
                   icon: Ext.Msg.INFO
                 });
+                bucket_store.load();
               },
               failure: function(response, opts) {
                 //TODO

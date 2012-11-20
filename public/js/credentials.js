@@ -1,7 +1,7 @@
 (function() {
   Ext.define('LeoTamer.model.Credentials', {
     extend: 'Ext.data.Model',
-    fields: ["user_id", "access_key_id"]
+    fields: ["user_id", "access_key_id", "created_at"]
   });
 
   Ext.define("LeoTamer.Credentials", {
@@ -61,6 +61,7 @@
                   buttons: Ext.Msg.OK,
                   icon: Ext.Msg.INFO
                 });
+                // credential_store.load(); //TODO
               },
               failure: function(response, opts) {
                 //TODO
@@ -92,8 +93,9 @@
           handler: add_user
         }],
         columns: [
-          { header: "User ID", dataIndex: "user_id", width: 600 },
-          { header: "Access Key ID", dataIndex: "access_key_id", width: 600 }
+          { header: "User ID", dataIndex: "user_id" },
+          { header: "Access Key ID", dataIndex: "access_key_id" },
+          { header: "Created At", dataIndex: "created_at" }
         ]
       });
 

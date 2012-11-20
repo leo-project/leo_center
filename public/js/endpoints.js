@@ -60,6 +60,7 @@
                   buttons: Ext.Msg.OK,
                   icon: Ext.Msg.INFO
                 });
+                endpoint_store.load();
               },
               failure: function(response, opts) {
                 //TODO

@@ -5,7 +5,12 @@ class LeoTamer
 
   namespace "/buckets" do
     get "/list.json" do
-      buckets = @@manager.s3_get_buckets
+      begin
+        buckets = @@manager.s3_get_buckets
+      rescue RuntimeError => ex
+        return { data: [] }.to_json if ex.message == "Not Found"
+      end
+
       result = buckets.map do |bucket|
         { 
           :name => bucket.name,

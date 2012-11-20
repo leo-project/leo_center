@@ -21,9 +21,45 @@
       ]
     });
 
+    header = Ext.create("Ext.toolbar.Toolbar", {
+      region: "north",
+      border: false,
+      items: [
+        { 
+          xtype: "box",
+          width: 75,
+          autoEl: {
+            tag: "img", 
+            src: "images/leofs-logo.png",
+          }
+        },
+        "->",
+        {
+          text: "Taro Yamada",
+          menu: {
+            xtype: "menu",
+            showSeparator: false,
+            items: [
+            /*
+              { text: "My Account" },
+              { text: "Account Activity" },
+              { text: "Usage Reports" },
+            */
+              { text: "Security Credentials" },
+              "-",
+              { text: "Sign Out" }
+            ]
+          }
+        }
+      ]
+    });
+
     return viewport = Ext.create("Ext.Viewport", {
       layout: "border",
-      items: tabs
+      items: [
+        header,
+        tabs
+      ]
     });
   });
 }).call(this);
