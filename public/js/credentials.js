@@ -1,7 +1,7 @@
 (function() {
   Ext.define('LeoTamer.model.Credentials', {
     extend: 'Ext.data.Model',
-    fields: ["user", "access_key_id"]
+    fields: ["user_id", "access_key_id"]
   });
 
   Ext.define("LeoTamer.Credentials", {
@@ -16,9 +16,7 @@
 
       credential_store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Credentials",
-        groupField: "owner",
-        data: [], //XXX: for mock
-        /*
+        // data: [], //XXX: for mock
         proxy: {
           type: 'ajax',
           url: 'credentials/list.json',
@@ -42,7 +40,6 @@
             }
           }
         },
-        */
         autoLoad: true
       });
 
@@ -95,7 +92,7 @@
           handler: add_user
         }],
         columns: [
-          { header: "User", dataIndex: "name", width: 600 },
+          { header: "User ID", dataIndex: "user_id", width: 600 },
           { header: "Access Key ID", dataIndex: "access_key_id", width: 600 }
         ]
       });
