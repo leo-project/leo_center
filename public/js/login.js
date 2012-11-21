@@ -1,7 +1,7 @@
 (function() {
   Ext.onReady(function() {
     form = Ext.create("Ext.form.Panel", {
-      width: "100%",
+      url: "login",
       defaultType: "textfield",
       layout: {
         type: "vbox",
@@ -15,14 +15,22 @@
       },
       items:[{ 
         fieldLabel:'Username', 
-        name: 'user',
+        name: 'user_name',
       },{ 
         fieldLabel: "Password",
         name: "pass", 
         inputType: "password",
       }],
       buttons: [{
-        text: "login"
+        text: "login",
+        handler: function() {
+          form.getForm().submit({
+            method: "POST",
+            success: function() {
+              window.location = "/"
+            }
+          });
+        }
       }]
     });
 
@@ -31,10 +39,12 @@
       layout: "vbox",
       width: 800,
       closable: false,
+      defaults: {
+        width: "100%",
+      },
       items: [
         {
           xtype: "image",
-          width: "100%",
           bodyStyle: { "background-color": "white" },
           src: "images/leofs-logo.png"
         },

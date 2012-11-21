@@ -12,13 +12,20 @@ class LeoTamer < Sinatra::Base
 
   register Sinatra::Namespace
   use Rack::Session::Cookie,
-    :expire_after => 60*60*24*14, # 2 weeks
-    :secret => "leo_tamer"
+    :key => "leotamer_session",
+    :secret => "CHANGE ME"
 
   before do
     debug "params: #{params}" if $DEBUG
-    if !session[:user_id] && request.path != "/login"
-      redirect "/login"
+    unless session[:user_name]
+      case request.path
+      when "/login"
+        # don't redirect
+      when "/"
+        redirect "/login"
+      else
+        halt 401
+      end
     end
   end
 
@@ -31,12 +38,16 @@ class LeoTamer < Sinatra::Base
   end
 
   get "/login" do
+    # halt 500 unless request.secure?
+    redirect "/" if session[:user_name]
     haml :login
   end
 
   post "/login" do
-    session[:user_id] = params[:user_id]
-    redirect "/"
+    user_name = params[:user_name]
+    session[:user_name] = user_name
+    response.set_cookie("user_name", user_name) # used in ExtJS
+    { success: true }.to_json
   end
 
   get "/logout" do

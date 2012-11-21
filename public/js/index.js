@@ -6,7 +6,7 @@
 
   Ext.onReady(function() {
     var node_status, tabs, viewport;
-
+    
     node_status = Ext.create("LeoTamer.Nodes");
 
     admin = Ext.create("LeoTamer.Admin");
@@ -26,16 +26,13 @@
       border: false,
       items: [
         { 
-          xtype: "box",
+          xtype: "image",
           width: 75,
-          autoEl: {
-            tag: "img", 
-            src: "images/leofs-logo.png",
-          }
+          src: "images/leofs-logo.png"
         },
         "->",
         {
-          text: "Taro Yamada",
+          text: Ext.util.Cookies.get("user_name"),
           menu: {
             xtype: "menu",
             showSeparator: false,
@@ -47,7 +44,12 @@
             */
               { text: "Security Credentials" },
               "-",
-              { text: "Sign Out" }
+              { 
+                text: "Sign Out",
+                handler: function() {
+                  window.location = "/logout"
+                }
+              }
             ]
           }
         }
