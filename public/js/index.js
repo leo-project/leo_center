@@ -6,7 +6,7 @@
 
   Ext.onReady(function() {
     var node_status, tabs, viewport;
-    
+
     node_status = Ext.create("LeoTamer.Nodes");
 
     admin = Ext.create("LeoTamer.Admin");
