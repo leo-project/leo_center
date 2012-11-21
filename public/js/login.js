@@ -95,7 +95,9 @@
         type: "vbox",
         align: "center"
       },
+      y: "20%",
       width: 600,
+      draggable: false,
       closable: false,
       items: [
         {
