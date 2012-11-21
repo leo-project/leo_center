@@ -9,6 +9,7 @@
         defaults: {
           padding: "10",
           width: 300,
+          vtype: "alphanum",
           allowBlank: false
         },
         items:[{
@@ -17,7 +18,7 @@
         }, {
           fieldLabel: "Email Address",
           name: "email",
-          inputType: "email"
+          vtype: "email"
         }, {
           fieldLabel: "Password",
           id: "sign_up_form_pass",
@@ -60,6 +61,7 @@
       defaults: {
         padding: "10",
         width: 500,
+        vtype: "alphanum",
         labelAlign: "right",
         allowBlank: false 
       },
