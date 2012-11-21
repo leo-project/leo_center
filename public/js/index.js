@@ -42,6 +42,7 @@
               { text: "Account Activity" },
               { text: "Usage Reports" },
             */
+              { text: "History" },
               { text: "Security Credentials" },
               "-",
               { 

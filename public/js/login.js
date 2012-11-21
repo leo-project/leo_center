@@ -1,12 +1,62 @@
 (function() {
   Ext.onReady(function() {
+    var sign_up, form, login;
+
+    sign_up = function() {
+      var sign_up_form = Ext.create("Ext.form.Panel", {
+        url: "test",
+        defaultType: "textfield",
+        defaults: {
+          padding: "10",
+          width: 300,
+          allowBlank: false
+        },
+        items:[{
+          fieldLabel: "Username",
+          name: "user_name",
+        }, {
+          fieldLabel: "Email Address",
+          name: "email",
+          inputType: "email"
+        }, {
+          fieldLabel: "Password",
+          id: "sign_up_form_pass",
+          name: "pass",
+          inputType: "password",
+          validator: function(value) {
+            confirm_value = Ext.getCmp("sign_up_form_confirm_pass").getValue();
+            return value === confirm_value;
+          }
+        }, {
+          fieldLabel: "Password (Confirm)",
+          id: "sign_up_form_confirm_pass",
+          name: "confirm_pass",
+          inputType: "password",
+          validator: function() {
+            return Ext.getCmp("sign_up_form_pass").validate();
+          }
+        }],
+        buttons: [{
+          text: "Sign UP",
+          handler: function() {
+            sign_up_form.submit({
+              method: "GET"
+            });
+          }
+        }]
+      });
+
+      Ext.create("Ext.window.Window", {
+        title: "Sign Up",
+        modal: true,
+        items: sign_up_form
+      }).show();
+    };
+
     form = Ext.create("Ext.form.Panel", {
       url: "login",
+      width: "100%",
       defaultType: "textfield",
-      layout: {
-        type: "vbox",
-        align: "center"
-      },
       defaults: {
         padding: "10",
         width: 500,
@@ -19,10 +69,10 @@
       },{ 
         fieldLabel: "Password",
         name: "pass", 
-        inputType: "password",
+        inputType: "password"
       }],
       buttons: [{
-        text: "login",
+        text: "Login",
         handler: function() {
           form.getForm().submit({
             method: "POST",
@@ -31,20 +81,24 @@
             }
           });
         }
+      },{
+        text: "Sign UP",
+        handler: sign_up
       }]
     });
 
     login = Ext.create("Ext.window.Window", {
       title: "login",
-      layout: "vbox",
-      width: 800,
-      closable: false,
-      defaults: {
-        width: "100%",
+      layout: {
+        type: "vbox",
+        align: "center"
       },
+      width: 600,
+      closable: false,
       items: [
         {
           xtype: "image",
+          width: 400,
           bodyStyle: { "background-color": "white" },
           src: "images/leofs-logo.png"
         },
