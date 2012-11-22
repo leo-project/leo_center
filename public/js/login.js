@@ -99,7 +99,7 @@
           xtype: "image",
           border: false,
           maintainFlex: true,
-          src: "images/leofs-logo.png"
+          src: "images/leofs-logo-1.png"
         },
         {
           xtype: "panel",
