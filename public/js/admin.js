@@ -34,7 +34,7 @@
             img = "<img src='images/credential16.png'> ";
             break;
           case "History":
-            img = "";
+            img = "<img src='images/history16.png'> ";
             break;
         }
         return img + value;
