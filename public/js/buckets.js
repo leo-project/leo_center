@@ -15,9 +15,8 @@
       var bucket_grid_grouping;
       var bucket_store, bucket_grid;
 
-      bucket_grid_grouping = Ext.create('Ext.grid.feature.Grouping', {
-        groupHeaderTpl: '{name} ({rows.length} bucket{[values.rows.length > 1 ? "s" : ""]})',
-        hideGroupedHeader: true
+      bucket_grid_grouping = Ext.create('Ext.grid.feature.GroupingSummary', {
+        groupHeaderTpl: '{name} ({rows.length} bucket{[values.rows.length > 1 ? "s" : ""]})'
       });
 
       bucket_store = Ext.create("Ext.data.Store", {
@@ -99,30 +98,36 @@
           handler: add_bucket
         }],
         columns: [
-          { header: "Bucket", dataIndex: "name" },
+          { 
+            header: "Bucket",
+            dataIndex: "name",
+            summaryRenderer: function(value){
+              return "TOTAL";
+            }
+          },
+          {
+            header: "# of Req",
+            width: 100,
+            columns: [
+              { header: "G" },
+              { header: "W" },
+              { header: "D" },
+            ]
+          },
+          { 
+            header: "# of Files",
+            width: 50
+          },
+          { 
+            header: "Capacity",
+            width: 50
+          },
           { header: "Created At", dataIndex: "created_at" }
         ]
       });
 
-
-
-      bucket_sub_grid = Ext.create("Ext.grid.Panel", {
-        title: "Details",
-        region: "east",
-        width: 300,
-        forceFit: true,
-        columns: [
-          { header: "Name", dataIndex: "name" },
-          { header: "Value", dataIndex: "value" },
-        ],
-        data: []
-      });
-
       Ext.apply(this, {
-        items: [
-          bucket_grid,
-          bucket_sub_grid
-        ]
+        items: bucket_grid
       });
 
       return this.callParent(arguments);

@@ -40,7 +40,8 @@ class LeoTamer
     end
 
     get "/detail.json" do
-      node = params[:node] || "storage_0@127.0.0.1" # dummy
+      node = params[:node]
+      type = params[:type]
       node_stat = @@manager.status(node).node_stat
 
       properties = [
@@ -50,6 +51,15 @@ class LeoTamer
 
       result = properties.map do |property|
         { :name => property, :value => node_stat.__send__(property) }
+      end
+
+      if type == "Storage"
+        storage_stat = @@manager.du(node)
+        p storage_stat
+        result.concat([
+          { :name => :file_size, :value => storage_stat.file_size },
+          { :name => :total_of_objects, :value => storage_stat.total_of_objects }
+        ])
       end
 
       { :data => result }.to_json

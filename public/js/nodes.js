@@ -220,7 +220,10 @@
         status_line = "Status: " + status_renderer(record.data.status);
         Ext.getCmp("node_status").update(name_line + "<br>" + status_line);
         detail_store.load({ 
-          params: { node: name }
+          params: { 
+            node: name,
+            type: record.data.type
+          }
         });
       };
 
