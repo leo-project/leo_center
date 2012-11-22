@@ -14,11 +14,7 @@
         },
         items:[{
           fieldLabel: "Username",
-          name: "user_name",
-        }, {
-          fieldLabel: "Email Address",
-          name: "email",
-          vtype: "email"
+          name: "user_name"
         }, {
           fieldLabel: "Password",
           id: "sign_up_form_pass",

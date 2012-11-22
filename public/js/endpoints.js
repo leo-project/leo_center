@@ -12,7 +12,7 @@
     border: false,
 
     initComponent: function() {
-      var bucket_store, bucket_grid;
+      var endpoint_store, endpoint_grid;
 
       endpoint_store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Endpoints",
