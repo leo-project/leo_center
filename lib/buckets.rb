@@ -15,7 +15,8 @@ class LeoTamer
         { 
           :name => bucket.name,
           :owner => bucket.owner,
-          :created_at => bucket.created_at
+          :created_at => bucket.created_at,
+          :dummy => rand(100)
         }
       end
       { data: result }.to_json

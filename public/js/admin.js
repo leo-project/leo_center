@@ -9,13 +9,15 @@
       buckets = Ext.create("LeoTamer.Buckets");
       endpoints = Ext.create("LeoTamer.Endpoints");
       credentials = Ext.create("LeoTamer.Credentials");
+      history = Ext.create("LeoTamer.History");
 
       admin_store = Ext.create("Ext.data.Store", {
         fields: ["name"],
         data: [
           { name: "Buckets" },
           { name: "Endpoints" },
-          { name: "Credentials" }
+          { name: "Credentials" },
+          { name: "History" }
         ],
       });
 
@@ -30,6 +32,9 @@
             break;
           case "Credentials":
             img = "<img src='images/credential16.png'> ";
+            break;
+          case "History":
+            img = "";
             break;
         }
         return img + value;
@@ -61,7 +66,8 @@
         items: [
           buckets,
           endpoints,
-          credentials
+          credentials,
+          history
         ]
       });
 
