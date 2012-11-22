@@ -52,11 +52,11 @@
 
     form = Ext.create("Ext.form.Panel", {
       url: "login",
-      width: "100%",
+      border: false,
+      y: 100,
       defaultType: "textfield",
       defaults: {
         padding: "10",
-        width: 500,
         vtype: "alphanum",
         labelAlign: "right",
         allowBlank: false 
@@ -87,22 +87,26 @@
 
     login = Ext.create("Ext.window.Window", {
       title: "login",
-      layout: {
-        type: "vbox",
-        align: "center"
-      },
+      id: "login",
+      layout: "hbox",
       y: "20%",
       width: 600,
       draggable: false,
       closable: false,
+      defaults: { flex: 2 },
       items: [
         {
           xtype: "image",
-          width: 400,
-          bodyStyle: { "background-color": "white" },
+          border: false,
+          maintainFlex: true,
           src: "images/leofs-logo.png"
         },
-        form
+        {
+          xtype: "panel",
+          border: false,
+          layout: "absolute",
+          items: form
+        }
       ]
     }).show();
   });
