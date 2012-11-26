@@ -53,12 +53,12 @@
     form = Ext.create("Ext.form.Panel", {
       url: "login",
       border: false,
-      y: 100,
       defaultType: "textfield",
       defaults: {
         padding: "10",
         vtype: "alphanum",
-        labelAlign: "right",
+        labelWidth: 150,
+        labelStyle: "font-size: x-large",
         allowBlank: false 
       },
       items:[{ 
@@ -88,23 +88,28 @@
     login = Ext.create("Ext.window.Window", {
       title: "login",
       id: "login",
-      layout: "hbox",
+      layout: {
+        type: "vbox",
+        align: "center"
+      },
       y: "20%",
       width: 600,
       draggable: false,
       closable: false,
-      defaults: { flex: 2 },
       items: [
         {
           xtype: "image",
+          flex: 1,
+          padding: "24 24 0",
+          width: "80%",
           border: false,
-          maintainFlex: true,
-          src: "images/leofs-logo-1.png"
+          src: "images/leofs-logo-0.png"
         },
         {
           xtype: "panel",
+          flex: 2,
           border: false,
-          layout: "absolute",
+          padding: "0 24 24",
           items: form
         }
       ]
