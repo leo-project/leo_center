@@ -56,7 +56,7 @@
         }],
         columns: [
           { header: "History", dataIndex: "history", width: 600 },
-          { header: "Created At", dataIndex: "created_at", width: 600 }
+          { header: "Created at", dataIndex: "created_at", width: 600 }
         ]
       });
 

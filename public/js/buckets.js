@@ -137,7 +137,7 @@
               return render_progress_bar(value, sum);
             }
           },
-          { header: "Created At", dataIndex: "created_at" }
+          { header: "Created at", dataIndex: "created_at" }
         ]
       });
 

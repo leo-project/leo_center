@@ -95,7 +95,7 @@
         columns: [
           { header: "User ID", dataIndex: "user_id" },
           { header: "Access Key ID", dataIndex: "access_key_id" },
-          { header: "Created At", dataIndex: "created_at" }
+          { header: "Created at", dataIndex: "created_at" }
         ]
       });
 
