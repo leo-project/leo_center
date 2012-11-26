@@ -113,11 +113,9 @@
           { 
             header: "Bucket",
             dataIndex: "name",
-            /*
             summaryRenderer: function(value){
               return "TOTAL";
             }
-            */
           },
           { 
             header: "# of Files",
