@@ -6,6 +6,9 @@
     layout: "border",
 
     initComponent: function() {
+      var buckets, endpoints, credentials, history;
+      var set_icon, admin_store, admin_card, admin_grid;
+
       buckets = Ext.create("LeoTamer.Buckets");
       endpoints = Ext.create("LeoTamer.Endpoints");
       credentials = Ext.create("LeoTamer.Credentials");
@@ -18,7 +21,7 @@
           { name: "Endpoints" },
           { name: "Credentials" },
           { name: "History" }
-        ],
+        ]
       });
 
       set_icon = function(value) {
@@ -55,6 +58,9 @@
         listeners: {
           select: function(self, record, index) {
             admin_card.getLayout().setActiveItem(index);
+          },
+          afterrender: function(self) {
+            self.getSelectionModel().select(0);
           }
         }
       });

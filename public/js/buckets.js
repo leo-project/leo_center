@@ -36,9 +36,6 @@
           sortParam: undefined,
           startParam: undefined,
           listeners: {
-            load: function() {
-              node_grid.getSelectionModel().selectFirstRow();
-            },
             exception: function(self, response, operation) {
               console.log(self, response, operation);
               alert("Error on: \'" + self.url + "\'\n" + response.responseText);
