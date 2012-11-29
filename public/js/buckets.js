@@ -1,7 +1,7 @@
 (function() {
   Ext.define('LeoTamer.model.Buckets', {
     extend: 'Ext.data.Model',
-    fields: ["name", "owner", "created_at", "dummy"]
+    fields: ["name", "owner", "created_at", "dummy", "dummy2"]
   });
 
   Ext.define("LeoTamer.Buckets", {
@@ -78,6 +78,7 @@
         Ext.defer(function () {
           Ext.widget('progressbar', {
             text: value,
+            border: false,
             renderTo: id,
             value: value / sum,
           });
@@ -115,8 +116,18 @@
             }
           },
           { 
-            header: "# of Files",
-            width: 50
+            header: "# of files",
+            width: 50,
+            dataIndex: "dummy2",
+            renderer: function(value, _, record, _, _, store, view) {
+              var sum = store.sum("dummy2");
+              return render_progress_bar(value, sum);
+            },
+            summaryType: "sum",
+            summaryRenderer: function(value, _, field) {
+              var sum = bucket_grid.getStore().sum(field);
+              return render_progress_bar(value, sum);
+            }
           },
           { 
             header: "Capacity",
