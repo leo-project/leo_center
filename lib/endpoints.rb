@@ -1,10 +1,4 @@
-require 'leofs_manager_client'
-
 class LeoTamer
-  configure do
-    @@manager ||= LeoFSManager::Client.new(*Config[:managers])
-  end
-
   namespace "/endpoints" do
     get "/list.json" do
       data = @@manager.s3_get_endpoints.map do |endpoint|

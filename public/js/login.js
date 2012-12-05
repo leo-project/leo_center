@@ -4,7 +4,7 @@
 
     sign_up = function() {
       var sign_up_form = Ext.create("Ext.form.Panel", {
-        url: "test",
+        url: "sign_up",
         defaultType: "textfield",
         defaults: {
           padding: "10",
@@ -13,8 +13,8 @@
           allowBlank: false
         },
         items:[{
-          fieldLabel: "Username",
-          name: "user_name"
+          fieldLabel: "User ID",
+          name: "user_id"
         }, {
           fieldLabel: "Password",
           id: "sign_up_form_pass",
@@ -62,8 +62,8 @@
         allowBlank: false 
       },
       items:[{ 
-        fieldLabel:'Username', 
-        name: 'user_name',
+        fieldLabel:'User ID',
+        name: 'user_id',
       },{ 
         fieldLabel: "Password",
         name: "pass", 

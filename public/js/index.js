@@ -32,7 +32,7 @@
         },
         "->",
         {
-          text: Ext.util.Cookies.get("user_name"),
+          text: Ext.util.Cookies.get("user_id"),
           menu: {
             xtype: "menu",
             showSeparator: false,
