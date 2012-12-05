@@ -24,7 +24,7 @@ class LeoTamer < Sinatra::Base
 
   before do
     debug "params: #{params}" if $DEBUG
-    unless session[:user_name]
+    unless session[:user_id]
       case request.path
       when "/login"
         # don't redirect
@@ -52,7 +52,7 @@ class LeoTamer < Sinatra::Base
 
   get "/login" do
     # halt 500 unless request.secure?
-    redirect "/" if session[:user_name]
+    redirect "/" if session[:user_id]
     haml :login
   end
 
