@@ -26,7 +26,7 @@ class LeoTamer < Sinatra::Base
     debug "params: #{params}" if $DEBUG
     unless session[:user_id]
       case request.path
-      when "/login"
+      when "/login", "/sign_up"
         # don't redirect
       when "/"
         redirect "/login"
@@ -47,7 +47,21 @@ class LeoTamer < Sinatra::Base
   post "/sign_up" do
     user_id = params[:user_id]
     password = params[:password]
-    @@manager.s3_create_user(user_id, password)
+    begin
+      credential = @@manager.s3_create_user(user_id, password)
+    rescue RuntimeError => ex
+      { 
+        success: false,
+        errors: {
+          reason: ex.message
+        }
+      }.to_json
+    else
+      { 
+        success: true,
+        message: "AWS_ACCESS_KEY_ID: #{credential.access_key_id}<br>AWS_SECRET_ACCESS_KEY: #{credential.secret_access_key}"
+      }.to_json
+    end
   end
 
   get "/login" do
@@ -60,9 +74,10 @@ class LeoTamer < Sinatra::Base
     user_id = params[:user_id]
     password = params[:password]
     begin
-      @@manager.login(user_id, password)
+      credential = @@manager.login(user_id, password)
     rescue RuntimeError => ex
-      { success: false,
+      { 
+        success: false,
         errors: {
           reason: "Invalid User ID or Password."
         }
