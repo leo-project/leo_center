@@ -49,10 +49,11 @@
         Ext.Msg.prompt(title, msg, function(btn, value) {
           if (btn == "ok") {
             Ext.Ajax.request({
-              url: "credentials/add_user",
+              url: "credentials/add_user.json",
               method: "POST",
               params: { user: value },
               success: function(response, opts) {
+                console.log(response, opts);
                 title = "Add User"
                 msg = "user '" + value + "' is added successfully."
                 Ext.Msg.show({
@@ -64,6 +65,37 @@
                 // credential_store.load(); //TODO
               },
               failure: function(response, opts) {
+                console.log(response, opts);
+                //TODO
+              }
+            })
+          }
+        })
+      }
+
+      delete_user = function() {
+        title = "Delete User";
+        msg = "Please input user name"
+        Ext.Msg.prompt(title, msg, function(btn, value) {
+          if (btn == "ok") {
+            Ext.Ajax.request({
+              url: "credentials/delete_user",
+              method: "DELETE",
+              params: { user: value },
+              success: function(response, opts) {
+                console.log(response, opts);
+                title = "Delete User"
+                msg = "user '" + value + "' is deleted successfully."
+                Ext.Msg.show({
+                  title: title,
+                  msg: msg,
+                  buttons: Ext.Msg.OK,
+                  icon: Ext.Msg.INFO
+                });
+                credential_store.load();
+              },
+              failure: function(response, opts) {
+                console.log(response, opts);
                 //TODO
               }
             })
@@ -91,6 +123,10 @@
           text: "Add User",
           icon: "images/add16.png",
           handler: add_user
+        }, {
+          text: "Delete User",
+          icon: "images/add16.png", //TODO
+          handler: delete_user
         }],
         columns: [
           { header: "User ID", dataIndex: "user_id" },

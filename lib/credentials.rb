@@ -1,10 +1,4 @@
-require 'leofs_manager_client'
-
 class LeoTamer
-  configure do
-    @@manager ||= LeoFSManager::Client.new(*Config[:managers])
-  end
-
   namespace "/credentials" do
     get "/list.json" do
       keys = @@manager.s3_get_keys
@@ -17,6 +11,19 @@ class LeoTamer
       end
 
       { data: result }.to_json
+    end
+=begin
+    post "/add_user.json" do
+      user_id = params[:user_id]
+      password = params[:password]
+      @@manager.s3_create_user(user_id, password)
+      { success: false }.json
+    end
+=end
+    delete "/delete_user" do
+      user_id = params[:user_id]
+      @@manager.s3_delete_user(user_id)
+      nil
     end
   end
 end

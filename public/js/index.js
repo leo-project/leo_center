@@ -6,6 +6,7 @@
 
   Ext.onReady(function() {
     var node_status, tabs, viewport;
+    var get_credential;
     
     node_status = Ext.create("LeoTamer.Nodes");
 
@@ -20,6 +21,20 @@
         admin
       ]
     });
+
+    get_credential = function() {
+      Ext.Ajax.request({
+        url: "user_credential.json",
+        method: "GET",
+        success: function(response, opts) {
+          console.log(response, opts);
+          Ext.Msg.alert("Your Credential", response.responseText);
+        },
+        failure: function(response, opts) {
+          console.log(response, opts);
+        }
+      })
+    };
 
     header = Ext.create("Ext.toolbar.Toolbar", {
       region: "north",
@@ -43,7 +58,10 @@
               { text: "Usage Reports" },
             */
               { text: "History" },
-              { text: "Security Credentials" },
+              { 
+                text: "Security Credentials",
+                handler: get_credential
+              },
               "-",
               { 
                 text: "Sign Out",

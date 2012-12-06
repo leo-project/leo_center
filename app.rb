@@ -84,6 +84,8 @@ class LeoTamer < Sinatra::Base
       }.to_json
     else
       session[:user_id] = user_id
+      session[:access_key_id] = credential.access_key_id
+      session[:secret_access_key] = credential.secret_key
       response.set_cookie("user_id", user_id) # used in ExtJS
       { success: true }.to_json
     end
@@ -92,6 +94,13 @@ class LeoTamer < Sinatra::Base
   get "/logout" do
     session.clear
     redirect "/login"
+  end
+
+  get "/user_credential.json" do
+    <<-EOS
+      AWS_ACCESS_KEY_ID: #{session[:access_key_id]}<br>
+      AWS_SECRET_ACCESS_KEY: #{session[:secret_access_key]}
+    EOS
   end
 
   get "/*.html" do |temp|
