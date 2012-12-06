@@ -2,8 +2,11 @@ require "sinatra/base"
 require "sinatra/namespace"
 require "json"
 require "haml"
+require "leofs_manager_client"
 
 class LeoTamer < Sinatra::Base
+  require_relative "lib/config"
+
   class Error < StandardError; end
 
   def debug(str)
@@ -14,12 +17,16 @@ class LeoTamer < Sinatra::Base
   use Rack::Session::Cookie,
     :key => "leotamer_session",
     :secret => "CHANGE ME"
+  
+  configure do
+    @@manager = LeoFSManager::Client.new(*Config[:managers])
+  end
 
   before do
     debug "params: #{params}" if $DEBUG
-    unless session[:user_name]
+    unless session[:user_id]
       case request.path
-      when "/login"
+      when "/login", "/sign_up"
         # don't redirect
       when "/"
         redirect "/login"
@@ -37,17 +44,49 @@ class LeoTamer < Sinatra::Base
     haml :index
   end
 
+  post "/sign_up" do
+    user_id = params[:user_id]
+    password = params[:password]
+    begin
+      credential = @@manager.s3_create_user(user_id, password)
+    rescue RuntimeError => ex
+      { 
+        success: false,
+        errors: {
+          reason: ex.message
+        }
+      }.to_json
+    else
+      { 
+        success: true,
+        message: "AWS_ACCESS_KEY_ID: #{credential.access_key_id}<br>AWS_SECRET_ACCESS_KEY: #{credential.secret_access_key}"
+      }.to_json
+    end
+  end
+
   get "/login" do
     # halt 500 unless request.secure?
-    redirect "/" if session[:user_name]
+    redirect "/" if session[:user_id]
     haml :login
   end
 
   post "/login" do
-    user_name = params[:user_name]
-    session[:user_name] = user_name
-    response.set_cookie("user_name", user_name) # used in ExtJS
-    { success: true }.to_json
+    user_id = params[:user_id]
+    password = params[:password]
+    begin
+      credential = @@manager.login(user_id, password)
+    rescue RuntimeError => ex
+      { 
+        success: false,
+        errors: {
+          reason: "Invalid User ID or Password."
+        }
+      }.to_json
+    else
+      session[:user_id] = user_id
+      response.set_cookie("user_id", user_id) # used in ExtJS
+      { success: true }.to_json
+    end
   end
 
   get "/logout" do
@@ -60,7 +99,6 @@ class LeoTamer < Sinatra::Base
   end
 end
 
-require_relative "lib/config"
 require_relative "lib/nodes"
 require_relative "lib/buckets"
 require_relative "lib/endpoints"

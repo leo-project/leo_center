@@ -1,10 +1,10 @@
 (function() {
   Ext.onReady(function() {
-    var sign_up, form, login;
+    var sign_up, login_form, login;
 
     sign_up = function() {
       var sign_up_form = Ext.create("Ext.form.Panel", {
-        url: "test",
+        url: "sign_up",
         defaultType: "textfield",
         defaults: {
           padding: "10",
@@ -13,12 +13,12 @@
           allowBlank: false
         },
         items:[{
-          fieldLabel: "Username",
-          name: "user_name"
+          fieldLabel: "User ID",
+          name: "user_id"
         }, {
           fieldLabel: "Password",
           id: "sign_up_form_pass",
-          name: "pass",
+          name: "password",
           inputType: "password",
           validator: function(value) {
             confirm_value = Ext.getCmp("sign_up_form_confirm_pass").getValue();
@@ -37,7 +37,15 @@
           text: "Sign UP",
           handler: function() {
             sign_up_form.submit({
-              method: "GET"
+              method: "POST",
+              success: function(form, action) {
+                Ext.Msg.alert("Your New Account", action.result.message);
+                //window.location = "/"
+              },
+              failure: function(form, action) {
+                console.log(action);
+                Ext.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
+              }
             });
           }
         }]
@@ -50,7 +58,7 @@
       }).show();
     };
 
-    form = Ext.create("Ext.form.Panel", {
+    login_form = Ext.create("Ext.form.Panel", {
       url: "login",
       border: false,
       defaultType: "textfield",
@@ -62,20 +70,25 @@
         allowBlank: false 
       },
       items:[{ 
-        fieldLabel:'Username', 
-        name: 'user_name',
+        fieldLabel:'User ID',
+        name: 'user_id',
       },{ 
         fieldLabel: "Password",
-        name: "pass", 
+        name: "password",
         inputType: "password"
       }],
       buttons: [{
         text: "Login",
         handler: function() {
-          form.getForm().submit({
+          login_form.getForm().submit({
             method: "POST",
             success: function() {
               window.location = "/"
+            },
+            failure: function(form, action) {
+              console.log(form, action);
+              Ext.Msg.alert("Login Faild!", action.result.errors.reason);
+              login_form.getForm().reset();
             }
           });
         }
@@ -110,7 +123,7 @@
           flex: 2,
           border: false,
           padding: "0 24 24",
-          items: form
+          items: login_form
         }
       ]
     }).show();

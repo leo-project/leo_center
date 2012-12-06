@@ -1,8 +1,4 @@
 class LeoTamer
-  configure do
-    @@manager ||= LeoFSManager::Client.new(*Config[:managers])
-  end
-
   namespace "/buckets" do
     get "/list.json" do
       begin
