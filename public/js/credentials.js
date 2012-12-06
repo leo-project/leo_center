@@ -125,7 +125,7 @@
           handler: add_user
         }, {
           text: "Delete User",
-          icon: "images/add16.png", //TODO
+          icon: "images/remove16.png",
           handler: delete_user
         }],
         columns: [
