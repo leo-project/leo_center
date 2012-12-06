@@ -66,7 +66,7 @@
         name: 'user_id',
       },{ 
         fieldLabel: "Password",
-        name: "pass", 
+        name: "password",
         inputType: "password"
       }],
       buttons: [{
@@ -76,6 +76,10 @@
             method: "POST",
             success: function() {
               window.location = "/"
+            },
+            failure: function(form, action) {
+              console.log(form, action);
+              Ext.Msg.alert("Login Faild!", action.result.errors.reason);
             }
           });
         }

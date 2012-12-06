@@ -59,10 +59,19 @@ class LeoTamer < Sinatra::Base
   post "/login" do
     user_id = params[:user_id]
     password = params[:password]
-    #@@manager.login(user_id, password) rescue return haml :login_error
-    session[:user_id] = user_id
-    response.set_cookie("user_id", user_id) # used in ExtJS
-    { success: true }.to_json
+    begin
+      @@manager.login(user_id, password)
+    rescue RuntimeError => ex
+      { success: false,
+        errors: {
+          reason: "Invalid User ID or Password."
+        }
+      }.to_json
+    else
+      session[:user_id] = user_id
+      response.set_cookie("user_id", user_id) # used in ExtJS
+      { success: true }.to_json
+    end
   end
 
   get "/logout" do
