@@ -19,7 +19,7 @@
         data: [
           { name: "Buckets" },
           { name: "Endpoints" },
-          { name: "Credentials" },
+          { name: "Users" },
           { name: "History" }
         ]
       });
@@ -33,8 +33,8 @@
           case "Endpoints":
             img = "<img src='images/endpoint16.png'> ";
             break;
-          case "Credentials":
-            img = "<img src='images/credential16.png'> ";
+          case "Users":
+            img = "<img src='images/users16.png'> ";
             break;
           case "History":
             img = "<img src='images/history16.png'> ";
