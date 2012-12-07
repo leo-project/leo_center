@@ -57,10 +57,7 @@ class LeoTamer < Sinatra::Base
         }
       }.to_json
     else
-      { 
-        success: true,
-        message: "AWS_ACCESS_KEY_ID: #{credential.access_key_id}<br>AWS_SECRET_ACCESS_KEY: #{credential.secret_access_key}"
-      }.to_json
+      { success: true }.to_json
     end
   end
 
@@ -84,6 +81,7 @@ class LeoTamer < Sinatra::Base
       }.to_json
     else
       session[:user_id] = user_id
+      session[:role_id] = credential.role_id
       session[:access_key_id] = credential.access_key_id
       session[:secret_access_key] = credential.secret_key
       response.set_cookie("user_id", user_id) # used in ExtJS

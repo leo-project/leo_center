@@ -38,9 +38,8 @@
           handler: function() {
             sign_up_form.submit({
               method: "POST",
-              success: function(form, action) {
-                Ext.Msg.alert("Your New Account", action.result.message);
-                //window.location = "/"
+              success: function() {
+                window.location = "/"
               },
               failure: function(form, action) {
                 console.log(action);
