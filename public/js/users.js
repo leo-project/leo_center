@@ -1,25 +1,25 @@
 (function() {
-  Ext.define('LeoTamer.model.Credentials', {
+  Ext.define('LeoTamer.model.Users', {
     extend: 'Ext.data.Model',
     fields: ["user_id", "access_key_id", "created_at"]
   });
 
-  Ext.define("LeoTamer.Credentials", {
+  Ext.define("LeoTamer.Users", {
     extend: "Ext.panel.Panel",
-    id: "credentials",
-    title: "Credentials",
+    id: "Users",
+    title: "Users",
     layout: "border",
     border: false,
 
     initComponent: function() {
-      var credential_store, credential_grid;
+      var user_store, user_grid;
 
-      credential_store = Ext.create("Ext.data.Store", {
-        model: "LeoTamer.model.Credentials",
+      user_store = Ext.create("Ext.data.Store", {
+        model: "LeoTamer.model.Users",
         // data: [], //XXX: for mock
         proxy: {
           type: 'ajax',
-          url: 'credentials/list.json',
+          url: 'users/list.json',
           reader: {
             type: 'json',
             root: 'data'
@@ -49,7 +49,7 @@
         Ext.Msg.prompt(title, msg, function(btn, value) {
           if (btn == "ok") {
             Ext.Ajax.request({
-              url: "credentials/add_user.json",
+              url: "users/add_user.json",
               method: "POST",
               params: { user: value },
               success: function(response, opts) {
@@ -62,7 +62,7 @@
                   buttons: Ext.Msg.OK,
                   icon: Ext.Msg.INFO
                 });
-                // credential_store.load(); //TODO
+                // user_store.load(); //TODO
               },
               failure: function(response, opts) {
                 console.log(response, opts);
@@ -79,7 +79,7 @@
         Ext.Msg.prompt(title, msg, function(btn, value) {
           if (btn == "ok") {
             Ext.Ajax.request({
-              url: "credentials/delete_user",
+              url: "users/delete_user",
               method: "DELETE",
               params: { user: value },
               success: function(response, opts) {
@@ -92,7 +92,7 @@
                   buttons: Ext.Msg.OK,
                   icon: Ext.Msg.INFO
                 });
-                credential_store.load();
+                user_store.load();
               },
               failure: function(response, opts) {
                 console.log(response, opts);
@@ -103,11 +103,11 @@
         })
       }
 
-      credential_grid = Ext.create("Ext.grid.Panel", {
+      user_grid = Ext.create("Ext.grid.Panel", {
         region: "center",
         border: false,
         forceFit: true,
-        store: credential_store,
+        store: user_store,
         tbar: [{
           xtype: "textfield",
           fieldLabel: "<img src='images/filter16.png'> Filter:",
@@ -136,7 +136,7 @@
       });
 
       Ext.apply(this, {
-        items: credential_grid
+        items: user_grid
       });
 
       return this.callParent(arguments);

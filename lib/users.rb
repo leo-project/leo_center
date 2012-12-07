@@ -1,5 +1,5 @@
 class LeoTamer
-  namespace "/credentials" do
+  namespace "/users" do
     get "/list.json" do
       keys = @@manager.s3_get_users
       result = keys.map do |user|

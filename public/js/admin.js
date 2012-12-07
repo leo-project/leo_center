@@ -11,7 +11,7 @@
 
       buckets = Ext.create("LeoTamer.Buckets");
       endpoints = Ext.create("LeoTamer.Endpoints");
-      credentials = Ext.create("LeoTamer.Credentials");
+      credentials = Ext.create("LeoTamer.Users");
       history = Ext.create("LeoTamer.History");
 
       admin_store = Ext.create("Ext.data.Store", {
