@@ -70,6 +70,34 @@
         })
       }
 
+      delete_endpoint = function() {
+        title = "Delete Endpoint";
+        msg = "Please input endpoint name"
+        Ext.Msg.prompt(title, msg, function(btn, value) {
+          if (btn == "ok") {
+            Ext.Ajax.request({
+              url: "endpoints/delete_endpoint",
+              method: "DELETE",
+              params: { endpoint: value },
+              success: function(response, opts) {
+                title = "Delete Endpoint"
+                msg = "endpoint '" + value + "' is deleted successfully."
+                Ext.Msg.show({
+                  title: title,
+                  msg: msg,
+                  buttons: Ext.Msg.OK,
+                  icon: Ext.Msg.INFO
+                });
+                endpoint_store.load();
+              },
+              failure: function(response, opts) {
+                //TODO
+              }
+            })
+          }
+        })
+      }
+
       endpoint_grid = Ext.create("Ext.grid.Panel", {
         region: "center",
         border: false,
@@ -90,6 +118,10 @@
           text: "Add Endpoint",
           icon: "images/add16.png",
           handler: add_endpoint
+        }, {
+          text: "Add Endpoint",
+          icon: "images/remove16.png",
+          handler: delete_endpoint
         }],
         columns: [
           { header: "Endpoint", dataIndex: "endpoint", width: 600 },
