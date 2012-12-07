@@ -1,7 +1,7 @@
 (function() {
   Ext.define('LeoTamer.model.Users', {
     extend: 'Ext.data.Model',
-    fields: ["user_id", "access_key_id", "created_at"]
+    fields: ["user_id", "role", "access_key_id", "created_at"]
   });
 
   Ext.define("LeoTamer.Users", {
@@ -130,6 +130,7 @@
         }],
         columns: [
           { header: "User ID", dataIndex: "user_id" },
+          { header: "Role", dataIndex: "role" },
           { header: "Access Key ID", dataIndex: "access_key_id" },
           { header: "Created at", dataIndex: "created_at" }
         ]
