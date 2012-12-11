@@ -119,7 +119,7 @@
           icon: "images/add16.png",
           handler: add_endpoint
         }, {
-          text: "Add Endpoint",
+          text: "Delete Endpoint",
           icon: "images/remove16.png",
           handler: delete_endpoint
         }],

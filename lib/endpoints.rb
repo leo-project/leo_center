@@ -12,13 +12,13 @@ class LeoTamer
     post "/add_endpoint" do
       endpoint = params[:endpoint]
       @@manager.s3_set_endpoint(endpoint)
-      nil
+      200
     end
 
     delete "/delete_endpoint" do
       endpoint = params[:endpoint]
       @@manager.s3_delete_endpoint(endpoint)
-      nil
+      200
     end
   end
 end
