@@ -35,9 +35,7 @@ class LeoTamer
     end
 
     get "/detail.json" do
-      required_params(:node, :type)
-      node = params[:node]
-      type = params[:type]
+      node, type = required_params(:node, :type)
       node_stat = @@manager.status(node).node_stat
 
       properties = [
@@ -64,8 +62,8 @@ class LeoTamer
     end
 
     post "/exec.json" do
-      node = params[:node]
-      command = params[:command].to_sym
+      node, command = required_params(:node, :command)
+      command = command.to_sym
 
       case command
       when :resume, :suspend, :detach
