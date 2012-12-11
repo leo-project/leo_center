@@ -36,6 +36,18 @@ class LeoTamer < Sinatra::Base
     end
   end
 
+  helpers do
+    def required_params(*params_to_check)
+      request_params = params
+      noexist_params = params_to_check.reject {|param| request_params[param] }
+      unless noexist_params.empty?
+        noexist_params.map! {|param| "'#{param}'" }
+        halt 500, "parameter #{noexist_params.join(" ")} is required"
+      end
+      params_to_check.map {|param| request_params[param] }
+    end
+  end
+
   error do
     env['sinatra.error'].message
   end

@@ -6,13 +6,12 @@
     layout: "border",
 
     initComponent: function() {
-      var buckets, endpoints, credentials, history;
+      var buckets, endpoints, credentials;
       var set_icon, admin_store, admin_card, admin_grid;
 
       buckets = Ext.create("LeoTamer.Buckets");
       endpoints = Ext.create("LeoTamer.Endpoints");
       credentials = Ext.create("LeoTamer.Users");
-      history = Ext.create("LeoTamer.History");
 
       admin_store = Ext.create("Ext.data.Store", {
         fields: ["name"],
@@ -20,7 +19,6 @@
           { name: "Buckets" },
           { name: "Endpoints" },
           { name: "Users" },
-          { name: "History" }
         ]
       });
 
@@ -35,9 +33,6 @@
             break;
           case "Users":
             img = "<img src='images/users16.png'> ";
-            break;
-          case "History":
-            img = "<img src='images/history16.png'> ";
             break;
         }
         return img + value;

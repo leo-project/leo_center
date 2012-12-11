@@ -1,10 +1,4 @@
-require 'leofs_manager_client'
-
 class LeoTamer
-  configure do
-    @@manager ||= LeoFSManager::Client.new(*Config[:managers])
-  end
-
   namespace "/nodes" do
     get "/list.json" do
       { 
@@ -15,6 +9,7 @@ class LeoTamer
     end
 
     get "/status.json" do
+      required_params(:group)
       node_list = @@manager.status.node_list
       data = node_list.map do |node|
         case node.type
@@ -40,13 +35,15 @@ class LeoTamer
     end
 
     get "/detail.json" do
+      required_params(:node, :type)
       node = params[:node]
       type = params[:type]
       node_stat = @@manager.status(node).node_stat
 
       properties = [
-        :log_dir, :ring_cur, :ring_prev, :total_mem_usage,
-        :system_mem_usage, :procs_mem_usage, :ets_mem_usage, :num_of_procs
+        :version, :vm_version, :log_dir, :ring_cur, :ring_prev, :total_mem_usage,
+        :system_mem_usage, :procs_mem_usage, :ets_mem_usage, :num_of_procs,
+        :limit_of_procs, :thread_pool_size 
       ]
 
       result = properties.map do |property|
@@ -54,12 +51,13 @@ class LeoTamer
       end
 
       if type == "Storage"
-        storage_stat = @@manager.du(node)
-        p storage_stat
-        result.concat([
-          { :name => :file_size, :value => storage_stat.file_size },
-          { :name => :total_of_objects, :value => storage_stat.total_of_objects }
-        ])
+        begin
+          storage_stat = @@manager.du(node)
+        rescue => ex
+          warn ex.message
+        else
+          result.push({ :name => :total_of_objects, :value => storage_stat.total_of_objects })
+        end
       end
 
       { :data => result }.to_json
