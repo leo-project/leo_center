@@ -49,9 +49,9 @@
         Ext.Msg.prompt(title, msg, function(btn, value) {
           if (btn == "ok") {
             Ext.Ajax.request({
-              url: "users/add_user.json",
+              url: "users/add_user",
               method: "POST",
-              params: { user: value },
+              params: { user_id: value },
               success: function(response, opts) {
                 console.log(response, opts);
                 title = "Add User"
@@ -62,7 +62,7 @@
                   buttons: Ext.Msg.OK,
                   icon: Ext.Msg.INFO
                 });
-                // user_store.load(); //TODO
+                user_store.load();
               },
               failure: function(response, opts) {
                 console.log(response, opts);
@@ -81,7 +81,7 @@
             Ext.Ajax.request({
               url: "users/delete_user",
               method: "DELETE",
-              params: { user: value },
+              params: { user_id: value },
               success: function(response, opts) {
                 console.log(response, opts);
                 title = "Delete User"
