@@ -56,6 +56,7 @@
               "-",
               { 
                 text: "Sign Out",
+                icon: "images/logout16.png",
                 handler: function() {
                   window.location = "/logout"
                 }
