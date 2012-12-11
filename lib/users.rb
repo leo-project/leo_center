@@ -17,14 +17,22 @@ class LeoTamer
     post "/add_user" do
       user_id = params[:user_id]
       halt 500, "parameter 'user_id' is required" unless user_id
-      @@manager.s3_create_user(user_id)
+      begin
+        @@manager.s3_create_user(user_id)
+      rescue => ex
+        halt 500, ex.message
+      end
       200
     end
 
     delete "/delete_user" do
       user_id = params[:user_id]
       halt 500, "parameter 'user_id' is required" unless user_id
-      @@manager.s3_delete_user(user_id)
+      begin
+        @@manager.s3_delete_user(user_id)
+      rescue => ex
+        halt 500, ex.message
+      end
       200
     end
   end
