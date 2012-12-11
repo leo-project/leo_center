@@ -69,34 +69,40 @@
 
       delete_endpoint = function() {
         title = "Delete Endpoint";
-        endpoint = endpoint_grid.getSelectionModel().getLastSelected().data.endpoint;
-        msg = "Are you sure to delete endpoint: '" + endpoint + "'?";
-        Ext.Msg.on("beforeshow",  function (win) {
-          win.defaultFocus = 2; // set default focus to "No" button
-        });
-        Ext.Msg.confirm(title, msg, function(btn) {
-          if (btn == "yes") {
-            Ext.Ajax.request({
-              url: "endpoints/delete_endpoint",
-              method: "DELETE",
-              params: { endpoint: endpoint },
-              success: function(response, opts) {
-                title = "Delete Endpoint"
-                msg = "endpoint '" + endpoint + "' is deleted successfully."
-                Ext.Msg.show({
-                  title: title,
-                  msg: msg,
-                  buttons: Ext.Msg.OK,
-                  icon: Ext.Msg.INFO
-                });
-                endpoint_store.load();
-              },
-              failure: function(response, opts) {
-                Ext.Msg.alert("Error!", response.responseText);
-              }
-            })
-          }
-        })
+        last_selected = endpoint_grid.getSelectionModel().getLastSelected();
+        if (!last_selected) {
+          Ext.Msg.alert("Error!", "Please select a endpoint.");
+        }
+        else {
+          endpoint = last_selected.data.endpoint;
+          msg = "Are you sure to delete endpoint: '" + endpoint + "'?";
+          Ext.Msg.on("beforeshow",  function (win) {
+            win.defaultFocus = 2; // set default focus to "No" button
+          });
+          Ext.Msg.confirm(title, msg, function(btn) {
+            if (btn == "yes") {
+              Ext.Ajax.request({
+                url: "endpoints/delete_endpoint",
+                method: "DELETE",
+                params: { endpoint: endpoint },
+                success: function(response, opts) {
+                  title = "Delete Endpoint"
+                  msg = "endpoint '" + endpoint + "' is deleted successfully."
+                  Ext.Msg.show({
+                    title: title,
+                    msg: msg,
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.INFO
+                  });
+                  endpoint_store.load();
+                },
+                failure: function(response, opts) {
+                  Ext.Msg.alert("Error!", response.responseText);
+                }
+              })
+            }
+          })
+        }
       }
 
       endpoint_grid = Ext.create("Ext.grid.Panel", {
