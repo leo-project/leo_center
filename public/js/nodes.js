@@ -74,16 +74,8 @@
 
         msg = "Are you sure to send command '" + command + " " + node + "'?";
 
-        Ext.Msg.show({
-          title: "Confirm", 
-          msg: msg,
-          buttons: Ext.Msg.YESNO,
-          icon: Ext.Msg.WARNING,
-          fn: function(btn) {
-            if (btn == "yes") {
-              do_send_command(node, command);
-            }
-          }
+        Ext.Msg.confirm("Confirm", msg, function(btn) {
+          if (btn == "yes") do_send_command(node, command);
         });
       }
 

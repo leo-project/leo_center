@@ -30,9 +30,6 @@
           sortParam: undefined,
           startParam: undefined,
           listeners: {
-            load: function() {
-              endpoint_grid.getSelectionModel().selectFirstRow();
-            },
             exception: function(self, response, operation) {
               console.log(self, response, operation);
               alert("Error on: \'" + self.url + "\'\n" + response.responseText);
@@ -72,16 +69,20 @@
 
       delete_endpoint = function() {
         title = "Delete Endpoint";
-        msg = "Please input endpoint name"
-        Ext.Msg.prompt(title, msg, function(btn, value) {
-          if (btn == "ok") {
+        endpoint = endpoint_grid.getSelectionModel().getLastSelected().data.endpoint;
+        msg = "Are you sure to delete endpoint: '" + endpoint + "'?";
+        Ext.Msg.on("beforeshow",  function (win) {
+          win.defaultFocus = 2; // set default focus to "No" button
+        });
+        Ext.Msg.confirm(title, msg, function(btn) {
+          if (btn == "yes") {
             Ext.Ajax.request({
               url: "endpoints/delete_endpoint",
               method: "DELETE",
-              params: { endpoint: value },
+              params: { endpoint: endpoint },
               success: function(response, opts) {
                 title = "Delete Endpoint"
-                msg = "endpoint '" + value + "' is deleted successfully."
+                msg = "endpoint '" + endpoint + "' is deleted successfully."
                 Ext.Msg.show({
                   title: title,
                   msg: msg,
