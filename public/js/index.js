@@ -16,22 +16,18 @@
       region: "center",
       activeTab: 0,
       defaults: { bodyPadding: 5 },
-      items: [
-        node_status,
-        admin
-      ]
+      items: [node_status, admin]
     });
 
     get_credential = function() {
       Ext.Ajax.request({
-        url: "user_credential.json",
+        url: "user_credential",
         method: "GET",
         success: function(response, opts) {
-          console.log(response, opts);
           Ext.Msg.alert("Your Credential", response.responseText);
         },
         failure: function(response, opts) {
-          console.log(response, opts);
+          Ext.Msg.alert("Error!", response.responseText);
         }
       })
     };
@@ -71,10 +67,7 @@
 
     return viewport = Ext.create("Ext.Viewport", {
       layout: "border",
-      items: [
-        header,
-        tabs
-      ]
+      items: [header, tabs]
     });
   });
 }).call(this);
