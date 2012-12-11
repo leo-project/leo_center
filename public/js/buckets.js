@@ -93,7 +93,7 @@
         store: bucket_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "<img src='images/filter16.png'> Filter:",
+          fieldLabel: "<img src='images/filter.png'> Filter:",
           labelWidth: 50,
           listeners: {
             change: function(self, new_value) {
@@ -103,7 +103,7 @@
           }
         },"-", {
           text: "Add Bucket",
-          icon: "images/add16.png",
+          icon: "images/add.png",
           handler: add_bucket
         }],
         columns: [

@@ -115,7 +115,7 @@
         store: user_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "<img src='images/filter16.png'> Filter:",
+          fieldLabel: "<img src='images/filter.png'> Filter:",
           labelWidth: 50,
           listeners: {
             change: function(self, new_value) {
@@ -126,11 +126,11 @@
           }
         },"-", {
           text: "Add User",
-          icon: "images/add16.png",
+          icon: "images/add.png",
           handler: add_user
         }, {
           text: "Delete User",
-          icon: "images/remove16.png",
+          icon: "images/remove.png",
           handler: delete_user
         }],
         columns: [

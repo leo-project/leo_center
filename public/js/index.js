@@ -51,13 +51,13 @@
             items: [
               { 
                 text: "Security Credentials",
-                icon: "images/credential16.png",
+                icon: "images/credential.png",
                 handler: get_credential
               },
               "-",
               { 
                 text: "Sign Out",
-                icon: "images/logout16.png",
+                icon: "images/logout.png",
                 handler: function() {
                   window.location = "/logout"
                 }

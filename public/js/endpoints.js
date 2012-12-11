@@ -111,7 +111,7 @@
         store: endpoint_store,
         tbar: [{
           xtype: "textfield",
-          fieldLabel: "<img src='images/filter16.png'> Filter:",
+          fieldLabel: "<img src='images/filter.png'> Filter:",
           labelWidth: 50,
           listeners: {
             change: function(self, new_value) {
@@ -122,11 +122,11 @@
           }
         },"-", {
           text: "Add Endpoint",
-          icon: "images/add16.png",
+          icon: "images/add.png",
           handler: add_endpoint
         }, {
           text: "Delete Endpoint",
-          icon: "images/remove16.png",
+          icon: "images/remove.png",
           handler: delete_endpoint
         }],
         columns: [

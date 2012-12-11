@@ -26,13 +26,13 @@
         img = undefined
         switch(value) {
           case "Buckets":
-            img = "<img src='images/bucket16.png'> ";
+            img = "<img src='images/bucket.png'> ";
             break;
           case "Endpoints":
-            img = "<img src='images/endpoint16.png'> ";
+            img = "<img src='images/endpoint.png'> ";
             break;
           case "Users":
-            img = "<img src='images/users16.png'> ";
+            img = "<img src='images/users.png'> ";
             break;
         }
         return img + value;

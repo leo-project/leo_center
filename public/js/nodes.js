@@ -155,13 +155,13 @@
             break;
           case "stop":
           case "downed":
-            src = "images/error16.png";
+            src = "images/error.png";
             break;
           case "attached":
-            src = "images/add16.png";
+            src = "images/add.png";
             break;
           case "suspended":
-            src = "images/warn16.png";
+            src = "images/warn.png";
             break;
           default:
             throw "invalid status specified.";
@@ -252,7 +252,7 @@
         tbar: [
           {
             xtype: "textfield",
-            fieldLabel: "<img src='images/filter16.png'> Filter:",
+            fieldLabel: "<img src='images/filter.png'> Filter:",
             labelWidth: 50,
             listeners: {
               change: function(self, new_value) {
