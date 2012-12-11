@@ -12,14 +12,22 @@ class LeoTamer
     post "/add_endpoint" do
       endpoint = params[:endpoint]
       halt 500, "parameter 'endpoint' is required" unless endpoint
-      @@manager.s3_set_endpoint(endpoint)
+      begin
+        @@manager.s3_set_endpoint(endpoint)
+      rescue => ex
+        halt 500, ex.message
+      end
       200
     end
 
     delete "/delete_endpoint" do
       endpoint = params[:endpoint]
       halt 500, "parameter 'endpoint' is required" unless endpoint
-      @@manager.s3_delete_endpoint(endpoint)
+      begin
+        @@manager.s3_delete_endpoint(endpoint)
+      rescue => ex
+        halt 500, ex.message
+      end
       200
     end
   end

@@ -21,9 +21,15 @@ class LeoTamer
 
     post "/add_bucket" do
       bucket_name = params[:bucket]
-      access_key = Config[:credential][:access_key_id]
-      @@manager.s3_add_bucket(bucket_name, access_key)
-      nil
+      halt 500, "parameter 'endpoint' is required" unless endpoint
+      access_key = session[:access_key_id]
+      halt 500, "invalid session" unless access_key
+      begin
+        @@manager.s3_add_bucket(bucket_name, access_key)
+      rescue => ex
+        halt 500, ex.message
+      end
+      200
     end
   end
 end
