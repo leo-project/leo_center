@@ -106,7 +106,7 @@ class LeoTamer < Sinatra::Base
     redirect "/login"
   end
 
-  get "/user_credential.json" do
+  get "/user_credential" do
     <<-EOS
       AWS_ACCESS_KEY_ID: #{session[:access_key_id]}<br>
       AWS_SECRET_ACCESS_KEY: #{session[:secret_access_key]}

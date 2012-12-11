@@ -50,6 +50,7 @@
             items: [
               { 
                 text: "Security Credentials",
+                icon: "images/credential16.png",
                 handler: get_credential
               },
               "-",
