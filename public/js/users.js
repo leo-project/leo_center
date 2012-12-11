@@ -141,9 +141,9 @@
             renderer: function(value) {
               switch (value) {
                 case "admin": 
-                  return value + " <img src='images/admin16.png'>";
+                  return "<img src='images/admin_user.png'> " + value;
                 case "normal":
-                  return value + " <img src='images/users16.png'>";
+                  return "<img src='images/user.png'> " + value;
               }
             }
           },
