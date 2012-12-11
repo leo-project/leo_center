@@ -52,12 +52,6 @@
             xtype: "menu",
             showSeparator: false,
             items: [
-            /*
-              { text: "My Account" },
-              { text: "Account Activity" },
-              { text: "Usage Reports" },
-            */
-              { text: "History" },
               { 
                 text: "Security Credentials",
                 handler: get_credential
