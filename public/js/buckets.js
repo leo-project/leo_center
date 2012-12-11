@@ -37,7 +37,6 @@
           startParam: undefined,
           listeners: {
             exception: function(self, response, operation) {
-              console.log(self, response, operation);
               alert("Error on: \'" + self.url + "\'\n" + response.responseText);
             }
           }

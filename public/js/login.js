@@ -42,7 +42,6 @@
                 window.location = "/"
               },
               failure: function(form, action) {
-                console.log(action);
                 Ext.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
               }
             });
@@ -85,7 +84,6 @@
               window.location = "/"
             },
             failure: function(form, action) {
-              console.log(form, action);
               Ext.Msg.alert("Login Faild!", action.result.errors.reason);
               login_form.getForm().reset();
             }
