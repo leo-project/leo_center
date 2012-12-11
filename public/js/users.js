@@ -16,7 +16,6 @@
 
       user_store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Users",
-        // data: [], //XXX: for mock
         proxy: {
           type: 'ajax',
           url: 'users/list.json',
