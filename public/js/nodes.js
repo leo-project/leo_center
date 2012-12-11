@@ -162,13 +162,14 @@
             src = "images/accept.gif";
             break;
           case "stop":
-            src = "images/cross.gif";
+          case "downed":
+            src = "images/error16.png";
             break;
           case "attached":
-            src = "images/cross.gif";
+            src = "images/add16.png";
             break;
           case "suspended":
-            src = "images/error.gif";
+            src = "images/warn16.png";
             break;
           default:
             throw "invalid status specified.";

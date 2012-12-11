@@ -128,7 +128,18 @@
         }],
         columns: [
           { header: "User ID", dataIndex: "user_id" },
-          { header: "Role", dataIndex: "role" },
+          { 
+            header: "Role",
+            dataIndex: "role",
+            renderer: function(value) {
+              switch (value) {
+                case "admin": 
+                  return value + " <img src='images/admin16.png'>";
+                case "normal":
+                  return value + " <img src='images/users16.png'>";
+              }
+            }
+          },
           { header: "Access Key ID", dataIndex: "access_key_id" },
           { header: "Created at", dataIndex: "created_at" }
         ]
