@@ -35,7 +35,6 @@
               endpoint_grid.getSelectionModel().selectFirstRow();
             },
             exception: function(self, response, operation) {
-              console.log(self, response, operation);
               alert("Error on: \'" + self.url + "\'\n" + response.responseText);
             }
           }
@@ -53,7 +52,6 @@
               method: "POST",
               params: { user_id: value },
               success: function(response, opts) {
-                console.log(response, opts);
                 title = "Add User"
                 msg = "user '" + value + "' is added successfully."
                 Ext.Msg.show({
@@ -74,31 +72,40 @@
 
       delete_user = function() {
         title = "Delete User";
-        msg = "Please input user name"
-        Ext.Msg.prompt(title, msg, function(btn, value) {
-          if (btn == "ok") {
-            Ext.Ajax.request({
-              url: "users/delete_user",
-              method: "DELETE",
-              params: { user_id: value },
-              success: function(response, opts) {
-                console.log(response, opts);
-                title = "Delete User"
-                msg = "user '" + value + "' is deleted successfully."
-                Ext.Msg.show({
-                  title: title,
-                  msg: msg,
-                  buttons: Ext.Msg.OK,
-                  icon: Ext.Msg.INFO
-                });
-                user_store.load();
-              },
-              failure: function(response, opts) {
-                Ext.Msg.alert("Error!", response.responseText);
-              }
-            })
-          }
-        })
+        last_selected = user_grid.getSelectionModel().getLastSelected();
+        if (!last_selected) {
+          Ext.Msg.alert("Error!", "Please select a user.");
+        }
+        else {
+          user_id = last_selected.data.user_id;
+          msg = "Are you sure to delete user: '" + user_id + "'?";
+          Ext.Msg.on("beforeshow",  function (win) {
+            win.defaultFocus = 2; // set default focus to "No" button
+          });
+          Ext.Msg.confirm(title, msg, function(btn) {
+            if (btn == "yes") {
+              Ext.Ajax.request({
+                url: "users/delete_user",
+                method: "DELETE",
+                params: { user_id: user_id },
+                success: function(response, opts) {
+                  title = "Delete User"
+                  msg = "user '" + user_id + "' is deleted successfully."
+                  Ext.Msg.show({
+                    title: title,
+                    msg: msg,
+                    buttons: Ext.Msg.OK,
+                    icon: Ext.Msg.INFO
+                  });
+                  user_store.load();
+                },
+                failure: function(response, opts) {
+                  Ext.Msg.alert("Error!", response.responseText);
+                }
+              });
+            }
+          });
+        }
       }
 
       user_grid = Ext.create("Ext.grid.Panel", {
