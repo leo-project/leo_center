@@ -44,7 +44,6 @@
           startParam: undefined,
           listeners: {
             exception: function(self, response, operation) {
-              console.log(self, response, operation);
               alert("Error on: \'" + self.url + "\'\n" + response.responseText);
             }
           }
@@ -203,7 +202,6 @@
               node_grid.getSelectionModel().selectFirstRow();
             },
             exception: function(self, response, operation) {
-              console.log(self, response, operation);
               alert("Error on: \'" + self.url + "\'\n" + response.responseText);
             }
           }
@@ -212,7 +210,6 @@
       });
 
       node_grid_select = function(self, record, item, index, event) {
-        console.log(self, record, item, index, event);
         name = record.data.node;
         status = record.data.status;
         node_status_panel.setTitle("status of " + name);
@@ -284,10 +281,7 @@
       });
 
       Ext.apply(this, {
-        items: [
-          node_grid,
-          node_status_panel
-        ]
+        items: [node_grid, node_status_panel]
       });
 
       return this.callParent(arguments);
