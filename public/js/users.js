@@ -65,8 +65,7 @@
                 user_store.load();
               },
               failure: function(response, opts) {
-                console.log(response, opts);
-                //TODO
+                Ext.Msg.alert("Error!", response.responseText);
               }
             })
           }
@@ -95,8 +94,7 @@
                 user_store.load();
               },
               failure: function(response, opts) {
-                console.log(response, opts);
-                //TODO
+                Ext.Msg.alert("Error!", response.responseText);
               }
             })
           }

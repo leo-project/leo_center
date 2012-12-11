@@ -63,7 +63,7 @@
                 endpoint_store.load();
               },
               failure: function(response, opts) {
-                //TODO
+                Ext.Msg.alert("Error!", response.responseText);
               }
             })
           }
@@ -91,7 +91,7 @@
                 endpoint_store.load();
               },
               failure: function(response, opts) {
-                //TODO
+                Ext.Msg.alert("Error!", response.responseText);
               }
             })
           }
