@@ -129,17 +129,27 @@
               store.filter("user", new RegExp(new_value));
             }
           }
-        },"-", {
+        },
+        "-", 
+        {
           text: "Add User",
           icon: "images/add.png",
           handler: function() {
             self.add_user(self);
           }
-        }, {
+        }, 
+        {
           text: "Delete User",
           icon: "images/remove.png",
           handler: function() {
             self.delete_user(self);
+          }
+        },
+        "->",
+        {
+          icon: "images/reload.png",
+          handler: function() {
+            self.load();
           }
         }],
         columns: [

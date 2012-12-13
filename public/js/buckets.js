@@ -111,11 +111,20 @@
               store.filter("name", new RegExp(new_value));
             }
           }
-        },"-", {
+        },
+        "-",
+        {
           text: "Add Bucket",
           icon: "images/add.png",
           handler: function() {
             self.add_bucket(self);
+          }
+        },
+        "->",
+        {
+          icon: "images/reload.png",
+          handler: function() {
+            self.load();
           }
         }],
         columns: [
