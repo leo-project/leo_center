@@ -21,7 +21,7 @@
           name: "password",
           inputType: "password",
           validator: function(value) {
-            confirm_value = Ext.getCmp("sign_up_form_confirm_pass").getValue();
+            var confirm_value = Ext.getCmp("sign_up_form_confirm_pass").getValue();
             return value === confirm_value;
           }
         }, {
