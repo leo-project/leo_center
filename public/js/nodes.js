@@ -77,7 +77,7 @@
         win.defaultFocus = 2; // set default focus to "No" button
       });
 
-      msg = "Are you sure to send command '" + command + " " + node + "'?";
+      var msg = "Are you sure to send command '" + command + " " + node + "'?";
       Ext.Msg.confirm("Confirm", msg, function(btn) {
         if (btn == "yes") this.do_send_command(node, command);
       });
@@ -111,6 +111,8 @@
     }),
 
     on_grid_select: function(self, record) {
+      var name, status, status_line;
+
       name = record.data.node;
       status = record.data.status;
       self.status_panel.setTitle("status of " + name);
@@ -138,7 +140,7 @@
           buttons: [{
             text: "Apply",
             handler: function() {
-              command = self.command_combo.getRawValue();
+              var command = self.command_combo.getRawValue();
               if (command != "none")
                 self.confirm_send_command(node.node, command);
             }
@@ -203,10 +205,6 @@
           sortParam: undefined,
           startParam: undefined,
           listeners: {
-            load: function() {
-              alert("foo");
-              self.grid.getSelectionModel().selectFirstRow();
-            },
             exception: function(store, response, operation) {
               alert("Error on: \'" + store.url + "\'\n" + response.responseText);
             }
