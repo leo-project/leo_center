@@ -5,25 +5,25 @@
     title: "Admin",
     layout: "border",
 
+    buckets: Ext.create("LeoTamer.Buckets"),
+    endpoints: Ext.create("LeoTamer.Endpoints"),
+    credentials: Ext.create("LeoTamer.Users"),
+
+    admin_store: Ext.create("Ext.data.Store", {
+      fields: ["name"],
+      data: [
+        { name: "Buckets" },
+        { name: "Endpoints" },
+        { name: "Users" },
+      ]
+    }),
+
     initComponent: function() {
-      var buckets, endpoints, credentials;
-      var set_icon, admin_store, admin_card, admin_grid;
-
-      buckets = Ext.create("LeoTamer.Buckets");
-      endpoints = Ext.create("LeoTamer.Endpoints");
-      credentials = Ext.create("LeoTamer.Users");
-
-      admin_store = Ext.create("Ext.data.Store", {
-        fields: ["name"],
-        data: [
-          { name: "Buckets" },
-          { name: "Endpoints" },
-          { name: "Users" },
-        ]
-      });
+      var self = this;
+      var set_icon, admin_card, admin_grid;
 
       set_icon = function(value) {
-        img = undefined
+        var img = undefined
         switch(value) {
           case "Buckets":
             img = "<img src='images/bucket.png'> ";
@@ -45,7 +45,7 @@
         width: 200,
         forceFit: true,
         hideHeaders: true,
-        store: admin_store,
+        store: self.admin_store,
         columns: [{
           dataIndex: "name",
           renderer: set_icon
@@ -65,10 +65,9 @@
         layout: "card",
         activeItem: 0,
         items: [
-          buckets,
-          endpoints,
-          credentials,
-          history
+          self.buckets,
+          self.endpoints,
+          self.credentials
         ]
       });
 

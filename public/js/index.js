@@ -5,8 +5,8 @@
   });
 
   Ext.onReady(function() {
-    var node_status, tabs, viewport;
-    var get_credential;
+    var node_status, admin, tabs, viewport;
+    var header, get_credential;
     
     node_status = Ext.create("LeoTamer.Nodes");
 
@@ -23,10 +23,10 @@
       Ext.Ajax.request({
         url: "user_credential",
         method: "GET",
-        success: function(response, opts) {
+        success: function(response) {
           Ext.Msg.alert("Your Credential", response.responseText);
         },
-        failure: function(response, opts) {
+        failure: function(response) {
           Ext.Msg.alert("Error!", response.responseText);
         }
       })
@@ -68,7 +68,7 @@
       ]
     });
 
-    return viewport = Ext.create("Ext.Viewport", {
+    return Ext.create("Ext.Viewport", {
       layout: "border",
       items: [header, tabs]
     });
