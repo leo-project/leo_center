@@ -21,6 +21,17 @@
       ]
     }),
 
+    command_combo: Ext.create("Ext.form.ComboBox", {
+        store: this.command_store,
+        labelWidth: 125,
+        fieldLabel: "Execute Command",
+        displayField: "command",
+        valueField: "command",
+        emptyText: "Select Command",
+        allowBlank: false,
+        editable: false
+    }),
+
     detail_store: Ext.create("Ext.data.ArrayStore", {
       model: "LeoTamer.model.NameValue",
       proxy: {
@@ -62,50 +73,74 @@
     },
 
     confirm_send_command: function(node, command) {
-      var self = this;
-
       Ext.Msg.on("beforeshow",  function (win) {
         win.defaultFocus = 2; // set default focus to "No" button
       });
 
       msg = "Are you sure to send command '" + command + " " + node + "'?";
-
       Ext.Msg.confirm("Confirm", msg, function(btn) {
-        if (btn == "yes") self.do_send_command(node, command);
+        if (btn == "yes") this.do_send_command(node, command);
+      });
+    },
+
+    status_renderer: function(val) {
+      var src;
+      switch (val) {
+        case "running":
+          src = "images/accept.gif";
+          break;
+        case "stop":
+        case "downed":
+          src = "images/error.png";
+          break;
+        case "attached":
+          src = "images/add.png";
+          break;
+        case "suspended":
+          src = "images/warn.png";
+          break;
+        default:
+          throw "invalid status specified.";
+      }
+      return "<img class='status' src='" + src + "'> " + val;
+    },
+
+    grid_grouping: Ext.create('Ext.grid.feature.Grouping', {
+      groupHeaderTpl: '{name} ({rows.length} node{[values.rows.length > 1 ? "s" : ""]})',
+      hideGroupedHeader: true
+    }),
+
+    on_grid_select: function(self, record) {
+      name = record.data.node;
+      status = record.data.status;
+      self.status_panel.setTitle("status of " + name);
+      name_line = "Node Name: " + record.data.node;
+      status_line = "Status: " + self.status_renderer(record.data.status);
+      Ext.getCmp("node_status").update(name_line + "<br>" + status_line);
+      self.detail_store.load({ 
+        params: { 
+          node: name,
+          type: record.data.type
+        }
       });
     },
 
     initComponent: function() {
-      var nodes = this;
-      var confirm_send_command, send_command;
-      var node_status_panel, status_renderer;
-      var node_grid_grouping, node_store, node_grid_select, node_grid;
+      var self = this;
 
-      send_command = function() {
-        var node, command_combo, command_select_window;  
+      self.send_command = function() {
+        var node, command_select_window;  
 
-        node = node_grid.getSelectionModel().getSelection()[0].data;
-
-        command_combo = Ext.create("Ext.form.ComboBox", {
-            store: nodes.command_store,
-            labelWidth: 125,
-            fieldLabel: "Execute Command",
-            displayField: "command",
-            valueField: "command",
-            emptyText: "Select Command",
-            allowBlank: false,
-            editable: false
-        });
-
+        node = self.grid.getSelectionModel().getSelection()[0].data;
         command_select_window = Ext.create('Ext.window.Window', {
           title: node.node,
-          items: command_combo,
+          items: self.command_combo,
           buttons: [{
             text: "Apply",
             handler: function() {
-              command = command_combo.getRawValue();
+              command = self.command_combo.getRawValue();
               if (command != "none")
-                nodes.confirm_send_command(node.node, command);
+                self.confirm_send_command(node.node, command);
             }
           }, {
             text: "Cancel",
@@ -116,7 +151,7 @@
         }).show();
       };
 
-      node_status_panel = Ext.create("Ext.Panel", {
+      self.status_panel = Ext.create("Ext.Panel", {
         title: "status",
         region: "east",
         width: 300,
@@ -129,7 +164,7 @@
             padding: "5",
             buttons: [{
               text: "Change Status",
-              handler: send_command
+              handler: self.send_command
             }]
           }, {
             xtype: 'grid',
@@ -146,39 +181,12 @@
                 text: "Value"
               }
             ],
-            store: nodes.detail_store
+            store: self.detail_store
           }
         ]
       });
 
-      status_renderer = function(val) {
-        var src;
-        switch (val) {
-          case "running":
-            src = "images/accept.gif";
-            break;
-          case "stop":
-          case "downed":
-            src = "images/error.png";
-            break;
-          case "attached":
-            src = "images/add.png";
-            break;
-          case "suspended":
-            src = "images/warn.png";
-            break;
-          default:
-            throw "invalid status specified.";
-        }
-        return "<img class='status' src='" + src + "'> " + val;
-      };
-
-      node_grid_grouping = Ext.create('Ext.grid.feature.Grouping', {
-        groupHeaderTpl: '{name} ({rows.length} node{[values.rows.length > 1 ? "s" : ""]})',
-        hideGroupedHeader: true
-      });
-
-      node_store = Ext.create("Ext.data.Store", {
+      self.store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Nodes",
         groupField: 'type',
         proxy: {
@@ -196,37 +204,22 @@
           startParam: undefined,
           listeners: {
             load: function() {
-              node_grid.getSelectionModel().selectFirstRow();
+              alert("foo");
+              self.grid.getSelectionModel().selectFirstRow();
             },
-            exception: function(self, response, operation) {
-              alert("Error on: \'" + self.url + "\'\n" + response.responseText);
+            exception: function(store, response, operation) {
+              alert("Error on: \'" + store.url + "\'\n" + response.responseText);
             }
           }
-        },
-        autoLoad: true
+        }
       });
 
-      node_grid_select = function(self, record, item, index, event) {
-        name = record.data.node;
-        status = record.data.status;
-        node_status_panel.setTitle("status of " + name);
-        name_line = "Node Name: " + record.data.node;
-        status_line = "Status: " + status_renderer(record.data.status);
-        Ext.getCmp("node_status").update(name_line + "<br>" + status_line);
-        nodes.detail_store.load({ 
-          params: { 
-            node: name,
-            type: record.data.type
-          }
-        });
-      };
-
-      node_grid = Ext.create("Ext.grid.Panel", {
+      self.grid = Ext.create("Ext.grid.Panel", {
         title: 'Nodes',
-        store: node_store,
+        store: self.store,
         region: "center",
         forceFit: true,
-        features: [ node_grid_grouping ],
+        features: [ self.grid_grouping ],
         viewConfig: {
           trackOver: false
         },
@@ -240,7 +233,7 @@
           }, {
             text: "Status",
             dataIndex: 'status',
-            renderer: status_renderer,
+            renderer: self.status_renderer,
             sortable: true
           }, {
             text: "Ring (Cur)",
@@ -259,9 +252,10 @@
             fieldLabel: "<img src='images/filter.png'> Filter:",
             labelWidth: 50,
             listeners: {
-              change: function(self, new_value) {
-                node_store.clearFilter();
-                node_store.filter("node", new RegExp(new_value));
+              change: function(grid, new_value) {
+                var store = grid.getStore();
+                store.clearFilter();
+                store.filter("node", new RegExp(new_value));
               }
             }
           },
@@ -270,36 +264,36 @@
             xtype: "button",
             icon: "images/reload.png",
             handler: function() {
-              node_store.load();
+              self.store.load();
             }
           }
         ],
         listeners: {
-          render : function(self){
+          render : function(grid){
             var interval = 30000;
 
-            self.store.on('load', function(store, records, options){
-              self.getSelectionModel().select(0); // select first row
+            grid.store.on('load', function(){
+              grid.getSelectionModel().select(0); // select first row
             });
 
-            Ext.defer(function() {
-              Ext.TaskManager.start({
-                run: function() {
-                  node_store.load();
-                },
-                interval: interval
-              });
-            }, interval);
+            Ext.TaskManager.start({
+              run: function() {
+                self.store.load();
+              },
+              interval: interval
+            });
           },
-          select: node_grid_select
+          select: function(grid, record) {
+            self.on_grid_select(self, record);
+          }
         }
       });
 
-      Ext.apply(this, {
-        items: [node_grid, node_status_panel]
+      Ext.apply(self, {
+        items: [self.grid, self.status_panel]
       });
 
-      return this.callParent(arguments);
+      return self.callParent(arguments);
     }
   });
 
