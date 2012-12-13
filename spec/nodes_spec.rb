@@ -1,11 +1,11 @@
 require_relative "spec_helper"
-require_relative "../lib/nodes"
+require_relative "../app"
 
 def app
-  LeoTamer::Nodes.new
+  LeoTamer.new
 end
 
-describe LeoTamer::Nodes do
+describe LeoTamer do
   subject { @data }
 
   describe "/nodes/list.json" do

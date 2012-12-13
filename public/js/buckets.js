@@ -15,7 +15,7 @@
       var bucket_grid_grouping;
       var bucket_store, bucket_grid;
 
-      bucket_grid_grouping = Ext.create('Ext.grid.feature.GroupingSummary', {
+      bucket_grid_grouping = Ext.create('Ext.grid.feature.Grouping', {
         groupHeaderTpl: '{name} ({rows.length} bucket{[values.rows.length > 1 ? "s" : ""]})'
       });
 
@@ -110,10 +110,12 @@
           { 
             header: "Bucket",
             dataIndex: "name",
+            /*
             summaryRenderer: function(value){
               return "TOTAL";
-            }
+            } */
           },
+          /*
           { 
             header: "# of files",
             width: 50,
@@ -142,6 +144,7 @@
               return render_progress_bar(value, sum);
             }
           },
+          */
           { header: "Created at", dataIndex: "created_at" }
         ]
       });

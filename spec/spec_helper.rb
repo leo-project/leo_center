@@ -1,8 +1,3 @@
-require "sinatra/base"
-require "json"
-require "haml"
-require "coffee-script"
-require "coffee-filter"
 require "rack/test"
 
 include Rack::Test::Methods

@@ -2,7 +2,7 @@ class LeoTamer
   namespace "/buckets" do
     get "/list.json" do
       begin
-        buckets = @@manager.s3_get_buckets
+        buckets = @@manager.get_buckets
       rescue RuntimeError => ex
         return { data: [] }.to_json if ex.message == "Not Found"
       end
@@ -25,7 +25,7 @@ class LeoTamer
       access_key = session[:access_key_id]
       halt 500, "invalid session" unless access_key
       begin
-        @@manager.s3_add_bucket(bucket_name, access_key)
+        @@manager.add_bucket(bucket_name, access_key)
       rescue => ex
         halt 500, ex.message
       end

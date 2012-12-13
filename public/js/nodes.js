@@ -11,7 +11,12 @@
     id: "nodes_panel",
     layout: "border",
 
+    reload: function() {
+      console.log("foo");
+    },
+
     initComponent: function() {
+      var nodes = this;
       var command_store, detail_store;
       var do_send_command, confirm_send_command, send_command;
       var node_status_panel, status_renderer;
@@ -217,6 +222,10 @@
         });
       };
 
+      foo = function() {
+        alert("foo");
+      }
+
       node_grid = Ext.create("Ext.grid.Panel", {
         title: 'Nodes',
         store: node_store,
@@ -260,14 +269,30 @@
                 node_store.filter("node", new RegExp(new_value));
               }
             }
+          },
+          "->",
+          {
+            xtype: "button",
+            icon: "images/reload.png",
+            handler: function() {
+              node_store.load();
+            }
           }
         ],
         listeners: {
-          // select first row on load
           render : function(self){
+            var interval = 30000;
+
             self.store.on('load', function(store, records, options){
-              self.getSelectionModel().select(0);
+              self.getSelectionModel().select(0); // select first row
             });
+
+            Ext.defer(function() {
+              Ext.TaskManager.start({
+                run: nodes.reload,
+                interval: interval
+              });
+            }, interval);
           },
           select: node_grid_select
         }

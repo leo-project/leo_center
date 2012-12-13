@@ -1,7 +1,7 @@
 class LeoTamer
   namespace "/endpoints" do
     get "/list.json" do
-      data = @@manager.s3_get_endpoints.map do |endpoint|
+      data = @@manager.get_endpoints.map do |endpoint|
         { :endpoint => endpoint.endpoint,
           :created_at => endpoint.created_at }
       end
@@ -13,7 +13,7 @@ class LeoTamer
       endpoint = params[:endpoint]
       halt 500, "parameter 'endpoint' is required" unless endpoint
       begin
-        @@manager.s3_set_endpoint(endpoint)
+        @@manager.set_endpoint(endpoint)
       rescue => ex
         halt 500, ex.message
       end
@@ -24,7 +24,7 @@ class LeoTamer
       endpoint = params[:endpoint]
       halt 500, "parameter 'endpoint' is required" unless endpoint
       begin
-        @@manager.s3_delete_endpoint(endpoint)
+        @@manager.delete_endpoint(endpoint)
       rescue => ex
         halt 500, ex.message
       end

@@ -60,7 +60,7 @@ class LeoTamer < Sinatra::Base
     user_id = params[:user_id]
     password = params[:password]
     begin
-      credential = @@manager.s3_create_user(user_id, password)
+      credential = @@manager.create_user(user_id, password)
     rescue RuntimeError => ex
       { 
         success: false,
