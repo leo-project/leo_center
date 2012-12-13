@@ -18,25 +18,25 @@
       ]
     }),
 
+    set_icon: function(value) {
+      var img = undefined;
+      switch(value) {
+        case "Buckets":
+          img = "<img src='images/bucket.png'> ";
+          break;
+        case "Endpoints":
+          img = "<img src='images/endpoint.png'> ";
+          break;
+        case "Users":
+          img = "<img src='images/users.png'> ";
+          break;
+      }
+      return img + value;
+    },
+
     initComponent: function() {
       var self = this;
-      var set_icon, admin_card, admin_grid;
-
-      set_icon = function(value) {
-        var img = undefined
-        switch(value) {
-          case "Buckets":
-            img = "<img src='images/bucket.png'> ";
-            break;
-          case "Endpoints":
-            img = "<img src='images/endpoint.png'> ";
-            break;
-          case "Users":
-            img = "<img src='images/users.png'> ";
-            break;
-        }
-        return img + value;
-      }
+      var admin_card, admin_grid;
 
       admin_grid = Ext.create("Ext.grid.Panel", {
         title: "Menu",
@@ -48,7 +48,7 @@
         store: self.admin_store,
         columns: [{
           dataIndex: "name",
-          renderer: set_icon
+          renderer: self.set_icon
         }],
         listeners: {
           select: function(self, record, index) {
@@ -71,14 +71,11 @@
         ]
       });
 
-      Ext.apply(this, {
-        items: [
-          admin_grid,
-          admin_card
-        ]
+      Ext.apply(self, {
+        items: [admin_grid, admin_card]
       });
 
-      return this.callParent(arguments);
+      return self.callParent(arguments);
     }
   });
 }).call(this);
