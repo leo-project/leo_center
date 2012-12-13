@@ -222,10 +222,6 @@
         });
       };
 
-      foo = function() {
-        alert("foo");
-      }
-
       node_grid = Ext.create("Ext.grid.Panel", {
         title: 'Nodes',
         store: node_store,
@@ -289,7 +285,9 @@
 
             Ext.defer(function() {
               Ext.TaskManager.start({
-                run: nodes.reload,
+                run: function() {
+                  node_store.load();
+                },
                 interval: interval
               });
             }, interval);
