@@ -82,6 +82,8 @@
       var node_grid_grouping, node_store, node_grid_select, node_grid;
 
       send_command = function() {
+        var node, command_combo, command_select_window;  
+
         node = node_grid.getSelectionModel().getSelection()[0].data;
 
         command_combo = Ext.create("Ext.form.ComboBox", {
@@ -101,7 +103,7 @@
           buttons: [{
             text: "Apply",
             handler: function() {
-              command = command_combo.getRawValue()
+              command = command_combo.getRawValue();
               if (command != "none")
                 nodes.confirm_send_command(node.node, command);
             }
