@@ -10,85 +10,82 @@
     title: "Node Status",
     id: "nodes_panel",
     layout: "border",
+    
+    command_store: Ext.create("Ext.data.Store", {
+      fields: [ "command" ],
+      data: [
+        { command: "none" },
+        { command: "resume" },
+        { command: "suspend" },
+        { command: "detach" }
+      ]
+    }),
 
-    reload: function() {
-      console.log("foo");
+    detail_store: Ext.create("Ext.data.ArrayStore", {
+      model: "LeoTamer.model.NameValue",
+      proxy: {
+        type: 'ajax',
+        url: 'nodes/detail.json',
+        reader: {
+          type: 'json',
+          root: 'data'
+        },
+        // disabe unused params
+        noCache: false,
+        limitParam: undefined,
+        pageParam: undefined,
+        sortParam: undefined,
+        startParam: undefined,
+        listeners: {
+          exception: function(self, response, operation) {
+            alert("Error on: \'" + self.url + "\'\n" + response.responseText);
+          }
+        }
+      }
+    }),
+    
+    do_send_command: function(node, command) {
+      Ext.Ajax.request({
+        url: "nodes/exec.json",
+        method: "POST",
+        params: {
+          node: node,
+          command: command
+        },
+        success: function(response) {
+          //TODO
+        },
+        failure: function(response, opts) {
+          //TODO
+        }
+      })
+    },
+
+    confirm_send_command: function(node, command) {
+      var self = this;
+
+      Ext.Msg.on("beforeshow",  function (win) {
+        win.defaultFocus = 2; // set default focus to "No" button
+      });
+
+      msg = "Are you sure to send command '" + command + " " + node + "'?";
+
+      Ext.Msg.confirm("Confirm", msg, function(btn) {
+        if (btn == "yes") self.do_send_command(node, command);
+      });
     },
 
     initComponent: function() {
       var nodes = this;
-      var command_store, detail_store;
-      var do_send_command, confirm_send_command, send_command;
+      var confirm_send_command, send_command;
       var node_status_panel, status_renderer;
       var node_grid_grouping, node_store, node_grid_select, node_grid;
-
-      command_store = Ext.create("Ext.data.Store", {
-        fields: [ "command" ],
-        data: [
-          { command: "none" },
-          { command: "resume" },
-          { command: "suspend" },
-          { command: "detach" }
-        ]
-      });
-
-      detail_store = Ext.create("Ext.data.ArrayStore", {
-        model: "LeoTamer.model.NameValue",
-        proxy: {
-          type: 'ajax',
-          url: 'nodes/detail.json',
-          reader: {
-            type: 'json',
-            root: 'data'
-          },
-          // disabe unused params
-          noCache: false,
-          limitParam: undefined,
-          pageParam: undefined,
-          sortParam: undefined,
-          startParam: undefined,
-          listeners: {
-            exception: function(self, response, operation) {
-              alert("Error on: \'" + self.url + "\'\n" + response.responseText);
-            }
-          }
-        }
-      });
-
-      do_send_command = function(node, command) {
-        Ext.Ajax.request({
-          url: "nodes/exec.json",
-          method: "POST",
-          params: {
-            node: node,
-            command: command
-          },
-          success: function(response) {
-            //TODO
-          },
-          failure: function(response, opts) {
-            //TODO
-          }
-        })
-      }
-
-      confirm_send_command = function(node, command) {
-        Ext.Msg.on("beforeshow",  function (win) {
-          win.defaultFocus = 2; // set default focus to "No" button
-        });
-
-        msg = "Are you sure to send command '" + command + " " + node + "'?";
-
-        Ext.Msg.confirm("Confirm", msg, function(btn) {
-          if (btn == "yes") do_send_command(node, command);
-        });
-      }
 
       send_command = function() {
         node = node_grid.getSelectionModel().getSelection()[0].data;
 
         command_combo = Ext.create("Ext.form.ComboBox", {
-            store: command_store,
+            store: nodes.command_store,
             labelWidth: 125,
             fieldLabel: "Execute Command",
             displayField: "command",
@@ -106,7 +103,7 @@
             handler: function() {
               command = command_combo.getRawValue()
               if (command != "none")
-                confirm_send_command(node.node, command);
+                nodes.confirm_send_command(node.node, command);
             }
           }, {
             text: "Cancel",
@@ -147,7 +144,7 @@
                 text: "Value"
               }
             ],
-            store: detail_store
+            store: nodes.detail_store
           }
         ]
       });
@@ -214,7 +211,7 @@
         name_line = "Node Name: " + record.data.node;
         status_line = "Status: " + status_renderer(record.data.status);
         Ext.getCmp("node_status").update(name_line + "<br>" + status_line);
-        detail_store.load({ 
+        nodes.detail_store.load({ 
           params: { 
             node: name,
             type: record.data.type
