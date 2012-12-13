@@ -11,11 +11,17 @@
     layout: "border",
     border: false,
 
+    listeners: {
+      activate: function(self) {
+        self.load();
+      }
+    },
+
     grid_grouping: Ext.create('Ext.grid.feature.Grouping', {
       groupHeaderTpl: '{name} ({rows.length} bucket{[values.rows.length > 1 ? "s" : ""]})'
     }),
 
-    reload: function() {
+    load: function() {
       this.store.load();
     },
 
@@ -38,7 +44,7 @@
                 buttons: Ext.Msg.OK,
                 icon: Ext.Msg.INFO
               });
-              self.reload(); 
+              self.load(); 
             },
             failure: function(response, opts) {
               Ext.Msg.alert("Error!", response.responseText);
@@ -82,8 +88,7 @@
             alert("Error on: \'" + store.url + "\'\n" + response.responseText);
           }
         }
-      },
-      autoLoad: true
+      }
     }),
 
     initComponent: function() {

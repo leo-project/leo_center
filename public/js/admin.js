@@ -51,11 +51,11 @@
           renderer: self.set_icon
         }],
         listeners: {
-          select: function(self, record, index) {
+          select: function(grid, record, index) {
             admin_card.getLayout().setActiveItem(index);
           },
-          afterrender: function(self) {
-            self.getSelectionModel().select(0);
+          afterrender: function(grid) {
+            grid.getSelectionModel().select(0);
           }
         }
       });

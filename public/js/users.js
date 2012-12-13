@@ -11,7 +11,13 @@
     layout: "border",
     border: false,
 
-    reload: function() {
+    listeners: {
+      activate: function(self) {
+        self.load();
+      }
+    },
+
+    load: function() {
       this.store.load();
     },
 
@@ -35,8 +41,7 @@
             alert("Error on: \'" + store.url + "\'\n" + response.responseText);
           }
         }
-      },
-      autoLoad: true
+      }
     }),
 
     add_user: function() {
@@ -57,7 +62,7 @@
                 buttons: Ext.Msg.OK,
                 icon: Ext.Msg.INFO
               });
-              self.reload();
+              self.load();
             },
             failure: function(response, opts) {
               Ext.Msg.alert("Error!", response.responseText);
@@ -94,7 +99,7 @@
                   buttons: Ext.Msg.OK,
                   icon: Ext.Msg.INFO
                 });
-                self.reload();
+                self.load();
               },
               failure: function(response) {
                 Ext.Msg.alert("Error!", response.responseText);
