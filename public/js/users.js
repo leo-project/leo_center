@@ -134,7 +134,7 @@
           self.load();
         },
         failure: function(response, opts) {
-          //TODO
+          Ext.Msg.alert("Error!", response.responseText);
         }
       });
     },
@@ -179,6 +179,17 @@
             }
           }]
         }).show();
+      }
+    },
+
+    role_renderer: function(value) {
+      switch (value) {
+        case "admin": 
+          return "<img src='images/admin_user.png'> " + value;
+        case "normal":
+          return "<img src='images/user.png'> " + value;
+        default:
+          throw "invalid value: " + value;
       }
     },
 
@@ -234,14 +245,7 @@
           { 
             header: "Role",
             dataIndex: "role",
-            renderer: function(value) {
-              switch (value) {
-                case "admin": 
-                  return "<img src='images/admin_user.png'> " + value;
-                case "normal":
-                  return "<img src='images/user.png'> " + value;
-              }
-            }
+            renderer: self.role_renderer
           },
           { header: "Access Key ID", dataIndex: "access_key_id" },
           { header: "Created at", dataIndex: "created_at" }
