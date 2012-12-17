@@ -45,6 +45,7 @@
     }),
 
     add_user: function() {
+      var self = this;
       var title = "Add New User";
       var msg = "Please input user name"
       Ext.Msg.prompt(title, msg, function(btn, value) {
@@ -111,6 +112,17 @@
       }
     },
 
+    update_user: function() {
+      var self = this;
+      var last_selected = self.grid.getSelectionModel().getLastSelected();
+      if (!last_selected) {
+        Ext.Msg.alert("Error!", "Please select a user.");
+      }
+      else {
+        var user_id = last_selected.data.user_id;
+      }
+    },
+
     initComponent: function() {
       var self = this;
 
@@ -136,14 +148,19 @@
           text: "Add User",
           icon: "images/add.png",
           handler: function() {
-            self.add_user(self);
+            self.add_user();
           }
         }, 
         {
           text: "Delete User",
           icon: "images/remove.png",
           handler: function() {
-            self.delete_user(self);
+            self.delete_user();
+          }
+        }, {
+          text: "Update Role",
+          handler: function() {
+            self.update_user();
           }
         },
         "->",

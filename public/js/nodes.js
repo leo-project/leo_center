@@ -21,17 +21,6 @@
       ]
     }),
 
-    command_combo: Ext.create("Ext.form.ComboBox", {
-        store: this.command_store,
-        labelWidth: 125,
-        fieldLabel: "Execute Command",
-        displayField: "command",
-        valueField: "command",
-        emptyText: "Select Command",
-        allowBlank: false,
-        editable: false
-    }),
-
     detail_store: Ext.create("Ext.data.ArrayStore", {
       model: "LeoTamer.model.NameValue",
       proxy: {
@@ -129,6 +118,17 @@
 
     initComponent: function() {
       var self = this;
+
+      self.command_combo = Ext.create("Ext.form.ComboBox", {
+        store: self.command_store,
+        labelWidth: 125,
+        fieldLabel: "Execute Command",
+        displayField: "command",
+        valueField: "command",
+        emptyText: "Select Command",
+        allowBlank: false,
+        editable: false
+      });
 
       self.send_command = function() {
         var node, command_select_window;  
