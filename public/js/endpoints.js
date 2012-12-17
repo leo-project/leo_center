@@ -74,8 +74,9 @@
     },
 
     delete_endpoint: function(self) {
+      var self = this;
       var title = "Delete Endpoint";
-      var last_selected = endpoint_grid.getSelectionModel().getLastSelected();
+      var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
         Ext.Msg.alert("Error!", "Please select a endpoint.");
       }
