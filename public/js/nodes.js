@@ -58,7 +58,7 @@
         failure: function(response, opts) {
           //TODO
         }
-      })
+      });
     },
 
     confirm_send_command: function(node, command) {
@@ -120,6 +120,7 @@
       var self = this;
 
       self.command_combo = Ext.create("Ext.form.ComboBox", {
+        padding: 10,
         store: self.command_store,
         labelWidth: 125,
         fieldLabel: "Execute Command",
@@ -140,7 +141,7 @@
           buttons: [{
             text: "Apply",
             handler: function() {
-              var command = self.command_combo.getRawValue();
+              var command = self.command_combo.getValue();
               if (command != "none")
                 self.confirm_send_command(node.node, command);
             }

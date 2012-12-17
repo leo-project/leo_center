@@ -15,8 +15,7 @@ class LeoTamer
     end
 
     post "/add_user" do
-      user_id = params[:user_id]
-      halt 500, "parameter 'user_id' is required" unless user_id
+      user_id = required_params(:user_id)
       begin
         @@manager.create_user(user_id)
       rescue => ex
@@ -26,10 +25,20 @@ class LeoTamer
     end
 
     delete "/delete_user" do
-      user_id = params[:user_id]
-      halt 500, "parameter 'user_id' is required" unless user_id
+      user_id = required_params(:user_id)
       begin
         @@manager.delete_user(user_id)
+      rescue => ex
+        halt 500, ex.message
+      end
+      200
+    end
+
+    post "/update_user" do
+      user_id, role_id = required_params(:user_id, :role_id)
+      role_id = Integer(role_id)
+      begin
+        @@manager.update_user_role(user_id, role_id)
       rescue => ex
         halt 500, ex.message
       end

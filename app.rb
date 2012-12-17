@@ -44,7 +44,7 @@ class LeoTamer < Sinatra::Base
         noexist_params.map! {|param| "'#{param}'" }
         halt 500, "parameter #{noexist_params.join(" ")} is required"
       end
-      p params_to_check.map {|param| request_params[param] }
+      params_to_check.map {|param| request_params[param] }
     end
   end
 

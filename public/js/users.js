@@ -21,6 +21,15 @@
       this.store.load();
     },
 
+    role_store: Ext.create("Ext.data.Store", {
+      fields: ["role", "role_id"],
+      data: [
+        { role: "none", role_id: null },
+        { role: "admin", role_id: 9 },
+        { role: "normal", role_id: 1 }
+      ]
+    }),
+
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Users",
       proxy: {
@@ -112,6 +121,24 @@
       }
     },
 
+    do_update_user: function(user_id, role_id) {
+      var self = this;
+      Ext.Ajax.request({
+        url: "users/update_user",
+        method: "POST",
+        params: {
+          user_id: user_id,
+          role_id: role_id
+        },
+        success: function(response) {
+          self.load();
+        },
+        failure: function(response, opts) {
+          //TODO
+        }
+      });
+    },
+
     update_user: function() {
       var self = this;
       var last_selected = self.grid.getSelectionModel().getLastSelected();
@@ -120,6 +147,38 @@
       }
       else {
         var user_id = last_selected.data.user_id;
+        var role_combo, role_select_window;
+
+        role_combo = Ext.create("Ext.form.ComboBox", {
+          padding: 10,
+          store: self.role_store,
+          labelWidth: 125,
+          fieldLabel: "Select Role",
+          displayField: "role",
+          valueField: "role_id",
+          emptyText: "Select Role",
+          allowBlank: false,
+          editable: false
+        });
+        
+        role_select_window = Ext.create('Ext.window.Window', {
+          title: "Update User Role",
+          items: role_combo,
+          buttons: [{
+            text: "Apply",
+            handler: function() {
+              var role_id = role_combo.getValue();
+              if (role_id != "none")
+                self.do_update_user(user_id, role_id);
+              role_select_window.close();
+            }
+          }, {
+            text: "Cancel",
+            handler: function() {
+              role_select_window.close();
+            }
+          }]
+        }).show();
       }
     },
 
