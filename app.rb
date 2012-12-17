@@ -85,20 +85,30 @@ class LeoTamer < Sinatra::Base
     begin
       credential = @@manager.login(user_id, password)
     rescue RuntimeError => ex
-      { 
+      return { 
         success: false,
         errors: {
           reason: "Invalid User ID or Password."
         }
       }.to_json
-    else
-      session[:user_id] = user_id
-      session[:role_id] = credential.role_id
-      session[:access_key_id] = credential.access_key_id
-      session[:secret_access_key] = credential.secret_key
-      response.set_cookie("user_id", user_id) # used in ExtJS
-      { success: true }.to_json
     end
+
+    # not admin user
+    if credential.role_id != 9
+      return { 
+        success: false,
+        errors: {
+          reason: "You are not authorized. Please contact the administrator."
+        }
+      }.to_json
+    end
+
+    session[:user_id] = user_id
+    session[:role_id] = credential.role_id
+    session[:access_key_id] = credential.access_key_id
+    session[:secret_access_key] = credential.secret_key
+    response.set_cookie("user_id", user_id) # used in ExtJS
+    { success: true }.to_json
   end
 
   get "/logout" do

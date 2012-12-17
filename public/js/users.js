@@ -73,8 +73,9 @@
     },
 
     delete_user: function() {
+      var self = this;
       var title = "Delete User";
-      var last_selected = user_grid.getSelectionModel().getLastSelected();
+      var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
         Ext.Msg.alert("Error!", "Please select a user.");
       }

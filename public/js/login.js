@@ -34,7 +34,7 @@
           }
         }],
         buttons: [{
-          text: "Sign UP",
+          text: "Sign Up",
           handler: function() {
             sign_up_form.submit({
               method: "POST",
@@ -89,9 +89,6 @@
             }
           });
         }
-      },{
-        text: "Sign UP",
-        handler: sign_up
       }]
     });
 
@@ -121,7 +118,27 @@
           border: false,
           padding: "0 24 24",
           items: login_form
+        },
+        /*
+        {
+          width: "100%",
+          bodyStyle: {
+            "text-align": "center",
+            padding: "10px",
+            "border-left": "none",
+            "border-right": "none",
+            "border-bottom": "none",
+          },
+          html: "you can create a new account: <a href='#'>Sign Up</a>",
+          listeners: {
+            render: function(component) {
+              component.getEl().on('click', function(e) {
+                sign_up();
+              });    
+            }
+          }
         }
+        */
       ]
     }).show();
   });
