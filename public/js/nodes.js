@@ -306,8 +306,10 @@
               grid.getSelectionModel().select(self.selected_index);
             });
           },
-          select: function(grid, record, index) {
+          beforeselect: function(grid, record, index) {
             self.selected_index = index;
+          },
+          select: function(grid, record, index) {
             self.on_grid_select(self, record);
           }
         }
