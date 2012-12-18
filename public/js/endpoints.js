@@ -55,14 +55,6 @@
             method: "POST",
             params: { endpoint: value },
             success: function(response) {
-              title = "Add Endpoint"
-              msg = "endpoint '" + value + "' is added successfully."
-              Ext.Msg.show({
-                title: title,
-                msg: msg,
-                buttons: Ext.Msg.OK,
-                icon: Ext.Msg.INFO
-              });
               self.load();
             },
             failure: function(response) {
@@ -93,14 +85,6 @@
               method: "DELETE",
               params: { endpoint: endpoint },
               success: function(response, opts) {
-                title = "Delete Endpoint"
-                msg = "endpoint '" + endpoint + "' is deleted successfully."
-                Ext.Msg.show({
-                  title: title,
-                  msg: msg,
-                  buttons: Ext.Msg.OK,
-                  icon: Ext.Msg.INFO
-                });
                 self.load();
               },
               failure: function(response, opts) {

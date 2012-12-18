@@ -64,14 +64,6 @@
             method: "POST",
             params: { user_id: value },
             success: function(response, opts) {
-              title = "Add User"
-              msg = "user '" + value + "' is added successfully."
-              Ext.Msg.show({
-                title: title,
-                msg: msg,
-                buttons: Ext.Msg.OK,
-                icon: Ext.Msg.INFO
-              });
               self.load();
             },
             failure: function(response, opts) {
@@ -102,14 +94,6 @@
               method: "DELETE",
               params: { user_id: user_id },
               success: function(response) {
-                var title = "Delete User"
-                var msg = "user '" + user_id + "' is deleted successfully."
-                Ext.Msg.show({
-                  title: title,
-                  msg: msg,
-                  buttons: Ext.Msg.OK,
-                  icon: Ext.Msg.INFO
-                });
                 self.load();
               },
               failure: function(response) {

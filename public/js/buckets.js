@@ -36,14 +36,6 @@
             method: "POST",
             params: { bucket: value },
             success: function(response, opts) {
-              title = "Add Bucket"
-              msg = "bucket '" + value + "' is added successfully."
-              Ext.Msg.show({
-                title: title,
-                msg: msg,
-                buttons: Ext.Msg.OK,
-                icon: Ext.Msg.INFO
-              });
               self.load(); 
             },
             failure: function(response, opts) {

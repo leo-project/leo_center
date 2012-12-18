@@ -81,7 +81,6 @@
           command: command
         },
         success: function(response) {
-          Ext.Msg.alert("Success", "command '" + command + "' is executed successfully.");
           self.store.load();
         },
         failure: function(response) {
