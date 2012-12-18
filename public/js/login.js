@@ -60,6 +60,7 @@
       url: "login",
       border: false,
       defaultType: "textfield",
+      padding: 12,
       defaults: {
         padding: "10",
         vtype: "alphanum",
@@ -106,28 +107,18 @@
       items: [
         {
           xtype: "image",
-          flex: 1,
-          padding: "24 24 0",
           width: "80%",
+          padding: 12,
           border: false,
           src: "images/leofs-logo-0.png"
         },
-        {
-          xtype: "panel",
-          flex: 2,
-          border: false,
-          padding: "0 24 24",
-          items: login_form
-        },
+        login_form,
         /*
         {
           width: "100%",
           bodyStyle: {
             "text-align": "center",
             padding: "10px",
-            "border-left": "none",
-            "border-right": "none",
-            "border-bottom": "none",
           },
           html: "you can create a new account: <a href='#'>Sign Up</a>",
           listeners: {
