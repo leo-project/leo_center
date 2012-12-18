@@ -10,11 +10,14 @@
     title: "Node Status",
     id: "nodes_panel",
     layout: "border",
-    reload_interval: 3000,
+    reload_interval: 30000,
 
     select_first_row: function() {
       var self = this;
-      // self.grid.getSelectionModel().select(0);
+      var grid = self.grid;
+      grid.getStore().on("load", function() {
+        grid.getSelectionModel().select(0);
+      }, null, { single: true });
     },
 
     listeners: {
@@ -298,9 +301,13 @@
           }
         ],
         listeners: {
-          render : function(grid){
+          render: function(grid) {
+            grid.getStore().on("load", function() {
+              grid.getSelectionModel().select(self.selected_index);
+            });
           },
-          select: function(grid, record) {
+          select: function(grid, record, index) {
+            self.selected_index = index;
             self.on_grid_select(self, record);
           }
         }
