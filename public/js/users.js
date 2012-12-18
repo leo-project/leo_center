@@ -24,7 +24,6 @@
     role_store: Ext.create("Ext.data.Store", {
       fields: ["role", "role_id"],
       data: [
-        { role: "none", role_id: null },
         { role: "admin", role_id: 9 },
         { role: "normal", role_id: 1 }
       ]
