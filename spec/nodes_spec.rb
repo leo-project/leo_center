@@ -1,9 +1,4 @@
 require_relative "spec_helper"
-require_relative "../app"
-
-def app
-  LeoTamer.new
-end
 
 describe LeoTamer do
   describe "/nodes/list.json" do
