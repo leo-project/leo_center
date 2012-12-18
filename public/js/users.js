@@ -206,10 +206,10 @@
           fieldLabel: "<img src='images/filter.png'> Filter:",
           labelWidth: 50,
           listeners: {
-            change: function(grid, new_value) {
-              store = grid.getStore();
+            change: function(text_field, new_value) {
+              var store = self.store;
               store.clearFilter();
-              store.filter("user", new RegExp(new_value));
+              store.filter("user_id", new RegExp(new_value));
             }
           }
         },

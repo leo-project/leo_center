@@ -105,8 +105,8 @@
           fieldLabel: "<img src='images/filter.png'> Filter:",
           labelWidth: 50,
           listeners: {
-            change: function(grid, new_value) {
-              var store = grid.getStore();
+            change: function(text_field, new_value) {
+              var store = self.store;
               store.clearFilter();
               store.filter("name", new RegExp(new_value));
             }

@@ -10,7 +10,7 @@
     title: "Node Status",
     id: "nodes_panel",
     layout: "border",
-    reload_interval: 30000,
+    reload_interval: 300000,
 
     select_first_row: function() {
       var self = this;
@@ -284,8 +284,8 @@
             fieldLabel: "<img src='images/filter.png'> Filter:",
             labelWidth: 50,
             listeners: {
-              change: function(grid, new_value) {
-                var store = grid.getStore();
+              change: function(text_field, new_value) {
+                var store = self.store;
                 store.clearFilter();
                 store.filter("node", new RegExp(new_value));
               }
