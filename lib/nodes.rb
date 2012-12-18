@@ -36,7 +36,12 @@ class LeoTamer
 
     get "/detail.json" do
       node, type = required_params(:node, :type)
-      node_stat = @@manager.status(node).node_stat
+
+      begin
+        node_stat = @@manager.status(node).node_stat
+      rescue => ex
+        halt 500, ex.message
+      end
 
       properties = [
         :version, :vm_version, :log_dir, :ring_cur, :ring_prev, :total_mem_usage,
@@ -61,16 +66,21 @@ class LeoTamer
       { :data => result }.to_json
     end
 
-    post "/exec.json" do
+    post "/execute" do
       node, command = required_params(:node, :command)
       command = command.to_sym
 
       case command
       when :resume, :suspend, :detach
-        # @@manager.__send__(command, node)
+        begin
+          @@manager.__send__(command, node)
+        rescue => ex
+          halt 500, ex.message
+        end
       else
-        raise Error, "invalid operation command: #{command}"
+        halt 500, "invalid operation command: #{command}"
       end
+      200
     end
   end
 end

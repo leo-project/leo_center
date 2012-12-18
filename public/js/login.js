@@ -107,7 +107,7 @@
       items: [
         {
           xtype: "image",
-          width: "80%",
+          height: 200,
           padding: 12,
           border: false,
           src: "images/leofs-logo-0.png"

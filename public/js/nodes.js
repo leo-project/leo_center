@@ -10,6 +10,29 @@
     title: "Node Status",
     id: "nodes_panel",
     layout: "border",
+    reload_interval: 3000,
+
+    select_first_row: function() {
+      var self = this;
+      // self.grid.getSelectionModel().select(0);
+    },
+
+    listeners: {
+      activate: function(self) {
+        self.select_first_row();
+
+        self.reloader = {
+          run: function() {
+            self.store.load();
+          },
+          interval: self.reload_interval
+        };
+        Ext.TaskManager.start(self.reloader);
+      },
+      deactivate: function(self) {
+        Ext.TaskManager.stop(self.reloader);
+      }
+    },
     
     command_store: Ext.create("Ext.data.Store", {
       fields: [ "command" ],
@@ -45,30 +68,35 @@
     }),
     
     do_send_command: function(node, command) {
+      var self = this;
+
       Ext.Ajax.request({
-        url: "nodes/exec.json",
+        url: "nodes/execute",
         method: "POST",
         params: {
           node: node,
           command: command
         },
         success: function(response) {
-          //TODO
+          Ext.Msg.alert("Success", "command '" + command + "' is executed successfully.");
+          self.store.load();
         },
-        failure: function(response, opts) {
-          //TODO
+        failure: function(response) {
+          Ext.Msg.alert("Error!", response.responseText);
         }
       });
     },
 
     confirm_send_command: function(node, command) {
+      var self = this;
+
       Ext.Msg.on("beforeshow",  function (win) {
         win.defaultFocus = 2; // set default focus to "No" button
       });
 
       var msg = "Are you sure to send command '" + command + " " + node + "'?";
       Ext.Msg.confirm("Confirm", msg, function(btn) {
-        if (btn == "yes") this.do_send_command(node, command);
+        if (btn == "yes") self.do_send_command(node, command);
       });
     },
 
@@ -85,7 +113,7 @@
         case "attached":
           src = "images/add.png";
           break;
-        case "suspended":
+        case "suspend":
           src = "images/warn.png";
           break;
         default:
@@ -119,31 +147,33 @@
     initComponent: function() {
       var self = this;
 
-      self.command_combo = Ext.create("Ext.form.ComboBox", {
-        padding: 10,
-        store: self.command_store,
-        labelWidth: 125,
-        fieldLabel: "Execute Command",
-        displayField: "command",
-        valueField: "command",
-        emptyText: "Select Command",
-        allowBlank: false,
-        editable: false
-      });
-
       self.send_command = function() {
-        var node, command_select_window;  
+        var node, command_combo, command_select_window;  
 
         node = self.grid.getSelectionModel().getSelection()[0].data;
+
+        command_combo = Ext.create("Ext.form.ComboBox", {
+          padding: 10,
+          store: self.command_store,
+          labelWidth: 125,
+          fieldLabel: "Execute Command",
+          displayField: "command",
+          valueField: "command",
+          emptyText: "Select Command",
+          allowBlank: false,
+          editable: false
+        });
+
         command_select_window = Ext.create('Ext.window.Window', {
           title: node.node,
-          items: self.command_combo,
+          items: command_combo,
           buttons: [{
             text: "Apply",
             handler: function() {
-              var command = self.command_combo.getValue();
+              var command = command_combo.getValue();
               if (command != "none")
                 self.confirm_send_command(node.node, command);
+              command_select_window.close();
             }
           }, {
             text: "Cancel",
@@ -269,18 +299,6 @@
         ],
         listeners: {
           render : function(grid){
-            var interval = 30000;
-
-            grid.store.on('load', function(){
-              grid.getSelectionModel().select(0); // select first row
-            });
-
-            Ext.TaskManager.start({
-              run: function() {
-                self.store.load();
-              },
-              interval: interval
-            });
           },
           select: function(grid, record) {
             self.on_grid_select(self, record);
