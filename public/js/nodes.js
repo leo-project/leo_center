@@ -237,6 +237,7 @@
           pageParam: undefined,
           sortParam: undefined,
           startParam: undefined,
+          groupParam: undefined,
           listeners: {
             exception: function(store, response, operation) {
               alert("Error on: \'" + store.url + "\'\n" + response.responseText);

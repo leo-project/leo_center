@@ -1,4 +1,6 @@
 class LeoTamer
+  module Nodes; end;
+
   namespace "/nodes" do
     get "/list.json" do
       { 
@@ -9,7 +11,6 @@ class LeoTamer
     end
 
     get "/status.json" do
-      required_params(:group)
       node_list = @@manager.status.node_list
       data = node_list.map do |node|
         case node.type
@@ -34,6 +35,12 @@ class LeoTamer
       { data: data }.to_json
     end
 
+    Nodes::Properties = [
+      :version, :vm_version, :log_dir, :ring_cur, :ring_prev, :total_mem_usage,
+      :system_mem_usage, :procs_mem_usage, :ets_mem_usage, :num_of_procs,
+      :limit_of_procs, :thread_pool_size 
+    ]
+
     get "/detail.json" do
       node, type = required_params(:node, :type)
 
@@ -43,13 +50,7 @@ class LeoTamer
         halt 500, ex.message
       end
 
-      properties = [
-        :version, :vm_version, :log_dir, :ring_cur, :ring_prev, :total_mem_usage,
-        :system_mem_usage, :procs_mem_usage, :ets_mem_usage, :num_of_procs,
-        :limit_of_procs, :thread_pool_size 
-      ]
-
-      result = properties.map do |property|
+      result = Nodes::Properties.map do |property|
         { :name => property, :value => node_stat.__send__(property) }
       end
 

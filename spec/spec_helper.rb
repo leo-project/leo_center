@@ -2,7 +2,9 @@ require "rack/test"
 
 include Rack::Test::Methods
 
+ENV['RACK_ENV'] = "test"
+
 def get_json(url)
   get url
-  @data = JSON.parse(last_response.body.to_s)
+  JSON.parse(last_response.body.to_s)
 end

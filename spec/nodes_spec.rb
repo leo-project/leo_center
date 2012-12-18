@@ -6,10 +6,8 @@ def app
 end
 
 describe LeoTamer do
-  subject { @data }
-
   describe "/nodes/list.json" do
-    before(:all) { get_json "/nodes/list.json" }
+    subject { get_json "/nodes/list.json" }
 
     it "returns valid format" do
       should be_a Hash
@@ -36,7 +34,7 @@ describe LeoTamer do
       joined_at: String
     }
     
-    before(:all) { get_json "/nodes/status.json" }
+    subject { get_json "/nodes/status.json" }
 
     it "returns valid format" do
       should be_a Hash
@@ -55,5 +53,18 @@ describe LeoTamer do
         end
       end
     end
+  end
+
+  describe "/nodes/detail.json" do
+    subject { get_json "/nodes/status.json" }
+  end
+
+  describe "/nodes/execute" do
+    subject do
+      post "/nodes/execute"
+      last_response.status
+    end
+
+    it { should eql 500 }
   end
 end

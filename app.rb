@@ -17,21 +17,26 @@ class LeoTamer < Sinatra::Base
   use Rack::Session::Cookie,
     :key => "leotamer_session",
     :secret => "CHANGE ME"
-  
-  configure do
+ 
+  configure :test do
+    #TODO: user dummy server
     @@manager = LeoFSManager::Client.new(*Config[:managers])
   end
 
-  before do
-    debug "params: #{params}" if $DEBUG
-    unless session[:user_id]
-      case request.path
-      when "/login", "/sign_up"
-        # don't redirect
-      when "/"
-        redirect "/login"
-      else
-        halt 401
+  configure :production, :development do
+    @@manager = LeoFSManager::Client.new(*Config[:managers])
+
+    before do
+      debug "params: #{params}" if $DEBUG
+      unless session[:user_id]
+        case request.path
+        when "/login", "/sign_up"
+          # don't redirect
+        when "/"
+          redirect "/login"
+        else
+          halt 401
+        end
       end
     end
   end
