@@ -1,0 +1,6 @@
+:managers:
+  - "localhost:10020" # master
+  - "localhost:10021" # slave
+:credential:
+  :access_key_id: "05236"
+  :secret_access_key: "802562235"
