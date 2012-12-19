@@ -10,8 +10,7 @@ class LeoTamer
     end
 
     post "/add_endpoint" do
-      endpoint = params[:endpoint]
-      halt 500, "parameter 'endpoint' is required" unless endpoint
+      endpoint = required_params(:endpoint)
       begin
         @@manager.set_endpoint(endpoint)
       rescue => ex
@@ -21,8 +20,7 @@ class LeoTamer
     end
 
     delete "/delete_endpoint" do
-      endpoint = params[:endpoint]
-      halt 500, "parameter 'endpoint' is required" unless endpoint
+      endpoint = required_params[:endpoint]
       begin
         @@manager.delete_endpoint(endpoint)
       rescue => ex

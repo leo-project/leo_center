@@ -35,7 +35,10 @@ describe LeoTamer do
   end
 
   describe "/nodes/detail.json" do
-    subject { get_json "/nodes/status.json" }
+    context "with no params" do
+      subject { get "/nodes/detail.json" }
+      its(:status) { should == 500 }
+    end
   end
 
   describe "/nodes/execute" do
@@ -45,7 +48,7 @@ describe LeoTamer do
         last_response
       end
 
-      its(:status) { should eql 500 }
+      its(:status) { should == 500 }
     end
   end
 end
