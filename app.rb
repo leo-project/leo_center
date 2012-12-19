@@ -5,6 +5,8 @@ require "haml"
 require "leofs_manager_client"
 
 class LeoTamer < Sinatra::Base
+  VERSION = "0.2.2"
+
   require_relative "lib/config"
 
   class Error < StandardError; end
