@@ -203,6 +203,7 @@
         id: "node_status",
         border: false,
         padding: 5,
+        height: 70,
         buttons: [{
           xtype: "button",
           id: "change_status_button",
