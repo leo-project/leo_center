@@ -107,10 +107,11 @@
       items: [
         {
           xtype: "image",
-          height: 200,
+          width: 500,
+          height: 174,
           padding: 12,
           border: false,
-          src: "images/leofs-logo-0.png"
+          src: "images/logo_login.png"
         },
         login_form,
         /*

@@ -39,7 +39,8 @@
         { 
           xtype: "image",
           width: 75,
-          src: "images/leofs-logo-0.png"
+          height: 24,
+          src: "images/logo_header.png"
         },
         "->",
         {

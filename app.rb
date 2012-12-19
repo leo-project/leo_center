@@ -9,15 +9,13 @@ class LeoTamer < Sinatra::Base
 
   class Error < StandardError; end
 
-  def debug(str)
-    puts str if $DEBUG
-  end
-
   register Sinatra::Namespace
   use Rack::Session::Cookie,
     :key => "leotamer_session",
     :secret => "CHANGE ME"
- 
+
+  JSON_SUCCESS = { success: true }.to_json
+
   configure :test do
     #TODO: user dummy server
     @@manager = LeoFSManager::Client.new(*Config[:managers])
@@ -27,7 +25,7 @@ class LeoTamer < Sinatra::Base
     @@manager = LeoFSManager::Client.new(*Config[:managers])
 
     before do
-      debug "params: #{params}" if $DEBUG
+      debug "params: #{params}"
       unless session[:user_id]
         case request.path
         when "/login", "/sign_up"
@@ -42,6 +40,10 @@ class LeoTamer < Sinatra::Base
   end
 
   helpers do
+    def debug(str)
+      puts str if $DEBUG
+    end
+
     def required_params(*params_to_check)
       request_params = params
       noexist_params = params_to_check.reject {|param| request_params[param] }
@@ -54,6 +56,15 @@ class LeoTamer < Sinatra::Base
       else
         params_to_check.map {|param| request_params[param] }
       end
+    end
+
+    def json_err_msg(msg)
+      { 
+        success: false,
+        errors: {
+          reason: msg
+        }
+      }.to_json
     end
   end
 
@@ -71,15 +82,9 @@ class LeoTamer < Sinatra::Base
     begin
       credential = @@manager.create_user(user_id, password)
     rescue RuntimeError => ex
-      { 
-        success: false,
-        errors: {
-          reason: ex.message
-        }
-      }.to_json
-    else
-      { success: true }.to_json
+      return json_err_msg(ex.message)
     end
+    JSON_SUCCESS
   end
 
   get "/login" do
@@ -94,22 +99,12 @@ class LeoTamer < Sinatra::Base
     begin
       credential = @@manager.login(user_id, password)
     rescue RuntimeError => ex
-      return { 
-        success: false,
-        errors: {
-          reason: "Invalid User ID or Password."
-        }
-      }.to_json
+      return json_err_msg("Invalid User ID or Password.")
     end
 
     # not admin user
     if credential.role_id != 9
-      return { 
-        success: false,
-        errors: {
-          reason: "You are not authorized. Please contact the administrator."
-        }
-      }.to_json
+      return json_err_msg("You are not authorized. Please contact the administrator.")
     end
 
     session[:user_id] = user_id
@@ -117,7 +112,7 @@ class LeoTamer < Sinatra::Base
     session[:access_key_id] = credential.access_key_id
     session[:secret_access_key] = credential.secret_key
     response.set_cookie("user_id", user_id) # used in ExtJS
-    { success: true }.to_json
+    JSON_SUCCESS
   end
 
   get "/logout" do
