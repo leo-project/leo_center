@@ -14,4 +14,24 @@ describe LeoTamer do
       end
     end
   end
+
+  describe "/buckets/add_bucket" do
+    context "with no params" do
+      subject do
+        post "/buckets/add_bucket"
+        last_response
+      end
+
+      its(:status) { should == 500 }
+    end
+
+    context "without session id" do
+      subject do
+        post "/buckets/add_bucket", { bucket: "foo" }
+        last_response
+      end
+
+      its(:status) { should == 500 }
+    end
+  end
 end

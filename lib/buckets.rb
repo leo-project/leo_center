@@ -18,8 +18,7 @@ class LeoTamer
     end
 
     post "/add_bucket" do
-      bucket_name = params[:bucket]
-      halt 500, "parameter 'bucket' is required" unless bucket_name
+      bucket_name = required_params(:bucket)
       access_key = session[:access_key_id]
       halt 500, "invalid session" unless access_key
       begin
