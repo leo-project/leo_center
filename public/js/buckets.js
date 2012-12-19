@@ -123,6 +123,7 @@
           { 
             header: "Bucket",
             dataIndex: "name",
+            width: 30
             /*
             summaryRenderer: function(value){
               return "TOTAL";

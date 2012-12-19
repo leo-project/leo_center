@@ -44,7 +44,7 @@
         "->",
         {
           text: Ext.util.Cookies.get("user_id"),
-          icon: "images/user.png",
+          icon: "images/admin_user.png",
           menu: {
             xtype: "menu",
             showSeparator: false,

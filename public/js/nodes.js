@@ -10,7 +10,7 @@
     title: "Node Status",
     id: "nodes_panel",
     layout: "border",
-    reload_interval: 300000,
+    reload_interval: 10000,
 
     select_first_row: function() {
       var self = this;
@@ -130,14 +130,15 @@
     }),
 
     on_grid_select: function(self, record) {
-      var name, status, status_line;
+      var name, status;
+      var name_line, status_line;
 
       name = record.data.node;
       status = record.data.status;
       self.status_panel.setTitle("status of " + name);
       name_line = "Node Name: " + record.data.node;
       status_line = "Status: " + self.status_renderer(record.data.status);
-      Ext.getCmp("node_status").update(name_line + "<br>" + status_line);
+      self.status_body.update(name_line + "<br>" + status_line);
       self.detail_store.load({ 
         params: { 
           node: name,
@@ -145,6 +146,16 @@
         }
       });
     },
+
+    status_body: Ext.create("Ext.Panel", {
+      id: "node_status",
+      border: false,
+      padding: 5,
+      buttons: [{
+        text: "Change Status",
+        handler: self.send_command
+      }]
+    }),
 
     initComponent: function() {
       var self = this;
@@ -192,16 +203,8 @@
         width: 300,
         resizable: false,
         items: [
+          self.status_body,
           {
-            xtype: "panel",
-            id: "node_status",
-            border: false,
-            padding: "5",
-            buttons: [{
-              text: "Change Status",
-              handler: self.send_command
-            }]
-          }, {
             xtype: 'grid',
             title: "defail information",
             border: false,

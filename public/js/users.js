@@ -212,6 +212,7 @@
           }
         }, {
           text: "Update Role",
+          icon: "images/update_user.png",
           handler: function() {
             self.update_user();
           }
@@ -224,13 +225,22 @@
           }
         }],
         columns: [
-          { header: "User ID", dataIndex: "user_id" },
           { 
             header: "Role",
             dataIndex: "role",
+            width: 15,
             renderer: self.role_renderer
           },
-          { header: "Access Key ID", dataIndex: "access_key_id" },
+          { 
+            header: "User ID",
+            dataIndex: "user_id",
+            width: 40
+          },
+          { 
+            header: "Access Key ID",
+            dataIndex: "access_key_id",
+            width: 30
+          },
           { header: "Created at", dataIndex: "created_at" }
         ]
       });
