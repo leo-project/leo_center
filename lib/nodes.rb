@@ -43,12 +43,8 @@ class LeoTamer
 
     get "/detail.json" do
       node, type = required_params(:node, :type)
-
-      begin
-        node_stat = @@manager.status(node).node_stat
-      rescue => ex
-        halt 500, ex.message
-      end
+      
+      node_stat = @@manager.status(node).node_stat
 
       result = Nodes::Properties.map do |property|
         { :name => property, :value => node_stat.__send__(property) }
@@ -73,13 +69,9 @@ class LeoTamer
 
       case command
       when :resume, :suspend, :detach
-        begin
-          @@manager.__send__(command, node)
-        rescue => ex
-          halt 500, ex.message
-        end
+        @@manager.__send__(command, node)
       else
-        halt 500, "invalid operation command: #{command}"
+        raise "invalid operation command: #{command}"
       end
       200
     end

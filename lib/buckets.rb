@@ -4,7 +4,8 @@ class LeoTamer
       begin
         buckets = @@manager.get_buckets
       rescue RuntimeError => ex
-        return { data: [] }.to_json if ex.message == "Not Found"
+        return { data: [] }.to_json if ex.message == "Not Found" # empty
+        raise ex
       end
 
       result = buckets.map do |bucket|
@@ -14,18 +15,14 @@ class LeoTamer
           :created_at => bucket.created_at
         }
       end
+
       { data: result }.to_json
     end
 
     post "/add_bucket" do
       bucket_name = required_params(:bucket)
-      access_key = session[:access_key_id]
-      halt 500, "invalid session" unless access_key
-      begin
-        @@manager.add_bucket(bucket_name, access_key)
-      rescue => ex
-        halt 500, ex.message
-      end
+      access_key = required_sessions(:access_key_id)
+      @@manager.add_bucket(bucket_name, access_key)
       200
     end
   end

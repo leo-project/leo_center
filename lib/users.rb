@@ -16,36 +16,24 @@ class LeoTamer
 
     post "/add_user" do
       user_id = required_params(:user_id)
-      begin
-        @@manager.create_user(user_id)
-      rescue => ex
-        halt 500, ex.message
-      end
+      @@manager.create_user(user_id)
       200
     end
 
     delete "/delete_user" do
       user_id = required_params(:user_id)
-      user_self_ = required_sessions(:user_id)
-      halt 500, "You can't modify your own role" if user_id == user_self
-      begin
-        @@manager.delete_user(user_id)
-      rescue => ex
-        halt 500, ex.message
-      end
+      user_self = required_sessions(:user_id)
+      raise "You can't modify your own role" if user_id == user_self
+      @@manager.delete_user(user_id)
       200
     end
 
     post "/update_user" do
       user_id, role_id = required_params(:user_id, :role_id)
-      user_self_ = required_sessions(:user_id)
-      halt 500, "You can't modify your own role" if user_id == user_self
+      user_self = required_sessions(:user_id)
+      raise "You can't modify your own role" if user_id == user_self
       role_id = Integer(role_id)
-      begin
-        @@manager.update_user_role(user_id, role_id)
-      rescue => ex
-        halt 500, ex.message
-      end
+      @@manager.update_user_role(user_id, role_id)
       200
     end
   end

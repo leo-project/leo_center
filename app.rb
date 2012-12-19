@@ -50,7 +50,7 @@ class LeoTamer < Sinatra::Base
       noexist_params = params_to_check.reject {|param| request_params[param] }
       unless noexist_params.empty?
         noexist_params.map! {|param| "'#{param}'" }
-        halt 500, "parameter #{noexist_params.join(" ")} is required"
+        raise "parameter #{noexist_params.join(" ")} is required"
       end
       if params_to_check.size == 1
         request_params[params_to_check.first]
@@ -63,7 +63,7 @@ class LeoTamer < Sinatra::Base
       valid = keys_to_check.all? {|key| session.has_key?(key) }
       raise "invalid session" unless valid
       if keys_to_check.size == 1
-        session[params_to_check.first]
+        session[keys_to_check.first]
       else
         keys_to_check.map {|key| session[key] }
       end
@@ -93,7 +93,7 @@ class LeoTamer < Sinatra::Base
     begin
       credential = @@manager.create_user(user_id, password)
     rescue RuntimeError => ex
-      return json_err_msg(ex.message)
+      raise json_err_msg(ex.message)
     end
     JSON_SUCCESS
   end
@@ -105,15 +105,16 @@ class LeoTamer < Sinatra::Base
 
   post "/login" do
     user_id, password = required_params(:user_id, :password)
+
     begin
       credential = @@manager.login(user_id, password)
-    rescue RuntimeError => ex
-      return json_err_msg("Invalid User ID or Password.")
+    rescue RuntimeError
+      raise json_err_msg("Invalid User ID or Password.")
     end
 
     # not admin user
     if credential.role_id != 9
-      return json_err_msg("You are not authorized. Please contact the administrator.")
+      raise json_err_msg("You are not authorized. Please contact the administrator.")
     end
 
     session[:user_id] = user_id

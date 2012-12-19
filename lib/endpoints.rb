@@ -11,21 +11,13 @@ class LeoTamer
 
     post "/add_endpoint" do
       endpoint = required_params(:endpoint)
-      begin
-        @@manager.set_endpoint(endpoint)
-      rescue => ex
-        halt 500, ex.message
-      end
+      @@manager.set_endpoint(endpoint)
       200
     end
 
     delete "/delete_endpoint" do
-      endpoint = required_params[:endpoint]
-      begin
-        @@manager.delete_endpoint(endpoint)
-      rescue => ex
-        halt 500, ex.message
-      end
+      endpoint = required_params(:endpoint)
+      @@manager.delete_endpoint(endpoint)
       200
     end
   end
