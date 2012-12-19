@@ -9,6 +9,7 @@ class LeoTamer < Sinatra::Base
 
   class Error < StandardError; end
 
+  set :show_exceptions, false
   register Sinatra::Namespace
   use Rack::Session::Cookie,
     :key => "leotamer_session",
@@ -58,6 +59,16 @@ class LeoTamer < Sinatra::Base
       end
     end
 
+    def required_sessions(*keys_to_check)
+      valid = keys_to_check.all? {|key| session.has_key?(key) }
+      raise "invalid session" unless valid
+      if keys_to_check.size == 1
+        session[params_to_check.first]
+      else
+        keys_to_check.map {|key| session[key] }
+      end
+    end
+
     def json_err_msg(msg)
       { 
         success: false,
@@ -69,7 +80,8 @@ class LeoTamer < Sinatra::Base
   end
 
   error do
-    env['sinatra.error'].message
+    ex = env['sinatra.error']
+    return 500, ex.message
   end
 
   get "/" do
@@ -77,8 +89,7 @@ class LeoTamer < Sinatra::Base
   end
 
   post "/sign_up" do
-    user_id = params[:user_id]
-    password = params[:password]
+    user_id, password = required_params(:user_id, :password)
     begin
       credential = @@manager.create_user(user_id, password)
     rescue RuntimeError => ex
@@ -88,14 +99,12 @@ class LeoTamer < Sinatra::Base
   end
 
   get "/login" do
-    # halt 500 unless request.secure?
     redirect "/" if session[:user_id]
     haml :login
   end
 
   post "/login" do
-    user_id = params[:user_id]
-    password = params[:password]
+    user_id, password = required_params(:user_id, :password)
     begin
       credential = @@manager.login(user_id, password)
     rescue RuntimeError => ex
@@ -121,6 +130,7 @@ class LeoTamer < Sinatra::Base
   end
 
   get "/user_credential" do
+    required_sessions(:access_key_id, :secret_access_key)
     <<-EOS
       AWS_ACCESS_KEY_ID: #{session[:access_key_id]}<br>
       AWS_SECRET_ACCESS_KEY: #{session[:secret_access_key]}

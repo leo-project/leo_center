@@ -26,7 +26,8 @@ class LeoTamer
 
     delete "/delete_user" do
       user_id = required_params(:user_id)
-      halt 500, "You can't delete yourself" if user_id == session[:user_id]
+      user_self_ = required_sessions(:user_id)
+      halt 500, "You can't modify your own role" if user_id == user_self
       begin
         @@manager.delete_user(user_id)
       rescue => ex
@@ -37,7 +38,8 @@ class LeoTamer
 
     post "/update_user" do
       user_id, role_id = required_params(:user_id, :role_id)
-      halt 500, "You can't modify your own role" if user_id == session[:user_id]
+      user_self_ = required_sessions(:user_id)
+      halt 500, "You can't modify your own role" if user_id == user_self
       role_id = Integer(role_id)
       begin
         @@manager.update_user_role(user_id, role_id)
