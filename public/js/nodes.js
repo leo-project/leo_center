@@ -10,7 +10,7 @@
     title: "Node Status",
     id: "nodes_panel",
     layout: "border",
-    reload_interval: 10000,
+    reload_interval: 30000,
 
     select_first_row: function() {
       var self = this;
@@ -40,7 +40,6 @@
     command_store: Ext.create("Ext.data.Store", {
       fields: [ "command" ],
       data: [
-        { command: "none" },
         { command: "resume" },
         { command: "suspend" },
         { command: "detach" }
@@ -124,38 +123,42 @@
       return "<img class='status' src='" + src + "'> " + val;
     },
 
-    grid_grouping: Ext.create('Ext.grid.feature.Grouping', {
+    grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
       groupHeaderTpl: '{name} ({rows.length} node{[values.rows.length > 1 ? "s" : ""]})',
       hideGroupedHeader: true
     }),
 
-    on_grid_select: function(self, record) {
-      var name, status;
-      var name_line, status_line;
+    rewrite_status_body: function(self, node_stat) {
+      var name = node_stat.node;
+      var status = node_stat.status;
 
-      name = record.data.node;
-      status = record.data.status;
       self.status_panel.setTitle("status of " + name);
-      name_line = "Node Name: " + record.data.node;
-      status_line = "Status: " + self.status_renderer(record.data.status);
+      name_line = "Node Name: " + name;
+      status_line = "Status: " + self.status_renderer(status);
       self.status_body.update(name_line + "<br>" + status_line);
+
+      var change_status_button = Ext.getCmp("change_status_button");
+
+      if (node_stat.type == "Gateway") {
+         change_status_button.hide();
+      }
+      else {
+         change_status_button.show();
+      }
+    },
+
+    on_grid_select: function(self, record) {
+      var node_stat = record.data;
+
+      self.rewrite_status_body(self, node_stat);
+
       self.detail_store.load({ 
         params: { 
-          node: name,
-          type: record.data.type
+          node: node_stat.node,
+          type: node_stat.type
         }
       });
     },
-
-    status_body: Ext.create("Ext.Panel", {
-      id: "node_status",
-      border: false,
-      padding: 5,
-      buttons: [{
-        text: "Change Status",
-        handler: self.send_command
-      }]
-    }),
 
     initComponent: function() {
       var self = this;
@@ -184,8 +187,7 @@
             text: "Apply",
             handler: function() {
               var command = command_combo.getValue();
-              if (command != "none")
-                self.confirm_send_command(node.node, command);
+              self.confirm_send_command(node.node, command);
               command_select_window.close();
             }
           }, {
@@ -196,6 +198,18 @@
           }]
         }).show();
       };
+    
+      self.status_body = Ext.create("Ext.Panel", {
+        id: "node_status",
+        border: false,
+        padding: 5,
+        buttons: [{
+          xtype: "button",
+          id: "change_status_button",
+          text: "Change Status",
+          handler: self.send_command
+        }]
+      });
 
       self.status_panel = Ext.create("Ext.Panel", {
         title: "status",
