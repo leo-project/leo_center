@@ -17,6 +17,7 @@ class LeoTamer < Sinatra::Base
   set :show_exceptions, environment == :test
 
   register Sinatra::Namespace
+  helpers TamerHelpers
   use Rack::Session::Cookie,
     key: "leotamer_session",
     secret: "CHANGE ME"
@@ -43,8 +44,6 @@ class LeoTamer < Sinatra::Base
       end
     end
   end
-
-  helpers TamerHelpers
 
   error do
     ex = env['sinatra.error'] # Exception
