@@ -1,6 +1,6 @@
 (function() {
-  Ext.define('LeoTamer.model.Endpoints', {
-    extend: 'Ext.data.Model',
+  Ext.define("LeoTamer.model.Endpoints", {
+    extend: "Ext.data.Model",
     fields: ["endpoint", "created_at"]
   });
 
@@ -24,11 +24,11 @@
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Endpoints",
       proxy: {
-        type: 'ajax',
-        url: 'endpoints/list.json',
+        type: "ajax",
+        url: "endpoints/list.json",
         reader: {
-          type: 'json',
-          root: 'data'
+          type: "json",
+          root: "data"
         },
         // disable unused params
         noCache: false,
