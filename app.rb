@@ -11,6 +11,12 @@ class LeoTamer < Sinatra::Base
 
   class Error < StandardError; end
 
+  module Role
+    roles = LeoFSManager::Client::USER_ROLES
+    Admin = roles[:admin]
+    Normal = roles[:normal]
+  end
+
   # error handlers don't get along with RSpec
   # disable it when environment is :test
   set :show_exceptions, environment == :test
@@ -22,7 +28,6 @@ class LeoTamer < Sinatra::Base
     secret: "CHANGE ME"
 
   configure :test do
-    p Config
     #TODO: user dummy server
     @@manager = LeoFSManager::Client.new(*Config[:managers])
   end
@@ -79,7 +84,7 @@ class LeoTamer < Sinatra::Base
     end
 
     # not admin user
-    if credential.role_id != 9
+    if credential.role_id != Role::Admin
       halt 200, json_err_msg("You are not authorized. Please contact the administrator.")
     end
 
