@@ -1,6 +1,6 @@
 (function() {
-  Ext.define('LeoTamer.model.Nodes', {
-    extend: 'Ext.data.Model',
+  Ext.define("LeoTamer.model.Nodes", {
+    extend: "Ext.data.Model",
     fields: ["type", "node", "status", "ring_hash_current", "ring_hash_previous", "joined_at"]
   });
 
@@ -124,8 +124,7 @@
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: '{name} ({rows.length} node{[values.rows.length > 1 ? "s" : ""]})',
-      hideGroupedHeader: true
+      groupHeaderTpl: "{name} ({rows.length} node{[values.rows.length > 1 ? 's' : '']})"
     }),
 
     rewrite_status_body: function(self, node_stat) {

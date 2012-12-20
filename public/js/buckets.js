@@ -17,8 +17,8 @@
       }
     },
 
-    grid_grouping: Ext.create('Ext.grid.feature.Grouping', {
-      groupHeaderTpl: '{name} ({rows.length} bucket{[values.rows.length > 1 ? "s" : ""]})'
+    grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
+      groupHeaderTpl: "{name} ({rows.length} bucket{[values.rows.length > 1 ? 's' : '']})"
     }),
 
     load: function() {
