@@ -105,7 +105,7 @@
       var src;
       switch (val) {
         case "running":
-          src = "images/accept.gif";
+          src = "images/running.png";
           break;
         case "stop":
         case "downed":
