@@ -6,7 +6,7 @@ require "leofs_manager_client"
 require_relative "lib/helpers"
 
 class LeoTamer < Sinatra::Base
-  VERSION = "0.2.2"
+  Version = "0.2.2"
   Config = TamerHelpers.load_config
 
   class Error < StandardError; end
