@@ -47,7 +47,7 @@ class LeoTamer
       node_stat = @@manager.status(node).node_stat
 
       result = Nodes::Properties.map do |property|
-        { :name => property, :value => node_stat.__send__(property) }
+        { name: property, value: node_stat.__send__(property) }
       end
 
       if type == "Storage"
@@ -56,11 +56,14 @@ class LeoTamer
         rescue => ex
           warn ex.message
         else
-          result.push({ :name => :total_of_objects, :value => storage_stat.total_of_objects })
+          result.push({
+            name: "total_of_objects",
+            value: storage_stat.total_of_objects 
+          })
         end
       end
 
-      { :data => result }.to_json
+      { data: result }.to_json
     end
 
     post "/execute" do

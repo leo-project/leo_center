@@ -4,7 +4,7 @@ class LeoTamer
       begin
         buckets = @@manager.get_buckets
       rescue RuntimeError => ex
-        return { data: [] }.to_json if ex.message == "Not Found" # empty
+        return { data: [] }.to_json if ex.message == "not found" # empty
         raise ex
       end
 

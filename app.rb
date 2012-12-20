@@ -17,8 +17,6 @@ class LeoTamer < Sinatra::Base
     :key => "leotamer_session",
     :secret => "CHANGE ME"
 
-  JSON_SUCCESS = { success: true }.to_json
-
   configure :test do
     #TODO: user dummy server
     @@manager = LeoFSManager::Client.new(*Config[:managers])
@@ -52,7 +50,7 @@ class LeoTamer < Sinatra::Base
       noexist_params = params_to_check.reject {|param| request_params[param] }
       unless noexist_params.empty?
         noexist_params.map! {|param| "'#{param}'" }
-        raise "parameter #{noexist_params.join(" ")} is required"
+        raise "parameter #{noexist_params.join(" ")} are required"
       end
       if params_to_check.size == 1
         request_params[params_to_check.first]
@@ -71,6 +69,7 @@ class LeoTamer < Sinatra::Base
       end
     end
 
+    # error msg for Ext.form
     def json_err_msg(msg)
       { 
         success: false,
@@ -82,8 +81,12 @@ class LeoTamer < Sinatra::Base
   end
 
   error do
-    ex = env['sinatra.error']
+    ex = env['sinatra.error'] # Exception
     return 500, ex.message
+  end
+
+  after "*.json" do
+    p response
   end
 
   get "/" do
@@ -95,9 +98,9 @@ class LeoTamer < Sinatra::Base
     begin
       credential = @@manager.create_user(user_id, password)
     rescue RuntimeError => ex
-      raise json_err_msg(ex.message)
+      halt 200, json_err_msg(ex.message)
     end
-    JSON_SUCCESS
+    { success: true }.to_json
   end
 
   get "/login" do
@@ -111,20 +114,21 @@ class LeoTamer < Sinatra::Base
     begin
       credential = @@manager.login(user_id, password)
     rescue RuntimeError
-      raise json_err_msg("Invalid User ID or Password.")
+      halt 200, json_err_msg("Invalid User ID or Password.")
     end
 
     # not admin user
     if credential.role_id != 9
-      raise json_err_msg("You are not authorized. Please contact the administrator.")
+      halt 200, json_err_msg("You are not authorized. Please contact the administrator.")
     end
 
     session[:user_id] = user_id
     session[:role_id] = credential.role_id
     session[:access_key_id] = credential.access_key_id
     session[:secret_access_key] = credential.secret_key
-    response.set_cookie("user_id", user_id) # used in ExtJS
-    JSON_SUCCESS
+    response.set_cookie("user_id", user_id) # raw cookie to use in ExtJS
+    
+    { success: true }.to_json
   end
 
   get "/logout" do
