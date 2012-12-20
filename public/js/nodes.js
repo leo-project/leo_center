@@ -280,6 +280,7 @@
         },
         columns: [
           {
+            text: "Type",
             dataIndex: "type"
           }, {
             text: "Node",
