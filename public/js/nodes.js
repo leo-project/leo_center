@@ -224,6 +224,7 @@
             border: false,
             forceFit: true,
             hideHeaders: true,
+            store: self.detail_store,
             columns: [
               {
                 dataIndex: "name",
@@ -233,7 +234,11 @@
                 text: "Value"
               }
             ],
-            store: self.detail_store
+            listeners: {
+              beforeselect: function() {
+                return false; // disable row select
+              }
+            }
           }
         ]
       });
