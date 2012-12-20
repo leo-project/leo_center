@@ -109,7 +109,8 @@
           break;
         case "stop":
         case "downed":
-          src = "images/error.png";
+        case "detached":
+          src = "images/downed.png";
           break;
         case "attached":
           src = "images/add.png";
