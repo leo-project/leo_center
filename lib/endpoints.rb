@@ -2,11 +2,11 @@ class LeoTamer
   namespace "/endpoints" do
     get "/list.json" do
       data = @@manager.get_endpoints.map do |endpoint|
-        { :endpoint => endpoint.endpoint,
-          :created_at => endpoint.created_at }
+        { endpoint: endpoint.endpoint,
+          created_at: endpoint.created_at }
       end
 
-      { :data => data }.to_json
+      { data: data }.to_json
     end
 
     post "/add_endpoint" do

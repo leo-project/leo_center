@@ -17,8 +17,8 @@ class LeoTamer < Sinatra::Base
 
   register Sinatra::Namespace
   use Rack::Session::Cookie,
-    :key => "leotamer_session",
-    :secret => "CHANGE ME"
+    key: "leotamer_session",
+    secret: "CHANGE ME"
 
   configure :test do
     #TODO: user dummy server
@@ -86,10 +86,6 @@ class LeoTamer < Sinatra::Base
   error do
     ex = env['sinatra.error'] # Exception
     return 500, ex.message
-  end
-
-  after "*.json" do
-    p response
   end
 
   get "/" do

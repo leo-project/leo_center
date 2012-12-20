@@ -10,9 +10,9 @@ class LeoTamer
 
       result = buckets.map do |bucket|
         { 
-          :name => bucket.name,
-          :owner => bucket.owner,
-          :created_at => bucket.created_at
+          name: bucket.name,
+          owner: bucket.owner,
+          created_at: bucket.created_at
         }
       end
 

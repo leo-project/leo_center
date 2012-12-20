@@ -4,10 +4,10 @@ class LeoTamer
       keys = @@manager.get_users
       result = keys.map do |user|
         {
-          :user_id => user.user_id,
-          :role => user.role.to_s,
-          :access_key_id => user.access_key_id,
-          :created_at => user.created_at
+          user_id: user.user_id,
+          role: user.role.to_s,
+          access_key_id: user.access_key_id,
+          created_at: user.created_at
         }
       end
 
