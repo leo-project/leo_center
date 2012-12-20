@@ -9,6 +9,17 @@ class LeoTamer < Sinatra::Base
   Version = "0.2.2"
   Config = TamerHelpers.load_config
 
+  use Rack::Session::Cookie,
+    key: "leotamer_session",
+    secret: "CHANGE ME"
+
+  register Sinatra::Namespace
+  helpers TamerHelpers
+
+  # error handlers don't get along with RSpec
+  # disable it when environment is :test
+  set :show_exceptions, environment == :test
+
   class Error < StandardError; end
 
   module Role
@@ -16,16 +27,6 @@ class LeoTamer < Sinatra::Base
     Admin = roles[:admin]
     Normal = roles[:normal]
   end
-
-  # error handlers don't get along with RSpec
-  # disable it when environment is :test
-  set :show_exceptions, environment == :test
-
-  register Sinatra::Namespace
-  helpers TamerHelpers
-  use Rack::Session::Cookie,
-    key: "leotamer_session",
-    secret: "CHANGE ME"
 
   configure :test do
     #TODO: user dummy server
