@@ -143,8 +143,8 @@ class LeoTamer < Sinatra::Base
     EOS
   end
 
-  get "/*.html" do |temp|
-    haml temp.to_sym
+  get "/*.html" do |haml_name|
+    haml haml_name
   end
 end
 

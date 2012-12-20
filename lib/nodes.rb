@@ -19,7 +19,7 @@ class LeoTamer
         when "G"
           type = "Gateway"
         else
-          raise Error, "invalid node type: #{node.type}"
+          raise Error, "unknown node type: #{node.type}"
         end
 
         {
