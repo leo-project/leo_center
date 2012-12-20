@@ -11,7 +11,10 @@ class LeoTamer < Sinatra::Base
 
   class Error < StandardError; end
 
-  set :show_exceptions, false
+  # error handlers don't get along with RSpec
+  # disable it when environment is :test
+  set :show_exceptions, environment == :test
+
   register Sinatra::Namespace
   use Rack::Session::Cookie,
     :key => "leotamer_session",
