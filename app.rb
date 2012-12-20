@@ -7,8 +7,7 @@ require_relative "lib/helpers"
 
 class LeoTamer < Sinatra::Base
   VERSION = "0.2.2"
-
-  require_relative "lib/config"
+  Config = TamerHelpers.load_config
 
   class Error < StandardError; end
 
@@ -23,6 +22,7 @@ class LeoTamer < Sinatra::Base
     secret: "CHANGE ME"
 
   configure :test do
+    p Config
     #TODO: user dummy server
     @@manager = LeoFSManager::Client.new(*Config[:managers])
   end

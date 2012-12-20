@@ -1,3 +1,6 @@
+require "json"
+require "yaml"
+
 module TamerHelpers
   def debug(str)
     puts str if $DEBUG
@@ -35,5 +38,13 @@ module TamerHelpers
         reason: msg
       }
     }.to_json
+  end
+
+  module_function
+
+  def load_config
+    source_dir = File.expand_path(File.dirname(__FILE__))
+    config_file = "#{source_dir}/../config.yml"
+    YAML.load(File.read(config_file))
   end
 end
