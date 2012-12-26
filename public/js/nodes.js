@@ -293,7 +293,7 @@
           groupParam: undefined,
           listeners: {
             exception: function(store, response, operation) {
-              alert("Error on: \'" + store.url + "\'\n" + response.responseText);
+              Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
             }
           }
         }
