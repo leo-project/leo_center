@@ -63,7 +63,7 @@
         startParam: undefined,
         listeners: {
           exception: function(self, response, operation) {
-            alert("Error on: \'" + self.url + "\'\n" + response.responseText);
+            Ext.Msg.alert("Error on: \'" + self.url + "\'", response.responseText);
           }
         }
       }
