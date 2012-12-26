@@ -160,6 +160,23 @@
       });
     },
 
+    available_command_filter: function(status, command) {
+      console.log(status, command);
+      switch (status) {
+        case "running":
+          if (command === "suspend") return true;
+          if (command === "detach") return true;
+          return false;
+        case "suspend":
+        case "restarted":
+          if (command === "resume") return true;
+          return false;
+        case "stop":
+          if (command === "detach") return true;
+          return false;
+      }
+    },
+
     initComponent: function() {
       var self = this;
 
@@ -180,6 +197,12 @@
           editable: false
         });
 
+        self.command_store.filter({
+          filterFn: function(record) {
+            return self.available_command_filter(node.status, record.data.command);
+          }
+        });
+
         command_select_window = Ext.create('Ext.window.Window', {
           title: node.node,
           items: command_combo,
@@ -195,7 +218,12 @@
             handler: function() {
               command_select_window.close();
             }
-          }]
+          }],
+          listeners: {
+            close: function() {
+              self.command_store.clearFilter();
+            }
+          }
         }).show();
       };
     
