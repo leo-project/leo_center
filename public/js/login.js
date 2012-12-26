@@ -89,6 +89,11 @@
               login_form.getForm().reset();
             }
           });
+        },
+        listeners: {
+          render: function() {
+            this.focus(false, 200);
+          }
         }
       }]
     });
