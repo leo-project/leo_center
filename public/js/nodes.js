@@ -112,6 +112,7 @@
         case "detached":
           src = "images/downed.png";
           break;
+        case "restarted":
         case "attached":
           src = "images/add.png";
           break;
