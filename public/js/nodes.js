@@ -138,7 +138,6 @@
       var name = node_stat.node;
       var status = node_stat.status;
 
-      self.status_panel.setTitle("status of " + name);
       self.status_body.update(self.get_status_icon(status) + " " + name);
 
       var change_status_button = Ext.getCmp("change_status_button");
@@ -244,7 +243,7 @@
       });
 
       self.status_panel = Ext.create("Ext.Panel", {
-        title: "status",
+        title: "status / node name",
         region: "east",
         width: 300,
         resizable: false,
