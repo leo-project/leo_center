@@ -91,7 +91,7 @@ class LeoTamer < Sinatra::Base
 
     session[:user_id] = user_id
     session[:role_id] = credential.role_id
-    session[:access_key_id] = credential.access_key_id
+    session[:access_key_id] = credential.access_key_id # used in buckets/add_bucket
     session[:secret_access_key] = credential.secret_key
     response.set_cookie("user_id", user_id) # raw cookie to use in ExtJS
     
