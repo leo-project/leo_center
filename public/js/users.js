@@ -253,7 +253,7 @@
             {
               header: "Role",
               dataIndex: "role",
-              width: 15,
+              width: 20,
               renderer: self.role_renderer
             },
             {
