@@ -1,8 +1,10 @@
 (function() {
+  /*
   Highcharts.setOptions({
     credits: { enabled: false },
     global: { useUTC: false }
   });
+  */
 
   Ext.onReady(function() {
     var node_status, admin, tabs, viewport;
