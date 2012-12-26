@@ -1,6 +1,27 @@
+// ======================================================================
+//
+//  Leo Tamer
+//
+//  Copyright (c) 2012 Rakuten, Inc.
+//
+//  This file is provided to you under the Apache License,
+//  Version 2.0 (the "License"); you may not use this file
+//  except in compliance with the License.  You may obtain
+//  a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing,
+//  software distributed under the License is distributed on an
+//  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+//  KIND, either express or implied.  See the License for the
+//  specific language governing permissions and limitations
+//  under the License.
+//
+// ======================================================================
 (function() {
-  Ext.define('LeoTamer.model.Endpoints', {
-    extend: 'Ext.data.Model',
+  Ext.define("LeoTamer.model.Endpoints", {
+    extend: "Ext.data.Model",
     fields: ["endpoint", "created_at"]
   });
 
@@ -24,11 +45,11 @@
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Endpoints",
       proxy: {
-        type: 'ajax',
-        url: 'endpoints/list.json',
+        type: "ajax",
+        url: "endpoints/list.json",
         reader: {
-          type: 'json',
-          root: 'data'
+          type: "json",
+          root: "data"
         },
         // disable unused params
         noCache: false,
@@ -38,7 +59,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response, operation) {
-            alert("Error on: \'" + store.url + "\'\n" + response.responseText);
+            Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }
@@ -123,14 +144,14 @@
           handler: function() {
             self.add_endpoint(self);
           }
-        }, 
+        },
         {
           text: "Delete Endpoint",
           icon: "images/remove.png",
           handler: function() {
             self.delete_endpoint(self);
           }
-        }, 
+        },
         "->",
         {
           icon: "images/reload.png",
@@ -138,10 +159,13 @@
             self.load();
           }
         }],
-        columns: [
-          { header: "Endpoint", dataIndex: "endpoint", width: 30 },
-          { header: "Created at", dataIndex: "created_at" }
-        ]
+        columns: {
+          defaults: { resizable: false },
+          items: [
+            { header: "Endpoint", dataIndex: "endpoint", width: 30 },
+            { header: "Created at", dataIndex: "created_at" }
+          ]
+        }
       });
 
       Ext.apply(self, {

@@ -1,23 +1,32 @@
-require "sinatra/base"
-require "sinatra/namespace"
 require "json"
 require "haml"
+require "sinatra/base"
+require "sinatra/namespace"
 require "leofs_manager_client"
+require_relative "lib/helpers"
 
 class LeoTamer < Sinatra::Base
-  VERSION = "0.2.2"
+  Version = "0.2.2"
+  Config = TamerHelpers.load_config
 
-  require_relative "lib/config"
+  use Rack::Session::Cookie,
+    key: "leotamer_session",
+    secret: "CHANGE ME"
+
+  register Sinatra::Namespace
+  helpers TamerHelpers
+
+  # error handlers don't get along with RSpec
+  # disable it when environment is :test
+  set :show_exceptions, environment == :test
 
   class Error < StandardError; end
 
-  set :show_exceptions, false
-  register Sinatra::Namespace
-  use Rack::Session::Cookie,
-    :key => "leotamer_session",
-    :secret => "CHANGE ME"
-
-  JSON_SUCCESS = { success: true }.to_json
+  module Role
+    roles = LeoFSManager::Client::USER_ROLES
+    Admin = roles[:admin]
+    Normal = roles[:normal]
+  end
 
   configure :test do
     #TODO: user dummy server
@@ -42,47 +51,8 @@ class LeoTamer < Sinatra::Base
     end
   end
 
-  helpers do
-    def debug(str)
-      puts str if $DEBUG
-    end
-
-    def required_params(*params_to_check)
-      request_params = params
-      noexist_params = params_to_check.reject {|param| request_params[param] }
-      unless noexist_params.empty?
-        noexist_params.map! {|param| "'#{param}'" }
-        raise "parameter #{noexist_params.join(" ")} is required"
-      end
-      if params_to_check.size == 1
-        request_params[params_to_check.first]
-      else
-        params_to_check.map {|param| request_params[param] }
-      end
-    end
-
-    def required_sessions(*keys_to_check)
-      valid = keys_to_check.all? {|key| session.has_key?(key) }
-      raise "invalid session" unless valid
-      if keys_to_check.size == 1
-        session[keys_to_check.first]
-      else
-        keys_to_check.map {|key| session[key] }
-      end
-    end
-
-    def json_err_msg(msg)
-      { 
-        success: false,
-        errors: {
-          reason: msg
-        }
-      }.to_json
-    end
-  end
-
   error do
-    ex = env['sinatra.error']
+    ex = env['sinatra.error'] # Exception
     return 500, ex.message
   end
 
@@ -95,9 +65,9 @@ class LeoTamer < Sinatra::Base
     begin
       credential = @@manager.create_user(user_id, password)
     rescue RuntimeError => ex
-      raise json_err_msg(ex.message)
+      halt 200, json_err_msg(ex.message)
     end
-    JSON_SUCCESS
+    { success: true }.to_json
   end
 
   get "/login" do
@@ -111,20 +81,21 @@ class LeoTamer < Sinatra::Base
     begin
       credential = @@manager.login(user_id, password)
     rescue RuntimeError
-      raise json_err_msg("Invalid User ID or Password.")
+      halt 200, json_err_msg("Invalid User ID or Password.")
     end
 
     # not admin user
-    if credential.role_id != 9
-      raise json_err_msg("You are not authorized. Please contact the administrator.")
+    if credential.role_id != Role::Admin
+      halt 200, json_err_msg("You are not authorized. Please contact the administrator.")
     end
 
     session[:user_id] = user_id
     session[:role_id] = credential.role_id
-    session[:access_key_id] = credential.access_key_id
+    session[:access_key_id] = credential.access_key_id # used in buckets/add_bucket
     session[:secret_access_key] = credential.secret_key
-    response.set_cookie("user_id", user_id) # used in ExtJS
-    JSON_SUCCESS
+    response.set_cookie("user_id", user_id) # raw cookie to use in ExtJS
+    
+    { success: true }.to_json
   end
 
   get "/logout" do
@@ -140,8 +111,8 @@ class LeoTamer < Sinatra::Base
     EOS
   end
 
-  get "/*.html" do |temp|
-    haml temp.to_sym
+  get "/*.html" do |haml_name|
+    haml haml_name
   end
 end
 

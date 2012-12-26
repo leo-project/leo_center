@@ -1,3 +1,24 @@
+// ======================================================================
+//
+//  Leo Tamer
+//
+//  Copyright (c) 2012 Rakuten, Inc.
+//
+//  This file is provided to you under the Apache License,
+//  Version 2.0 (the "License"); you may not use this file
+//  except in compliance with the License.  You may obtain
+//  a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing,
+//  software distributed under the License is distributed on an
+//  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+//  KIND, either express or implied.  See the License for the
+//  specific language governing permissions and limitations
+//  under the License.
+//
+// ======================================================================
 (function() {
   Ext.onReady(function() {
     var sign_up, login_form, login;
@@ -35,6 +56,7 @@
         }],
         buttons: [{
           text: "Sign Up",
+          enableKeyEvents: true,
           handler: function() {
             sign_up_form.submit({
               method: "POST",
@@ -56,40 +78,54 @@
       }).show();
     };
 
+    login_form_submit = function() {
+      login_form.getForm().submit({
+        method: "POST",
+        success: function() {
+          window.location = "/"
+        },
+        failure: function(form, action) {
+          Ext.Msg.alert("Login Faild!", action.result.errors.reason);
+          login_form.getForm().reset();
+        }
+      });
+    };
+
     login_form = Ext.create("Ext.form.Panel", {
       url: "login",
       border: false,
       defaultType: "textfield",
-      padding: 12,
+      padding: "0 12 24",
       defaults: {
-        padding: "10",
+        padding: 5,
         vtype: "alphanum",
         labelWidth: 150,
         labelStyle: "font-size: x-large",
-        allowBlank: false 
+        allowBlank: false
       },
-      items:[{ 
+      items:[{
         fieldLabel:'User ID',
         name: 'user_id',
-      },{ 
+        listeners: {
+          render: function() {
+            this.focus(false, 200);
+          }
+        }
+      },{
         fieldLabel: "Password",
         name: "password",
-        inputType: "password"
+        inputType: "password",
+        listeners: {
+          specialkey: function(form, e) {
+            if (e.getKey() == e.ENTER) {
+              login_form_submit();
+            }
+          }
+        }
       }],
       buttons: [{
         text: "Login",
-        handler: function() {
-          login_form.getForm().submit({
-            method: "POST",
-            success: function() {
-              window.location = "/"
-            },
-            failure: function(form, action) {
-              Ext.Msg.alert("Login Faild!", action.result.errors.reason);
-              login_form.getForm().reset();
-            }
-          });
-        }
+        handler: login_form_submit
       }]
     });
 
@@ -104,12 +140,13 @@
       width: 600,
       draggable: false,
       closable: false,
+      resizable: false,
       items: [
         {
           xtype: "image",
           width: 500,
           height: 174,
-          padding: 12,
+          padding: "12 12 0",
           border: false,
           src: "images/logo_login.png"
         },
@@ -126,7 +163,7 @@
             render: function(component) {
               component.getEl().on('click', function(e) {
                 sign_up();
-              });    
+              });
             }
           }
         }

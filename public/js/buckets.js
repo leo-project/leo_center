@@ -1,3 +1,24 @@
+// ======================================================================
+//
+//  Leo Tamer
+//
+//  Copyright (c) 2012 Rakuten, Inc.
+//
+//  This file is provided to you under the Apache License,
+//  Version 2.0 (the "License"); you may not use this file
+//  except in compliance with the License.  You may obtain
+//  a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing,
+//  software distributed under the License is distributed on an
+//  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+//  KIND, either express or implied.  See the License for the
+//  specific language governing permissions and limitations
+//  under the License.
+//
+// ======================================================================
 (function() {
   Ext.define('LeoTamer.model.Buckets', {
     extend: 'Ext.data.Model',
@@ -17,8 +38,8 @@
       }
     },
 
-    grid_grouping: Ext.create('Ext.grid.feature.Grouping', {
-      groupHeaderTpl: '{name} ({rows.length} bucket{[values.rows.length > 1 ? "s" : ""]})'
+    grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
+      groupHeaderTpl: "{name} ({rows.length} bucket{[values.rows.length > 1 ? 's' : '']})"
     }),
 
     load: function() {
@@ -36,7 +57,7 @@
             method: "POST",
             params: { bucket: value },
             success: function(response, opts) {
-              self.load(); 
+              self.load();
             },
             failure: function(response, opts) {
               Ext.Msg.alert("Error!", response.responseText);
@@ -77,7 +98,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response, operation) {
-            alert("Error on: \'" + store.url + "\'\n" + response.responseText);
+            Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }
@@ -119,48 +140,19 @@
             self.load();
           }
         }],
-        columns: [
-          { 
-            header: "Bucket",
-            dataIndex: "name",
-            width: 30
-            /*
-            summaryRenderer: function(value){
-              return "TOTAL";
-            } */
+        columns: {
+          defaults: {
+            resizable: false
           },
-          /*
-          { 
-            header: "# of files",
-            width: 50,
-            dataIndex: "dummy2",
-            renderer: function(value, _, record, _, _, store, view) {
-              var sum = store.sum("dummy2");
-              return render_progress_bar(value, sum);
+          items: [
+            {
+              header: "Bucket",
+              dataIndex: "name",
+              width: 30
             },
-            summaryType: "sum",
-            summaryRenderer: function(value, _, field) {
-              var sum = bucket_grid.getStore().sum(field);
-              return render_progress_bar(value, sum);
-            }
-          },
-          { 
-            header: "Capacity",
-            width: 50,
-            dataIndex: "dummy",
-            renderer: function(value, _, record, _, _, store, view) {
-              var sum = store.sum("dummy");
-              return render_progress_bar(value, sum);
-            },
-            summaryType: "sum",
-            summaryRenderer: function(value, _, field) {
-              var sum = bucket_grid.getStore().sum(field);
-              return render_progress_bar(value, sum);
-            }
-          },
-          */
-          { header: "Created at", dataIndex: "created_at" }
-        ]
+            { header: "Created at", dataIndex: "created_at" }
+          ]
+        }
       });
 
       Ext.apply(self, {

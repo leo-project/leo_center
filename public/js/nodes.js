@@ -1,6 +1,27 @@
+// ======================================================================
+//
+//  Leo Tamer
+//
+//  Copyright (c) 2012 Rakuten, Inc.
+//
+//  This file is provided to you under the Apache License,
+//  Version 2.0 (the "License"); you may not use this file
+//  except in compliance with the License.  You may obtain
+//  a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing,
+//  software distributed under the License is distributed on an
+//  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+//  KIND, either express or implied.  See the License for the
+//  specific language governing permissions and limitations
+//  under the License.
+//
+// ======================================================================
 (function() {
-  Ext.define('LeoTamer.model.Nodes', {
-    extend: 'Ext.data.Model',
+  Ext.define("LeoTamer.model.Nodes", {
+    extend: "Ext.data.Model",
     fields: ["type", "node", "status", "ring_hash_current", "ring_hash_previous", "joined_at"]
   });
 
@@ -36,7 +57,7 @@
         Ext.TaskManager.stop(self.reloader);
       }
     },
-    
+
     command_store: Ext.create("Ext.data.Store", {
       fields: [ "command" ],
       data: [
@@ -63,12 +84,12 @@
         startParam: undefined,
         listeners: {
           exception: function(self, response, operation) {
-            alert("Error on: \'" + self.url + "\'\n" + response.responseText);
+            Ext.Msg.alert("Error on: \'" + self.url + "\'", response.responseText);
           }
         }
       }
     }),
-    
+
     do_send_command: function(node, command) {
       var self = this;
 
@@ -101,15 +122,16 @@
       });
     },
 
-    status_renderer: function(val) {
+    get_status_icon: function(val) {
       var src;
       switch (val) {
         case "running":
-          src = "images/accept.gif";
+          src = "images/running.png";
           break;
         case "stop":
         case "downed":
-          src = "images/error.png";
+        case "detached":
+          src = "images/downed.png";
           break;
         case "attached":
           src = "images/add.png";
@@ -118,24 +140,26 @@
           src = "images/warn.png";
           break;
         default:
-          throw "invalid status specified.";
+          throw "invalid status specified: " + val;
       }
-      return "<img class='status' src='" + src + "'> " + val;
+      return "<img class='status' src='" + src + "'> ";
+    },
+
+    status_renderer: function(val) {
+      var self = this;
+      var img = self.get_status_icon(val);
+      return img + val;
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: '{name} ({rows.length} node{[values.rows.length > 1 ? "s" : ""]})',
-      hideGroupedHeader: true
+      groupHeaderTpl: "{name} ({rows.length} node{[values.rows.length > 1 ? 's' : '']})"
     }),
 
     rewrite_status_body: function(self, node_stat) {
       var name = node_stat.node;
       var status = node_stat.status;
 
-      self.status_panel.setTitle("status of " + name);
-      name_line = "Node Name: " + name;
-      status_line = "Status: " + self.status_renderer(status);
-      self.status_body.update(name_line + "<br>" + status_line);
+      self.status_body.update(self.get_status_icon(status) + " " + name);
 
       var change_status_button = Ext.getCmp("change_status_button");
 
@@ -152,19 +176,35 @@
 
       self.rewrite_status_body(self, node_stat);
 
-      self.detail_store.load({ 
-        params: { 
+      self.detail_store.load({
+        params: {
           node: node_stat.node,
           type: node_stat.type
         }
       });
     },
 
+    available_command_filter: function(status, command) {
+      switch (status) {
+        case "running":
+          if (command === "suspend") return true;
+          if (command === "detach") return true;
+          return false;
+        case "suspend":
+        case "restarted":
+          if (command === "resume") return true;
+          return false;
+        case "stop":
+          if (command === "detach") return true;
+          return false;
+      }
+    },
+
     initComponent: function() {
       var self = this;
 
       self.send_command = function() {
-        var node, command_combo, command_select_window;  
+        var node, command_combo, command_select_window;
 
         node = self.grid.getSelectionModel().getSelection()[0].data;
 
@@ -178,6 +218,12 @@
           emptyText: "Select Command",
           allowBlank: false,
           editable: false
+        });
+
+        self.command_store.filter({
+          filterFn: function(record) {
+            return self.available_command_filter(node.status, record.data.command);
+          }
         });
 
         command_select_window = Ext.create('Ext.window.Window', {
@@ -195,15 +241,20 @@
             handler: function() {
               command_select_window.close();
             }
-          }]
+          }],
+          listeners: {
+            close: function() {
+              self.command_store.clearFilter();
+            }
+          }
         }).show();
       };
-    
+
       self.status_body = Ext.create("Ext.Panel", {
         id: "node_status",
         border: false,
         padding: 5,
-        height: 70,
+        height: 60,
         buttons: [{
           xtype: "button",
           id: "change_status_button",
@@ -213,7 +264,7 @@
       });
 
       self.status_panel = Ext.create("Ext.Panel", {
-        title: "status",
+        title: "status / node name",
         region: "east",
         width: 300,
         resizable: false,
@@ -225,6 +276,7 @@
             border: false,
             forceFit: true,
             hideHeaders: true,
+            store: self.detail_store,
             columns: [
               {
                 dataIndex: "name",
@@ -234,7 +286,11 @@
                 text: "Value"
               }
             ],
-            store: self.detail_store
+            listeners: {
+              beforeselect: function() {
+                return false; // disable row select
+              }
+            }
           }
         ]
       });
@@ -258,7 +314,7 @@
           groupParam: undefined,
           listeners: {
             exception: function(store, response, operation) {
-              alert("Error on: \'" + store.url + "\'\n" + response.responseText);
+              Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
             }
           }
         }
@@ -273,29 +329,35 @@
         viewConfig: {
           trackOver: false
         },
-        columns: [
-          {
-            dataIndex: "type"
-          }, {
-            text: "Node",
-            dataIndex: 'node',
-            sortable: true
-          }, {
-            text: "Status",
-            dataIndex: 'status',
-            renderer: self.status_renderer,
-            sortable: true
-          }, {
-            text: "Ring (Cur)",
-            dataIndex: 'ring_hash_current'
-          }, {
-            text: "Ring (Prev)",
-            dataIndex: 'ring_hash_previous'
-          }, {
-            text: "Joined At",
-            dataIndex: "joined_at"
-          }
-        ],
+        columns: {
+          defaults: {
+            resizable: false
+          },
+          items: [
+            {
+              text: "Type",
+              dataIndex: "type"
+            }, {
+              text: "Node",
+              dataIndex: 'node',
+              sortable: true
+            }, {
+              text: "Status",
+              dataIndex: 'status',
+              renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
+              sortable: true
+            }, {
+              text: "Ring (Cur)",
+              dataIndex: 'ring_hash_current'
+            }, {
+              text: "Ring (Prev)",
+              dataIndex: 'ring_hash_previous'
+            }, {
+              text: "Joined At",
+              dataIndex: "joined_at"
+            }
+          ]
+        },
         tbar: [
           {
             xtype: "textfield",
