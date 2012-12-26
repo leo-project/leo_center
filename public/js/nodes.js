@@ -1,3 +1,24 @@
+// ======================================================================
+//
+//  Leo Tamer
+//
+//  Copyright (c) 2012 Rakuten, Inc.
+//
+//  This file is provided to you under the Apache License,
+//  Version 2.0 (the "License"); you may not use this file
+//  except in compliance with the License.  You may obtain
+//  a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing,
+//  software distributed under the License is distributed on an
+//  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+//  KIND, either express or implied.  See the License for the
+//  specific language governing permissions and limitations
+//  under the License.
+//
+// ======================================================================
 (function() {
   Ext.define("LeoTamer.model.Nodes", {
     extend: "Ext.data.Model",
@@ -36,7 +57,7 @@
         Ext.TaskManager.stop(self.reloader);
       }
     },
-    
+
     command_store: Ext.create("Ext.data.Store", {
       fields: [ "command" ],
       data: [
@@ -68,7 +89,7 @@
         }
       }
     }),
-    
+
     do_send_command: function(node, command) {
       var self = this;
 
@@ -120,7 +141,7 @@
           break;
         default:
           throw "invalid status specified: " + val;
-      } 
+      }
       return "<img class='status' src='" + src + "'> ";
     },
 
@@ -155,8 +176,8 @@
 
       self.rewrite_status_body(self, node_stat);
 
-      self.detail_store.load({ 
-        params: { 
+      self.detail_store.load({
+        params: {
           node: node_stat.node,
           type: node_stat.type
         }
@@ -183,7 +204,7 @@
       var self = this;
 
       self.send_command = function() {
-        var node, command_combo, command_select_window;  
+        var node, command_combo, command_select_window;
 
         node = self.grid.getSelectionModel().getSelection()[0].data;
 
@@ -228,7 +249,7 @@
           }
         }).show();
       };
-    
+
       self.status_body = Ext.create("Ext.Panel", {
         id: "node_status",
         border: false,
