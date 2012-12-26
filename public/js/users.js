@@ -25,7 +25,7 @@
       fields: ["role", "role_id"],
       data: [
         { role: "admin", role_id: 9 },
-        { role: "normal", role_id: 1 }
+        { role: "general", role_id: 1 }
       ]
     }),
 
@@ -169,7 +169,7 @@
       switch (value) {
         case "admin": 
           return "<img src='images/admin_user.png'> " + value;
-        case "normal":
+        case "general":
           return "<img src='images/user.png'> " + value;
         default:
           throw "invalid value: " + value;
