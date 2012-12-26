@@ -119,48 +119,19 @@
             self.load();
           }
         }],
-        columns: [
-          { 
-            header: "Bucket",
-            dataIndex: "name",
-            width: 30
-            /*
-            summaryRenderer: function(value){
-              return "TOTAL";
-            } */
+        columns: {
+          defaults: {
+            resizable: false
           },
-          /*
-          { 
-            header: "# of files",
-            width: 50,
-            dataIndex: "dummy2",
-            renderer: function(value, _, record, _, _, store, view) {
-              var sum = store.sum("dummy2");
-              return render_progress_bar(value, sum);
+          items: [
+            { 
+              header: "Bucket",
+              dataIndex: "name",
+              width: 30
             },
-            summaryType: "sum",
-            summaryRenderer: function(value, _, field) {
-              var sum = bucket_grid.getStore().sum(field);
-              return render_progress_bar(value, sum);
-            }
-          },
-          { 
-            header: "Capacity",
-            width: 50,
-            dataIndex: "dummy",
-            renderer: function(value, _, record, _, _, store, view) {
-              var sum = store.sum("dummy");
-              return render_progress_bar(value, sum);
-            },
-            summaryType: "sum",
-            summaryRenderer: function(value, _, field) {
-              var sum = bucket_grid.getStore().sum(field);
-              return render_progress_bar(value, sum);
-            }
-          },
-          */
-          { header: "Created at", dataIndex: "created_at" }
-        ]
+            { header: "Created at", dataIndex: "created_at" }
+          ]
+        }
       });
 
       Ext.apply(self, {

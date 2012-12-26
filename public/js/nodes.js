@@ -135,7 +135,7 @@
       self.status_panel.setTitle("status of " + name);
       name_line = "Node Name: " + name;
       status_line = "Status: " + self.status_renderer(status);
-      self.status_body.update(name_line + "<br>" + status_line);
+      self.status_body.update(name + "<br>" + self.status_renderer(status));
 
       var change_status_button = Ext.getCmp("change_status_button");
 
@@ -306,30 +306,35 @@
         viewConfig: {
           trackOver: false
         },
-        columns: [
-          {
-            text: "Type",
-            dataIndex: "type"
-          }, {
-            text: "Node",
-            dataIndex: 'node',
-            sortable: true
-          }, {
-            text: "Status",
-            dataIndex: 'status',
-            renderer: self.status_renderer,
-            sortable: true
-          }, {
-            text: "Ring (Cur)",
-            dataIndex: 'ring_hash_current'
-          }, {
-            text: "Ring (Prev)",
-            dataIndex: 'ring_hash_previous'
-          }, {
-            text: "Joined At",
-            dataIndex: "joined_at"
-          }
-        ],
+        columns: {
+          defaults: {
+            resizable: false
+          },
+          items: [
+            {
+              text: "Type",
+              dataIndex: "type"
+            }, {
+              text: "Node",
+              dataIndex: 'node',
+              sortable: true
+            }, {
+              text: "Status",
+              dataIndex: 'status',
+              renderer: self.status_renderer,
+              sortable: true
+            }, {
+              text: "Ring (Cur)",
+              dataIndex: 'ring_hash_current'
+            }, {
+              text: "Ring (Prev)",
+              dataIndex: 'ring_hash_previous'
+            }, {
+              text: "Joined At",
+              dataIndex: "joined_at"
+            }
+          ]
+        },
         tbar: [
           {
             xtype: "textfield",

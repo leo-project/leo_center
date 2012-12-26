@@ -60,9 +60,9 @@
       url: "login",
       border: false,
       defaultType: "textfield",
-      padding: 12,
+      padding: "0 12 24",
       defaults: {
-        padding: "10",
+        padding: 5,
         vtype: "alphanum",
         labelWidth: 150,
         labelStyle: "font-size: x-large",
@@ -104,12 +104,13 @@
       width: 600,
       draggable: false,
       closable: false,
+      resizable: false,
       items: [
         {
           xtype: "image",
           width: 500,
           height: 174,
-          padding: 12,
+          padding: "12 12 0",
           border: false,
           src: "images/logo_login.png"
         },

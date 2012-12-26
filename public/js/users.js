@@ -224,25 +224,30 @@
             self.load();
           }
         }],
-        columns: [
-          { 
-            header: "Role",
-            dataIndex: "role",
-            width: 15,
-            renderer: self.role_renderer
+        columns: {
+          defaults: {
+            resizable: false
           },
-          { 
-            header: "User ID",
-            dataIndex: "user_id",
-            width: 40
-          },
-          { 
-            header: "Access Key ID",
-            dataIndex: "access_key_id",
-            width: 30
-          },
-          { header: "Created at", dataIndex: "created_at" }
-        ]
+          items: [
+            { 
+              header: "Role",
+              dataIndex: "role",
+              width: 15,
+              renderer: self.role_renderer
+            },
+            { 
+              header: "User ID",
+              dataIndex: "user_id",
+              width: 40
+            },
+            { 
+              header: "Access Key ID",
+              dataIndex: "access_key_id",
+              width: 30
+            },
+            { header: "Created at", dataIndex: "created_at" }
+          ]
+        }
       });
 
       Ext.apply(self, {

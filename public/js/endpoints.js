@@ -138,10 +138,13 @@
             self.load();
           }
         }],
-        columns: [
-          { header: "Endpoint", dataIndex: "endpoint", width: 30 },
-          { header: "Created at", dataIndex: "created_at" }
-        ]
+        columns: {
+          defaults: { resizable: false },
+          items: [
+            { header: "Endpoint", dataIndex: "endpoint", width: 30 },
+            { header: "Created at", dataIndex: "created_at" }
+          ]
+        }
       });
 
       Ext.apply(self, {
