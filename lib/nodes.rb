@@ -43,7 +43,7 @@ class LeoTamer
 
     get "/detail.json" do
       node, type = required_params(:node, :type)
-      
+
       node_stat = @@manager.status(node).node_stat
 
       result = Nodes::Properties.map do |property|

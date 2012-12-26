@@ -324,10 +324,7 @@
             }, {
               text: "Status",
               dataIndex: 'status',
-              renderer: {
-                fn: self.status_renderer,
-                scope: self
-              },
+              renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
               sortable: true
             }, {
               text: "Ring (Cur)",
