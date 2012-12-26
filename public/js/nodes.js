@@ -101,7 +101,7 @@
       });
     },
 
-    status_renderer: function(val) {
+    get_status_icon: function(val) {
       var src;
       switch (val) {
         case "running":
@@ -119,9 +119,15 @@
           src = "images/warn.png";
           break;
         default:
-          throw "invalid status specified.";
-      }
-      return "<img class='status' src='" + src + "'> " + val;
+          throw "invalid status specified: " + val;
+      } 
+      return "<img class='status' src='" + src + "'> ";
+    },
+
+    status_renderer: function(val) {
+      var self = this;
+      var img = self.get_status_icon(val);
+      return img + val;
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
@@ -133,9 +139,7 @@
       var status = node_stat.status;
 
       self.status_panel.setTitle("status of " + name);
-      name_line = "Node Name: " + name;
-      status_line = "Status: " + self.status_renderer(status);
-      self.status_body.update(name + "<br>" + self.status_renderer(status));
+      self.status_body.update(self.get_status_icon(status) + " " + name);
 
       var change_status_button = Ext.getCmp("change_status_button");
 
@@ -161,7 +165,6 @@
     },
 
     available_command_filter: function(status, command) {
-      console.log(status, command);
       switch (status) {
         case "running":
           if (command === "suspend") return true;
@@ -231,7 +234,7 @@
         id: "node_status",
         border: false,
         padding: 5,
-        height: 70,
+        height: 60,
         buttons: [{
           xtype: "button",
           id: "change_status_button",
@@ -321,7 +324,10 @@
             }, {
               text: "Status",
               dataIndex: 'status',
-              renderer: self.status_renderer,
+              renderer: {
+                fn: self.status_renderer,
+                scope: self
+              },
               sortable: true
             }, {
               text: "Ring (Cur)",
