@@ -8,10 +8,31 @@ require_relative "lib/helpers"
 class LeoTamer < Sinatra::Base
   Version = "0.2.2"
   Config = TamerHelpers.load_config
+  SessionKey = "leotamer_session" 
+ 
+  class Error < StandardError; end
 
-  use Rack::Session::Cookie,
-    key: "leotamer_session",
-    secret: "CHANGE ME"
+  session_config = Config[:session]
+  if session_config.has_key?(:local)
+    local_config = session_config[:local]
+    unless local_config.has_key?(:secret)
+      warn "session secret is not configured. please set it in config.yml. now LeoTamer uses random secret."
+    end
+    use Rack::Session::Cookie,
+      key: SessionKey,
+      secret: local_config[:secret] || Random.new.bytes(40)
+  elsif session_config.has_key?(:redis)
+    redis_config = session_config[:redis]
+    unless url = redis_config[:url]
+      raise Error, "redis url is required in session config. please set it in config.yml"
+    end
+    require "redis-rack"
+    use Rack::Session::Redis,
+      key: SessionKey,
+      redis_server: url
+  else
+    raise Error, "invalid session config: #{session_config}"
+  end
 
   register Sinatra::Namespace
   helpers TamerHelpers
@@ -19,8 +40,6 @@ class LeoTamer < Sinatra::Base
   # error handlers don't get along with RSpec
   # disable it when environment is :test
   set :show_exceptions, environment == :test
-
-  class Error < StandardError; end
 
   module Role
     roles = LeoFSManager::Client::USER_ROLES
