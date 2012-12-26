@@ -7,28 +7,28 @@
 
     buckets: Ext.create("LeoTamer.Buckets"),
     endpoints: Ext.create("LeoTamer.Endpoints"),
-    credentials: Ext.create("LeoTamer.Users"),
+    users: Ext.create("LeoTamer.Users"),
 
     admin_store: Ext.create("Ext.data.Store", {
       fields: ["name"],
       data: [
-        { name: "Buckets" },
-        { name: "Endpoints" },
         { name: "Users" },
+        { name: "Buckets" },
+        { name: "Endpoints" }
       ]
     }),
 
     set_icon: function(value) {
       var img = undefined;
       switch(value) {
+        case "Users":
+          img = "<img src='images/users.png'> ";
+          break;
         case "Buckets":
           img = "<img src='images/bucket.png'> ";
           break;
         case "Endpoints":
           img = "<img src='images/endpoint.png'> ";
-          break;
-        case "Users":
-          img = "<img src='images/users.png'> ";
           break;
       }
       return img + value;
@@ -65,9 +65,9 @@
         layout: "card",
         activeItem: 0,
         items: [
+          self.users,
           self.buckets,
-          self.endpoints,
-          self.credentials
+          self.endpoints
         ]
       });
 
