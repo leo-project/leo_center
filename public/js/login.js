@@ -35,6 +35,7 @@
         }],
         buttons: [{
           text: "Sign Up",
+          enableKeyEvents: true,
           handler: function() {
             sign_up_form.submit({
               method: "POST",
@@ -56,6 +57,19 @@
       }).show();
     };
 
+    login_form_submit = function() {
+      login_form.getForm().submit({
+        method: "POST",
+        success: function() {
+          window.location = "/"
+        },
+        failure: function(form, action) {
+          Ext.Msg.alert("Login Faild!", action.result.errors.reason);
+          login_form.getForm().reset();
+        }
+      });
+    };
+
     login_form = Ext.create("Ext.form.Panel", {
       url: "login",
       border: false,
@@ -66,7 +80,7 @@
         vtype: "alphanum",
         labelWidth: 150,
         labelStyle: "font-size: x-large",
-        allowBlank: false 
+        allowBlank: false
       },
       items:[{ 
         fieldLabel:'User ID',
@@ -74,27 +88,18 @@
       },{ 
         fieldLabel: "Password",
         name: "password",
-        inputType: "password"
+        inputType: "password",
+        listeners: {
+          specialkey: function(form, e) {
+            if (e.getKey() == e.ENTER) {
+              login_form_submit();
+            }
+          }
+        }
       }],
       buttons: [{
         text: "Login",
-        handler: function() {
-          login_form.getForm().submit({
-            method: "POST",
-            success: function() {
-              window.location = "/"
-            },
-            failure: function(form, action) {
-              Ext.Msg.alert("Login Faild!", action.result.errors.reason);
-              login_form.getForm().reset();
-            }
-          });
-        },
-        listeners: {
-          render: function() {
-            this.focus(false, 200);
-          }
-        }
+        handler: login_form_submit
       }]
     });
 
