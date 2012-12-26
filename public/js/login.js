@@ -85,6 +85,11 @@
       items:[{ 
         fieldLabel:'User ID',
         name: 'user_id',
+        listeners: {
+          render: function() {
+            this.focus(false, 200);
+          }
+        }
       },{ 
         fieldLabel: "Password",
         name: "password",
