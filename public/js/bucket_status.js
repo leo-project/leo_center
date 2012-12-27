@@ -85,7 +85,7 @@
       groupField: "owner",
       proxy: {
         type: 'ajax',
-        url: 'buckets/list.json',
+        url: 'bucket_status/list.json',
         reader: {
           type: 'json',
           root: 'data'

@@ -20,7 +20,7 @@
 #
 # ======================================================================
 class LeoTamer
-  namespace "/buckets" do
+  namespace "/bucket_status" do
     get "/list.json" do
       begin
         buckets = @@manager.get_buckets
@@ -28,6 +28,8 @@ class LeoTamer
         return { data: [] }.to_json if ex.message == "not found" # empty
         raise ex
       end
+
+      buckets.select! {|bucket| bucket.owner == session[:user_id] }
 
       result = buckets.map do |bucket|
         {
