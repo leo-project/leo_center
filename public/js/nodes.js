@@ -177,12 +177,17 @@
 
       self.rewrite_status_body(self, node_stat);
 
-      self.detail_store.load({
-        params: {
-          node: node_stat.node,
-          type: node_stat.type
-        }
-      });
+      if (node_stat.status === "stop") {
+        self.detail_store.removeAll();
+      }
+      else {
+        self.detail_store.load({
+          params: {
+            node: node_stat.node,
+            type: node_stat.type
+          }
+        });
+      }
     },
 
     available_command_filter: function(status, command) {
