@@ -89,7 +89,7 @@
       Ext.Msg.prompt(title, msg, function(btn, value) {
         if (btn == "ok") {
           Ext.Ajax.request({
-            url: "user_group/add",
+            url: "user_group/add_group",
             method: "POST",
             params: { group: value },
             success: function(response, opts) {
