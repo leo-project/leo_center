@@ -41,6 +41,11 @@
       groupHeaderTpl: "{name} ({rows.length} user{[values.rows.length > 1 ? 's' : '']})"
     }),
 
+    selection_model: Ext.create("Ext.selection.CheckboxModel", {
+      checkOnly: true,
+      headerWidth: 4
+    }),
+
     load: function() {
       this.store.load();
     },
@@ -171,6 +176,7 @@
         forceFit: true,
         features: [ self.grid_grouping ],
         store: self.store,
+        selModel: self.selection_model,
         tbar: [{
           xtype: "textfield",
           fieldLabel: "<img src='images/filter.png'> Filter:",
