@@ -22,13 +22,13 @@
 (function() {
   Ext.define('LeoTamer.model.Buckets', {
     extend: 'Ext.data.Model',
-    fields: ["name", "owner", "created_at", "dummy", "dummy2"]
+    fields: ["name", "owner", "created_at"]
   });
 
   Ext.define("LeoTamer.Buckets", {
     extend: "Ext.panel.Panel",
     id: "buckets",
-    title: "Bucket Status",
+    title: "Buckets",
     layout: "border",
     border: false,
 

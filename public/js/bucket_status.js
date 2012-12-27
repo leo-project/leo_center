@@ -20,14 +20,14 @@
 //
 // ======================================================================
 (function() {
-  Ext.define('LeoTamer.model.Buckets', {
+  Ext.define('LeoTamer.model.BucketStatus', {
     extend: 'Ext.data.Model',
-    fields: ["name", "owner", "created_at", "dummy", "dummy2"]
+    fields: ["name", "owner", "created_at"]
   });
 
-  Ext.define("LeoTamer.Buckets", {
+  Ext.define("LeoTamer.BucketStatus", {
     extend: "Ext.panel.Panel",
-    id: "buckets",
+    id: "bucket_status",
     title: "Bucket Status",
     layout: "border",
     border: false,
@@ -81,7 +81,7 @@
     },
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Buckets",
+      model: "LeoTamer.model.BucketStatus",
       groupField: "owner",
       proxy: {
         type: 'ajax',

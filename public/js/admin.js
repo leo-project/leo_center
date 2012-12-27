@@ -26,13 +26,15 @@
     title: "Admin",
     layout: "border",
 
-    endpoints: Ext.create("LeoTamer.Endpoints"),
     users: Ext.create("LeoTamer.Users"),
+    buckets: Ext.create("LeoTamer.Buckets"),
+    endpoints: Ext.create("LeoTamer.Endpoints"),
 
     admin_store: Ext.create("Ext.data.Store", {
       fields: ["name"],
       data: [
         { name: "Users" },
+        { name: "Buckets" },
         { name: "Endpoints" }
       ]
     }),
@@ -42,6 +44,9 @@
       switch(value) {
         case "Users":
           img = "<img src='images/users.png'> ";
+          break;
+        case "Buckets":
+          img = "<img src='images/bucket.png'> ";
           break;
         case "Endpoints":
           img = "<img src='images/endpoint.png'> ";
@@ -82,6 +87,7 @@
         activeItem: 0,
         items: [
           self.users,
+          self.buckets,
           self.endpoints
         ]
       });

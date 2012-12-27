@@ -31,7 +31,7 @@
     var node_status, bucket_status, admin, tabs, viewport;
     var header, get_credential;
 
-    bucket_status = Ext.create("LeoTamer.Buckets");
+    bucket_status = Ext.create("LeoTamer.BucketStatus");
     user_group = Ext.create("LeoTamer.UserGroup");
 
     // items for only administrator
