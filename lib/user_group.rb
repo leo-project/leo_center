@@ -29,6 +29,8 @@ class LeoTamer
     get "/list.json" do
       users = @@manager.get_users
 
+      #TODO: filter user own group
+
       result = users.map do |user|
         {
           user_id: user.user_id,

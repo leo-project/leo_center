@@ -45,14 +45,6 @@
       this.store.load();
     },
 
-    role_store: Ext.create("Ext.data.Store", {
-      fields: ["role", "role_id"],
-      data: [
-        { role: "admin", role_id: 9 },
-        { role: "general", role_id: 1 }
-      ]
-    }),
-
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.UserGroup",
       groupField: "group",
@@ -100,7 +92,7 @@
 
     update_user_group: function() {
       // TODO
-    }
+    },
 
     delete_user_group: function() {
       var self = this;
