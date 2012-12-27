@@ -30,7 +30,6 @@
     id: "users",
     title: "User Group",
     layout: "border",
-    border: false,
 
     listeners: {
       activate: function(self) {
@@ -202,7 +201,6 @@
 
       self.grid = Ext.create("Ext.grid.Panel", {
         region: "center",
-        border: false,
         forceFit: true,
         store: self.store,
         tbar: [{
