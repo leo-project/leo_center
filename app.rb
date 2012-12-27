@@ -84,13 +84,6 @@ class LeoTamer < Sinatra::Base
       halt 200, json_err_msg("Invalid User ID or Password.")
     end
 
-=begin
-    # not admin user
-    if credential.role_id != Role::Admin
-      halt 200, json_err_msg("You are not authorized. Please contact the administrator.")
-    end
-=end
-
     admin = credential.role_id == Role::Admin # boola
     group = ["hoge", "fuga"].sample #XXX: FAKE
     session[:admin] = admin
