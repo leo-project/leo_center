@@ -22,7 +22,7 @@
 class LeoTamer
   namespace "/endpoints" do
     before do
-      halt 401 unless session[:admin]
+      check_admin
     end
 
     get "/list.json" do

@@ -22,6 +22,8 @@
 class LeoTamer
   namespace "/buckets" do
     get "/list.json" do
+      check_admin
+
       begin
         buckets = @@manager.get_buckets
       rescue RuntimeError => ex
