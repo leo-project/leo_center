@@ -27,7 +27,7 @@
 
   Ext.define("LeoTamer.UserGroup", {
     extend: "Ext.panel.Panel",
-    id: "users",
+    id: "user_group",
     title: "User Group",
     layout: "border",
 
