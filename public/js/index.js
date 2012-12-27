@@ -28,18 +28,18 @@
   */
 
   Ext.onReady(function() {
-    var node_status, admin, tabs, viewport;
+    var node_status, bucket_status, admin, tabs, viewport;
     var header, get_credential;
 
     node_status = Ext.create("LeoTamer.Nodes");
-
+    bucket_status = Ext.create("LeoTamer.Buckets"),
     admin = Ext.create("LeoTamer.Admin");
 
     tabs = Ext.create("Ext.TabPanel", {
       region: "center",
       activeTab: 0,
       defaults: { bodyPadding: 5 },
-      items: [node_status, admin]
+      items: [bucket_status, node_status, admin]
     });
 
     get_credential = function() {

@@ -322,7 +322,6 @@
       });
 
       self.grid = Ext.create("Ext.grid.Panel", {
-        title: 'Nodes',
         store: self.store,
         region: "center",
         forceFit: true,

@@ -28,7 +28,7 @@
   Ext.define("LeoTamer.Buckets", {
     extend: "Ext.panel.Panel",
     id: "buckets",
-    title: "Buckets",
+    title: "Bucket Status",
     layout: "border",
     border: false,
 
@@ -109,7 +109,6 @@
 
       self.grid = Ext.create("Ext.grid.Panel", {
         region: "center",
-        border: false,
         forceFit: true,
         features: [ self.grid_grouping ],
         store: self.store,
