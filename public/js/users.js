@@ -218,6 +218,7 @@
           }
         },
         "-",
+        /*
         {
           text: "Add User",
           icon: "images/add.png",
@@ -225,6 +226,7 @@
             self.add_user();
           }
         },
+        */
         {
           text: "Delete User",
           icon: "images/remove.png",
