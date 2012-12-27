@@ -77,6 +77,37 @@
       }
     }),
 
+    add_user_group: function() {
+      var self = this;
+      var title = "Add New User Group";
+      var msg = "Please input group name"
+      Ext.Msg.prompt(title, msg, function(btn, value) {
+        if (btn == "ok") {
+          Ext.Ajax.request({
+            url: "user_group/add",
+            method: "POST",
+            params: { group: value },
+            success: function(response, opts) {
+              self.load();
+            },
+            failure: function(response, opts) {
+              Ext.Msg.alert("Error!", response.responseText);
+            }
+          })
+        }
+      })
+    },
+
+    update_user_group: function() {
+      // TODO
+    }
+
+    delete_user_group: function() {
+      var self = this;
+      var title = "Delete User Group";
+      // TODO
+    },
+
     add_user: function() {
       var self = this;
       var title = "Add New User";
@@ -129,67 +160,6 @@
       }
     },
 
-    do_update_user: function(user_id, role_id) {
-      var self = this;
-      Ext.Ajax.request({
-        url: "users/update_user",
-        method: "POST",
-        params: {
-          user_id: user_id,
-          role_id: role_id
-        },
-        success: function(response) {
-          self.load();
-        },
-        failure: function(response, opts) {
-          Ext.Msg.alert("Error!", response.responseText);
-        }
-      });
-    },
-
-    update_user: function() {
-      var self = this;
-      var last_selected = self.grid.getSelectionModel().getLastSelected();
-      if (!last_selected) {
-        Ext.Msg.alert("Error!", "Please select a user.");
-      }
-      else {
-        var user_id = last_selected.data.user_id;
-        var role_combo, role_select_window;
-
-        role_combo = Ext.create("Ext.form.ComboBox", {
-          padding: 10,
-          store: self.role_store,
-          labelWidth: 125,
-          fieldLabel: "Select Role",
-          displayField: "role",
-          valueField: "role_id",
-          emptyText: "Select Role",
-          allowBlank: false,
-          editable: false
-        });
-
-        role_select_window = Ext.create('Ext.window.Window', {
-          title: "Update User Role",
-          items: role_combo,
-          buttons: [{
-            text: "Apply",
-            handler: function() {
-              var role_id = role_combo.getValue();
-              if (role_id != "none")
-                self.do_update_user(user_id, role_id);
-              role_select_window.close();
-            }
-          }, {
-            text: "Cancel",
-            handler: function() {
-              role_select_window.close();
-            }
-          }]
-        }).show();
-      }
-    },
-
     role_renderer: function(value) {
       switch (value) {
         case "admin":
@@ -225,21 +195,21 @@
           text: "Add Group",
           icon: "images/add.png",
           handler: function() {
-            self.delete_user();
+            self.add_user_group();
           }
         },
         {
           text: "Update Group",
           icon: "images/update_user.png",
           handler: function() {
-            self.update_user();
+            // TODO
           }
         },
         {
           text: "Delete Group",
           icon: "images/remove.png",
           handler: function() {
-            self.delete_user();
+            // TODO
           }
         }, 
         "-",
@@ -248,6 +218,13 @@
           icon: "images/add.png",
           handler: function() {
             self.add_user();
+          }
+        },
+        {
+          text: "Delete User",
+          icon: "images/remove.png",
+          handler: function() {
+            self.delete_user();
           }
         },
         "->",

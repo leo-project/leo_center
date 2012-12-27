@@ -41,12 +41,5 @@ class LeoTamer
 
       { data: result }.to_json
     end
-
-    post "/add_bucket" do
-      bucket_name = required_params(:bucket)
-      access_key = required_sessions(:access_key_id)
-      @@manager.add_bucket(bucket_name, access_key)
-      200
-    end
   end
 end

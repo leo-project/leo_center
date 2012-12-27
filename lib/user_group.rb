@@ -28,6 +28,7 @@ class LeoTamer
 =end
     get "/list.json" do
       users = @@manager.get_users
+
       result = users.map do |user|
         {
           user_id: user.user_id,
@@ -41,13 +42,16 @@ class LeoTamer
       { data: result }.to_json
     end
 
-    post "/add_user_group" do
+    post "/add" do
+      group = required_params(:group)
     end
 
-    post "/update_user_group" do
+    post "/update" do
+      group = required_params(:group)
     end
 
-    delete "/delete_user_group" do
+    delete "/delete" do
+      group = required_params(:group)
     end
   end
 end

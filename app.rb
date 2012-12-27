@@ -91,9 +91,11 @@ class LeoTamer < Sinatra::Base
     end
 =end
 
-    admin = credential.role_id == Role::Admin # bool
+    admin = credential.role_id == Role::Admin # boola
+    group = ["hoge", "fuga"].sample #XXX: FAKE
     session[:admin] = admin
     session[:user_id] = user_id
+    session[:group] = group
     session[:access_key_id] = credential.access_key_id # used in buckets/add_bucket
     session[:secret_access_key] = credential.secret_key
 
