@@ -33,7 +33,7 @@
 
     node_status = Ext.create("LeoTamer.Nodes");
     bucket_status = Ext.create("LeoTamer.Buckets");
-    user_group = Ext.create("LeoTamer.Users");
+    user_group = Ext.create("LeoTamer.UserGroup");
     if (Ext.util.Cookies.get("admin") == "true") {
       admin = Ext.create("LeoTamer.Admin");
     }

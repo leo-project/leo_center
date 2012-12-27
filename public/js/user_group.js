@@ -51,7 +51,7 @@
     }),
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Users",
+      model: "LeoTamer.model.UserGroup",
       proxy: {
         type: 'ajax',
         url: 'users/list.json',
