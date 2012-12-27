@@ -32,14 +32,17 @@
     var header, get_credential;
 
     node_status = Ext.create("LeoTamer.Nodes");
-    bucket_status = Ext.create("LeoTamer.Buckets"),
-    admin = Ext.create("LeoTamer.Admin");
+    bucket_status = Ext.create("LeoTamer.Buckets");
+    user_group = Ext.create("LeoTamer.Users");
+    if (Ext.util.Cookies.get("admin") == "true") {
+      admin = Ext.create("LeoTamer.Admin");
+    }
 
     tabs = Ext.create("Ext.TabPanel", {
       region: "center",
       activeTab: 0,
       defaults: { bodyPadding: 5 },
-      items: [bucket_status, node_status, admin]
+      items: [bucket_status, user_group, node_status, admin]
     });
 
     get_credential = function() {

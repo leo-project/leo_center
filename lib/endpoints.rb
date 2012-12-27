@@ -21,6 +21,10 @@
 # ======================================================================
 class LeoTamer
   namespace "/endpoints" do
+    before do
+      halt 401 unless session[:admin]
+    end
+
     get "/list.json" do
       data = @@manager.get_endpoints.map do |endpoint|
         { endpoint: endpoint.endpoint,

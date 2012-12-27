@@ -84,16 +84,22 @@ class LeoTamer < Sinatra::Base
       halt 200, json_err_msg("Invalid User ID or Password.")
     end
 
+=begin
     # not admin user
     if credential.role_id != Role::Admin
       halt 200, json_err_msg("You are not authorized. Please contact the administrator.")
     end
+=end
 
+    admin = credential.role_id == Role::Admin # bool
+    session[:admin] = admin
     session[:user_id] = user_id
-    session[:role_id] = credential.role_id
     session[:access_key_id] = credential.access_key_id # used in buckets/add_bucket
     session[:secret_access_key] = credential.secret_key
-    response.set_cookie("user_id", user_id) # raw cookie to use in ExtJS
+
+    # raw cookie to use in ExtJS
+    response.set_cookie("user_id", user_id) 
+    response.set_cookie("admin", admin)
     
     { success: true }.to_json
   end
