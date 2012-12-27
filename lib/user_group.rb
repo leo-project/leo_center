@@ -44,16 +44,27 @@ class LeoTamer
       { data: result }.to_json
     end
 
-    post "/add" do
+    get "/name_list.json" do
+      %w{hoge fuga}.to_json
+    end
+
+    post "/add_group" do
       group = required_params(:group)
     end
 
-    post "/update" do
+    post "/update_group" do
       group = required_params(:group)
     end
 
-    delete "/delete" do
+    delete "/delete_group" do
       group = required_params(:group)
+    end
+
+    post "/add_user.json" do
+      group, user_id = required_params(:group, :user_id)
+      p group, user_id
+      # TODO
+      { success: true }.to_json
     end
   end
 end

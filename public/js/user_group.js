@@ -50,6 +50,14 @@
       this.store.load();
     },
 
+    role_store: Ext.create("Ext.data.Store", {
+      fields: ["role", "role_id"],
+      data: [
+        { role: "admin", role_id: 9 },
+        { role: "general", role_id: 1 }
+      ]
+    }),
+
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.UserGroup",
       groupField: "group",
@@ -107,25 +115,49 @@
 
     add_user: function() {
       var self = this;
-      var title = "Add New User";
-      var msg = "Please input user name"
-      Ext.Msg.prompt(title, msg, function(btn, value) {
-        if (btn == "ok") {
-          Ext.Ajax.request({
-            url: "users/add_user",
-            method: "POST",
-            params: { user_id: value },
-            success: function(response, opts) {
-              self.load();
-            },
-            failure: function(response, opts) {
-              Ext.Msg.alert("Error!", response.responseText);
-            }
-          })
-        }
-      })
+
+      var form = Ext.create("Ext.form.Panel", {
+        url: "user_group/add_user.json",
+        defaults: {
+          padding: "10",
+          width: 300,
+          vtype: "alphanum",
+          allowBlank: false
+        },
+        items:[{
+          xtype: "combo",
+          fieldLabel: "Group",
+          name: "group"
+        }, {
+          xtype: "textfield",
+          fieldLabel: "User ID",
+          name: "user_id"
+        }],
+        buttons: [{
+          text: "OK",
+          enableKeyEvents: true,
+          handler: function() {
+            form.submit({
+              method: "POST",
+              success: function() {
+                self.load();
+              },
+              failure: function(form, action) {
+                alert("foo");
+                Ext.Msg.alert("Add User Faild!", "reason: " + action.result.errors.reason);
+              }
+            });
+          }
+        }]
+      });
+
+      Ext.create("Ext.Window", {
+        title: "Add New User",
+        items: form
+      }).show();
     },
 
+    // TODO: multiple selection
     delete_user: function() {
       var self = this;
       var title = "Delete User";
@@ -177,6 +209,11 @@
         features: [ self.grid_grouping ],
         store: self.store,
         selModel: self.selection_model,
+        plugins: [
+          Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
+          })
+        ],
         tbar: [{
           xtype: "textfield",
           fieldLabel: "<img src='images/filter.png'> Filter:",
@@ -240,6 +277,17 @@
             {
               header: "Role",
               dataIndex: "role",
+              editor: {
+                xtype: "combo",
+                store: self.role_store,
+                displayField: "role",
+                valueField: "role",
+                mode: "local",
+                triggerAction: "all",
+                lazyRender: true,
+                allowBlank: false,
+                editable: false
+              },
               width: 20,
               renderer: self.role_renderer
             },
