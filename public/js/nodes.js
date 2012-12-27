@@ -265,7 +265,7 @@
       });
 
       self.status_panel = Ext.create("Ext.Panel", {
-        title: "status / node name",
+        title: "Status / Node Name",
         region: "east",
         width: 300,
         resizable: false,
@@ -273,7 +273,7 @@
           self.status_body,
           {
             xtype: 'grid',
-            title: "defail information",
+            title: "Defail Information",
             border: false,
             forceFit: true,
             hideHeaders: true,
