@@ -31,10 +31,12 @@
     var node_status, bucket_status, admin, tabs, viewport;
     var header, get_credential;
 
-    node_status = Ext.create("LeoTamer.Nodes");
     bucket_status = Ext.create("LeoTamer.Buckets");
     user_group = Ext.create("LeoTamer.UserGroup");
+
+    // items for only administrator
     if (Ext.util.Cookies.get("admin") == "true") {
+      node_status = Ext.create("LeoTamer.Nodes");
       admin = Ext.create("LeoTamer.Admin");
     }
 

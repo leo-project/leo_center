@@ -122,7 +122,8 @@ class LeoTamer < Sinatra::Base
   end
 end
 
-require_relative "lib/nodes"
 require_relative "lib/buckets"
+require_relative "lib/user_group"
+require_relative "lib/nodes"
 require_relative "lib/endpoints"
 require_relative "lib/users"

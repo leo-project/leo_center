@@ -22,7 +22,7 @@
 (function() {
   Ext.define('LeoTamer.model.UserGroup', {
     extend: 'Ext.data.Model',
-    fields: ["user_id", "role", "access_key_id", "created_at"]
+    fields: ["user_id", "role", "group", "access_key_id", "created_at"]
   });
 
   Ext.define("LeoTamer.UserGroup", {
@@ -36,6 +36,10 @@
         self.load();
       }
     },
+
+    grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
+      groupHeaderTpl: "{name} ({rows.length} user{[values.rows.length > 1 ? 's' : '']})"
+    }),
 
     load: function() {
       this.store.load();
@@ -51,9 +55,10 @@
 
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.UserGroup",
+      groupField: "group",
       proxy: {
         type: 'ajax',
-        url: 'users/list.json',
+        url: 'user_group/list.json',
         reader: {
           type: 'json',
           root: 'data'
@@ -202,6 +207,7 @@
       self.grid = Ext.create("Ext.grid.Panel", {
         region: "center",
         forceFit: true,
+        features: [ self.grid_grouping ],
         store: self.store,
         tbar: [{
           xtype: "textfield",
@@ -215,27 +221,33 @@
             }
           }
         },
+        {
+          text: "Add Group",
+          icon: "images/add.png",
+          handler: function() {
+            self.delete_user();
+          }
+        },
+        {
+          text: "Update Group",
+          icon: "images/update_user.png",
+          handler: function() {
+            self.update_user();
+          }
+        },
+        {
+          text: "Delete Group",
+          icon: "images/remove.png",
+          handler: function() {
+            self.delete_user();
+          }
+        }, 
         "-",
-        /*
         {
           text: "Add User",
           icon: "images/add.png",
           handler: function() {
             self.add_user();
-          }
-        },
-        */
-        {
-          text: "Delete User",
-          icon: "images/remove.png",
-          handler: function() {
-            self.delete_user();
-          }
-        }, {
-          text: "Update Role",
-          icon: "images/update_user.png",
-          handler: function() {
-            self.update_user();
           }
         },
         "->",

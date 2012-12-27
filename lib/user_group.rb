@@ -27,6 +27,18 @@ class LeoTamer
     end
 =end
     get "/list.json" do
+      users = @@manager.get_users
+      result = users.map do |user|
+        {
+          user_id: user.user_id,
+          role: user.role.to_s,
+          group: ["hoge", "fuga"].sample,
+          access_key_id: user.access_key_id,
+          created_at: user.created_at
+        }
+      end
+
+      { data: result }.to_json
     end
 
     post "/add_user_group" do

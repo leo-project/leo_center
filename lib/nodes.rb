@@ -23,6 +23,10 @@ class LeoTamer
   module Nodes; end;
 
   namespace "/nodes" do
+    before do
+      halt 401 unless session[:admin]
+    end
+
     get "/list.json" do
       {
         data: @@manager.status.node_list.map do |node|
