@@ -23,7 +23,7 @@
   Ext.define("LeoTamer.Admin", {
     extend: "Ext.panel.Panel",
     id: "admin",
-    title: "Admin",
+    title: "Admin Tools",
     layout: "border",
 
     users: Ext.create("LeoTamer.Users"),
