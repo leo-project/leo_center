@@ -28,18 +28,23 @@
   */
 
   Ext.onReady(function() {
-    var node_status, admin, tabs, viewport;
+    var node_status, bucket_status, admin, tabs, viewport;
     var header, get_credential;
 
-    node_status = Ext.create("LeoTamer.Nodes");
+    bucket_status = Ext.create("LeoTamer.BucketStatus");
+    user_group = Ext.create("LeoTamer.UserGroup");
 
-    admin = Ext.create("LeoTamer.Admin");
+    // items for only administrator
+    if (Ext.util.Cookies.get("admin") == "true") {
+      node_status = Ext.create("LeoTamer.Nodes");
+      admin = Ext.create("LeoTamer.Admin");
+    }
 
     tabs = Ext.create("Ext.TabPanel", {
       region: "center",
       activeTab: 0,
       defaults: { bodyPadding: 5 },
-      items: [node_status, admin]
+      items: [bucket_status, node_status, admin]
     });
 
     get_credential = function() {

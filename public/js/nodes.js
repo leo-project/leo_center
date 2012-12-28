@@ -133,6 +133,7 @@
         case "detached":
           src = "images/downed.png";
           break;
+        case "restarted":
         case "attached":
           src = "images/add.png";
           break;
@@ -176,12 +177,17 @@
 
       self.rewrite_status_body(self, node_stat);
 
-      self.detail_store.load({
-        params: {
-          node: node_stat.node,
-          type: node_stat.type
-        }
-      });
+      if (node_stat.status === "stop") {
+        self.detail_store.removeAll();
+      }
+      else {
+        self.detail_store.load({
+          params: {
+            node: node_stat.node,
+            type: node_stat.type
+          }
+        });
+      }
     },
 
     available_command_filter: function(status, command) {
@@ -264,7 +270,7 @@
       });
 
       self.status_panel = Ext.create("Ext.Panel", {
-        title: "status / node name",
+        title: "Node Status/Name",
         region: "east",
         width: 300,
         resizable: false,
@@ -272,7 +278,7 @@
           self.status_body,
           {
             xtype: 'grid',
-            title: "defail information",
+            title: "Config/VM Status",
             border: false,
             forceFit: true,
             hideHeaders: true,
@@ -321,7 +327,6 @@
       });
 
       self.grid = Ext.create("Ext.grid.Panel", {
-        title: 'Nodes',
         store: self.store,
         region: "center",
         forceFit: true,

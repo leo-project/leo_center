@@ -20,31 +20,26 @@
 #
 # ======================================================================
 class LeoTamer
-  namespace "/endpoints" do
-    before do
-      check_admin
-    end
-
+  namespace "/bucket_status" do
     get "/list.json" do
-      data = @@manager.get_endpoints.map do |endpoint|
-        { endpoint: endpoint.endpoint,
-          created_at: endpoint.created_at }
+      begin
+        buckets = @@manager.get_buckets
+      rescue RuntimeError => ex
+        return { data: [] }.to_json if ex.message == "not found" # empty
+        raise ex
       end
 
-      { data: data }.to_json
-    end
+      buckets.select! {|bucket| bucket.owner == session[:user_id] }
 
-    post "/add_endpoint" do
-      endpoint = required_params(:endpoint)
-      @@manager.set_endpoint(endpoint)
-      200
-    end
+      result = buckets.map do |bucket|
+        {
+          name: bucket.name,
+          owner: bucket.owner,
+          created_at: bucket.created_at
+        }
+      end
 
-    delete "/delete_endpoint" do
-      endpoint = required_params(:endpoint)
-      raise "You can't delete the last endpoint" if @@manager.get_endpoints.size == 1
-      @@manager.delete_endpoint(endpoint)
-      200
+      { data: result }.to_json
     end
   end
 end

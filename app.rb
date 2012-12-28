@@ -8,10 +8,31 @@ require_relative "lib/helpers"
 class LeoTamer < Sinatra::Base
   Version = "0.2.2"
   Config = TamerHelpers.load_config
+  SessionKey = "leotamer_session" 
+ 
+  class Error < StandardError; end
 
-  use Rack::Session::Cookie,
-    key: "leotamer_session",
-    secret: "CHANGE ME"
+  session_config = Config[:session]
+  if session_config.has_key?(:local)
+    local_config = session_config[:local]
+    unless local_config.has_key?(:secret)
+      warn "session secret is not configured. please set it in config.yml. now LeoTamer uses random secret."
+    end
+    use Rack::Session::Cookie,
+      key: SessionKey,
+      secret: local_config[:secret] || Random.new.bytes(40)
+  elsif session_config.has_key?(:redis)
+    redis_config = session_config[:redis]
+    unless url = redis_config[:url]
+      raise Error, "redis url is required in session config. please set it in config.yml"
+    end
+    require "redis-rack"
+    use Rack::Session::Redis,
+      key: SessionKey,
+      redis_server: url
+  else
+    raise Error, "invalid session config: #{session_config}"
+  end
 
   register Sinatra::Namespace
   helpers TamerHelpers
@@ -19,8 +40,6 @@ class LeoTamer < Sinatra::Base
   # error handlers don't get along with RSpec
   # disable it when environment is :test
   set :show_exceptions, environment == :test
-
-  class Error < StandardError; end
 
   module Role
     roles = LeoFSManager::Client::USER_ROLES
@@ -84,16 +103,17 @@ class LeoTamer < Sinatra::Base
       halt 200, json_err_msg("Invalid User ID or Password.")
     end
 
-    # not admin user
-    if credential.role_id != Role::Admin
-      halt 200, json_err_msg("You are not authorized. Please contact the administrator.")
-    end
-
+    admin = credential.role_id == Role::Admin # boola
+    group = ["hoge", "fuga"].sample #XXX: FAKE
+    session[:admin] = admin
     session[:user_id] = user_id
-    session[:role_id] = credential.role_id
+    session[:group] = group
     session[:access_key_id] = credential.access_key_id # used in buckets/add_bucket
     session[:secret_access_key] = credential.secret_key
-    response.set_cookie("user_id", user_id) # raw cookie to use in ExtJS
+
+    # raw cookie to use in ExtJS
+    response.set_cookie("user_id", user_id) 
+    response.set_cookie("admin", admin)
     
     { success: true }.to_json
   end
@@ -116,7 +136,10 @@ class LeoTamer < Sinatra::Base
   end
 end
 
+require_relative "lib/bucket_status"
+require_relative "lib/user_group"
 require_relative "lib/nodes"
+require_relative "lib/users"
 require_relative "lib/buckets"
 require_relative "lib/endpoints"
-require_relative "lib/users"
+

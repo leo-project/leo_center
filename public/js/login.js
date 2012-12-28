@@ -151,14 +151,13 @@
           src: "images/logo_login.png"
         },
         login_form,
-        /*
         {
           width: "100%",
           bodyStyle: {
             "text-align": "center",
             padding: "10px",
           },
-          html: "you can create a new account: <a href='#'>Sign Up</a>",
+          html: "Have an account? <a href='#'>Sign Up</a>",
           listeners: {
             render: function(component) {
               component.getEl().on('click', function(e) {
@@ -167,7 +166,6 @@
             }
           }
         }
-        */
       ]
     }).show();
   });

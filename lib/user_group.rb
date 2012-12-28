@@ -20,31 +20,51 @@
 #
 # ======================================================================
 class LeoTamer
-  namespace "/endpoints" do
+  namespace "/user_group" do
+=begin
     before do
-      check_admin
+      halt 401 unless session[:admin]
     end
-
+=end
     get "/list.json" do
-      data = @@manager.get_endpoints.map do |endpoint|
-        { endpoint: endpoint.endpoint,
-          created_at: endpoint.created_at }
+      users = @@manager.get_users
+
+      #TODO: filter user own group
+
+      result = users.map do |user|
+        {
+          user_id: user.user_id,
+          role: user.role.to_s,
+          group: ["hoge", "fuga"].sample,
+          access_key_id: user.access_key_id,
+          created_at: user.created_at
+        }
       end
 
-      { data: data }.to_json
+      { data: result }.to_json
     end
 
-    post "/add_endpoint" do
-      endpoint = required_params(:endpoint)
-      @@manager.set_endpoint(endpoint)
-      200
+    get "/name_list.json" do
+      %w{hoge fuga}.to_json
     end
 
-    delete "/delete_endpoint" do
-      endpoint = required_params(:endpoint)
-      raise "You can't delete the last endpoint" if @@manager.get_endpoints.size == 1
-      @@manager.delete_endpoint(endpoint)
-      200
+    post "/add_group" do
+      group = required_params(:group)
+    end
+
+    post "/update_group" do
+      group = required_params(:group)
+    end
+
+    delete "/delete_group" do
+      group = required_params(:group)
+    end
+
+    post "/add_user.json" do
+      group, user_id = required_params(:group, :user_id)
+      p group, user_id
+      # TODO
+      { success: true }.to_json
     end
   end
 end

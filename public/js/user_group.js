@@ -20,23 +20,31 @@
 //
 // ======================================================================
 (function() {
-  Ext.define('LeoTamer.model.Users', {
+  Ext.define('LeoTamer.model.UserGroup', {
     extend: 'Ext.data.Model',
-    fields: ["user_id", "role", "access_key_id", "created_at"]
+    fields: ["user_id", "role", "group", "access_key_id", "created_at"]
   });
 
-  Ext.define("LeoTamer.Users", {
+  Ext.define("LeoTamer.UserGroup", {
     extend: "Ext.panel.Panel",
-    id: "users",
-    title: "Users",
+    id: "user_group",
+    title: "User Group",
     layout: "border",
-    border: false,
 
     listeners: {
       activate: function(self) {
         self.load();
       }
     },
+
+    grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
+      groupHeaderTpl: "{name} ({rows.length} user{[values.rows.length > 1 ? 's' : '']})"
+    }),
+
+    selection_model: Ext.create("Ext.selection.CheckboxModel", {
+      checkOnly: true,
+      headerWidth: 4
+    }),
 
     load: function() {
       this.store.load();
@@ -51,10 +59,11 @@
     }),
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Users",
+      model: "LeoTamer.model.UserGroup",
+      groupField: "group",
       proxy: {
         type: 'ajax',
-        url: 'users/list.json',
+        url: 'user_group/list.json',
         reader: {
           type: 'json',
           root: 'data'
@@ -73,16 +82,16 @@
       }
     }),
 
-    add_user: function() {
+    add_user_group: function() {
       var self = this;
-      var title = "Add New User";
-      var msg = "Please input user name"
+      var title = "Add New User Group";
+      var msg = "Please input group name"
       Ext.Msg.prompt(title, msg, function(btn, value) {
         if (btn == "ok") {
           Ext.Ajax.request({
-            url: "users/add_user",
+            url: "user_group/add_group",
             method: "POST",
-            params: { user_id: value },
+            params: { group: value },
             success: function(response, opts) {
               self.load();
             },
@@ -94,6 +103,61 @@
       })
     },
 
+    update_user_group: function() {
+      // TODO
+    },
+
+    delete_user_group: function() {
+      var self = this;
+      var title = "Delete User Group";
+      // TODO
+    },
+
+    add_user: function() {
+      var self = this;
+
+      var form = Ext.create("Ext.form.Panel", {
+        url: "user_group/add_user.json",
+        defaults: {
+          padding: "10",
+          width: 300,
+          vtype: "alphanum",
+          allowBlank: false
+        },
+        items:[{
+          xtype: "combo",
+          fieldLabel: "Group",
+          name: "group"
+        }, {
+          xtype: "textfield",
+          fieldLabel: "User ID",
+          name: "user_id"
+        }],
+        buttons: [{
+          text: "OK",
+          enableKeyEvents: true,
+          handler: function() {
+            form.submit({
+              method: "POST",
+              success: function() {
+                self.load();
+              },
+              failure: function(form, action) {
+                alert("foo");
+                Ext.Msg.alert("Add User Faild!", "reason: " + action.result.errors.reason);
+              }
+            });
+          }
+        }]
+      });
+
+      Ext.create("Ext.Window", {
+        title: "Add New User",
+        items: form
+      }).show();
+    },
+
+    // TODO: multiple selection
     delete_user: function() {
       var self = this;
       var title = "Delete User";
@@ -125,67 +189,6 @@
       }
     },
 
-    do_update_user: function(user_id, role_id) {
-      var self = this;
-      Ext.Ajax.request({
-        url: "users/update_user",
-        method: "POST",
-        params: {
-          user_id: user_id,
-          role_id: role_id
-        },
-        success: function(response) {
-          self.load();
-        },
-        failure: function(response, opts) {
-          Ext.Msg.alert("Error!", response.responseText);
-        }
-      });
-    },
-
-    update_user: function() {
-      var self = this;
-      var last_selected = self.grid.getSelectionModel().getLastSelected();
-      if (!last_selected) {
-        Ext.Msg.alert("Error!", "Please select a user.");
-      }
-      else {
-        var user_id = last_selected.data.user_id;
-        var role_combo, role_select_window;
-
-        role_combo = Ext.create("Ext.form.ComboBox", {
-          padding: 10,
-          store: self.role_store,
-          labelWidth: 125,
-          fieldLabel: "Select Role",
-          displayField: "role",
-          valueField: "role_id",
-          emptyText: "Select Role",
-          allowBlank: false,
-          editable: false
-        });
-
-        role_select_window = Ext.create('Ext.window.Window', {
-          title: "Update User Role",
-          items: role_combo,
-          buttons: [{
-            text: "Apply",
-            handler: function() {
-              var role_id = role_combo.getValue();
-              if (role_id != "none")
-                self.do_update_user(user_id, role_id);
-              role_select_window.close();
-            }
-          }, {
-            text: "Cancel",
-            handler: function() {
-              role_select_window.close();
-            }
-          }]
-        }).show();
-      }
-    },
-
     role_renderer: function(value) {
       switch (value) {
         case "admin":
@@ -202,9 +205,15 @@
 
       self.grid = Ext.create("Ext.grid.Panel", {
         region: "center",
-        border: false,
         forceFit: true,
+        features: [ self.grid_grouping ],
         store: self.store,
+        selModel: self.selection_model,
+        plugins: [
+          Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1
+          })
+        ],
         tbar: [{
           xtype: "textfield",
           fieldLabel: "<img src='images/filter.png'> Filter:",
@@ -217,8 +226,28 @@
             }
           }
         },
+        {
+          text: "Add Group",
+          icon: "images/add.png",
+          handler: function() {
+            self.add_user_group();
+          }
+        },
+        {
+          text: "Update Group",
+          icon: "images/update_user.png",
+          handler: function() {
+            // TODO
+          }
+        },
+        {
+          text: "Delete Group",
+          icon: "images/remove.png",
+          handler: function() {
+            // TODO
+          }
+        }, 
         "-",
-        /*
         {
           text: "Add User",
           icon: "images/add.png",
@@ -226,18 +255,11 @@
             self.add_user();
           }
         },
-        */
         {
           text: "Delete User",
           icon: "images/remove.png",
           handler: function() {
             self.delete_user();
-          }
-        }, {
-          text: "Update Role",
-          icon: "images/update_user.png",
-          handler: function() {
-            self.update_user();
           }
         },
         "->",
@@ -255,6 +277,17 @@
             {
               header: "Role",
               dataIndex: "role",
+              editor: {
+                xtype: "combo",
+                store: self.role_store,
+                displayField: "role",
+                valueField: "role",
+                mode: "local",
+                triggerAction: "all",
+                lazyRender: true,
+                allowBlank: false,
+                editable: false
+              },
               width: 20,
               renderer: self.role_renderer
             },

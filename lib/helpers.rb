@@ -61,6 +61,10 @@ module TamerHelpers
     }.to_json
   end
 
+  def check_admin
+    halt 401, "this resouce is only for administrators" unless session[:admin]
+  end
+
   module_function
 
   def load_config

@@ -23,12 +23,12 @@
   Ext.define("LeoTamer.Admin", {
     extend: "Ext.panel.Panel",
     id: "admin",
-    title: "Admin",
+    title: "Admin Tools",
     layout: "border",
 
+    users: Ext.create("LeoTamer.Users"),
     buckets: Ext.create("LeoTamer.Buckets"),
     endpoints: Ext.create("LeoTamer.Endpoints"),
-    users: Ext.create("LeoTamer.Users"),
 
     admin_store: Ext.create("Ext.data.Store", {
       fields: ["name"],

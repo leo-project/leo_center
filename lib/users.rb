@@ -21,6 +21,10 @@
 # ======================================================================
 class LeoTamer
   namespace "/users" do
+    before do
+      halt 401 unless session[:admin]
+    end
+
     get "/list.json" do
       keys = @@manager.get_users
       result = keys.map do |user|
