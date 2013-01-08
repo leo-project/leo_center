@@ -340,10 +340,6 @@
           },
           items: [
             {
-              text: "Type",
-              dataIndex: "type",
-              width: 40
-            }, {
               text: "Node",
               dataIndex: 'node',
               sortable: true,
