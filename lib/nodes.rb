@@ -72,7 +72,7 @@ class LeoTamer
       node_stat = @@manager.status(node).node_stat
 
       result = Nodes::Properties.map do |property|
-        { name: property, value: node_stat.__send__(property) }
+        { name: property.to_s.gsub("_", " "), value: node_stat.__send__(property) }
       end
 
       if type == "Storage"
