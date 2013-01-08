@@ -20,7 +20,8 @@ class LeoTamer < Sinatra::Base
     end
     use Rack::Session::Cookie,
       key: SessionKey,
-      secret: local_config[:secret] || Random.new.bytes(40)
+      secret: local_config[:secret] || Random.new.bytes(40),
+      expire_after: local_config[:expire_after] || 300 # 5 minutes in seconds
   elsif session_config.has_key?(:redis)
     redis_config = session_config[:redis]
     unless url = redis_config[:url]
@@ -29,7 +30,8 @@ class LeoTamer < Sinatra::Base
     require "redis-rack"
     use Rack::Session::Redis,
       key: SessionKey,
-      redis_server: url
+      redis_server: url,
+      expire_after: redis_config[:expire_after] || 300 # 5 minutes in seconds
   else
     raise Error, "invalid session config: #{session_config}"
   end
