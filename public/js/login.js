@@ -30,8 +30,9 @@
         defaults: {
           padding: "10",
           width: 300,
-          vtype: "alphanum",
-          allowBlank: false
+          allowBlank: false,
+          validateOnBlur: false,
+          validateOnChange: false,
         },
         items:[{
           fieldLabel: "User ID",
@@ -98,10 +99,11 @@
       padding: "0 12 24",
       defaults: {
         padding: 5,
-        vtype: "alphanum",
         labelWidth: 150,
         labelStyle: "font-size: x-large",
-        allowBlank: false
+        allowBlank: false,
+        validateOnBlur: false,
+        validateOnChange: false,
       },
       items:[{
         fieldLabel:'User ID',
