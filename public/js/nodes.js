@@ -270,7 +270,7 @@
       });
 
       self.status_panel = Ext.create("Ext.Panel", {
-        title: "Status / Node Name",
+        title: "Node Status/Name",
         region: "east",
         width: 300,
         resizable: false,
@@ -278,7 +278,7 @@
           self.status_body,
           {
             xtype: 'grid',
-            title: "Defail Information",
+            title: "Config/VM Status",
             border: false,
             forceFit: true,
             hideHeaders: true,

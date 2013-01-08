@@ -44,7 +44,7 @@
       region: "center",
       activeTab: 0,
       defaults: { bodyPadding: 5 },
-      items: [bucket_status, user_group, node_status, admin]
+      items: [bucket_status, node_status, admin]
     });
 
     get_credential = function() {
