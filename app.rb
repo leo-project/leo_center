@@ -144,4 +144,3 @@ require_relative "lib/nodes"
 require_relative "lib/users"
 require_relative "lib/buckets"
 require_relative "lib/endpoints"
-
