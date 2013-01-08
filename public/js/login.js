@@ -62,7 +62,9 @@
             sign_up_form.submit({
               method: "POST",
               success: function() {
-                window.location = "/"
+                var form = login_form.getForm();
+                form.setValues(sign_up_form.getValues());
+                login_form_submit();
               },
               failure: function(form, action) {
                 Ext.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
