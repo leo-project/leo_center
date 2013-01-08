@@ -36,7 +36,12 @@
         },
         items:[{
           fieldLabel: "User ID",
-          name: "user_id"
+          name: "user_id",
+          listeners: {
+            render: function() {
+              this.focus(false, 200);
+            }
+          }
         }, {
           fieldLabel: "Password",
           id: "sign_up_form_pass",
