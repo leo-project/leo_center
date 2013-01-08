@@ -10,4 +10,4 @@
 #    #:expire_after: 600
   :local:
     :secret: ""
-    :expire_after: 150
+    :expire_after: 300

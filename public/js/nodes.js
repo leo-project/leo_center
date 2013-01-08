@@ -282,6 +282,9 @@
             border: false,
             forceFit: true,
             hideHeaders: true,
+            viewConfig: {
+              loadMask: false
+            },
             store: self.detail_store,
             columns: [
               {
