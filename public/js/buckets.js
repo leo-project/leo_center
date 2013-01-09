@@ -39,7 +39,7 @@
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name} ({rows.length} bucket{[values.rows.length > 1 ? 's' : '']})"
+      groupHeaderTpl: "{name} [{rows.length}]"
     }),
 
     load: function() {
@@ -115,7 +115,7 @@
         tbar: [{
           xtype: "textfield",
           fieldLabel: "<img src='images/filter.png'> Filter:",
-          labelWidth: 50,
+          labelWidth: 60,
           listeners: {
             change: function(text_field, new_value) {
               var store = self.store;

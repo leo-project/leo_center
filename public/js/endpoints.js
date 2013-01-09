@@ -128,7 +128,7 @@
         tbar: [{
           xtype: "textfield",
           fieldLabel: "<img src='images/filter.png'> Filter:",
-          labelWidth: 50,
+          labelWidth: 60,
           listeners: {
             change: function(text_field, new_value) {
               var store = self.store;

@@ -30,12 +30,18 @@
         defaults: {
           padding: "10",
           width: 300,
-          vtype: "alphanum",
-          allowBlank: false
+          allowBlank: false,
+          validateOnBlur: false,
+          validateOnChange: false,
         },
         items:[{
           fieldLabel: "User ID",
-          name: "user_id"
+          name: "user_id",
+          listeners: {
+            render: function() {
+              this.focus(false, 200);
+            }
+          }
         }, {
           fieldLabel: "Password",
           id: "sign_up_form_pass",
@@ -61,7 +67,9 @@
             sign_up_form.submit({
               method: "POST",
               success: function() {
-                window.location = "/"
+                var form = login_form.getForm();
+                form.setValues(sign_up_form.getValues());
+                login_form_submit();
               },
               failure: function(form, action) {
                 Ext.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
@@ -98,10 +106,11 @@
       padding: "0 12 24",
       defaults: {
         padding: 5,
-        vtype: "alphanum",
         labelWidth: 150,
         labelStyle: "font-size: x-large",
-        allowBlank: false
+        allowBlank: false,
+        validateOnBlur: false,
+        validateOnChange: false,
       },
       items:[{
         fieldLabel:'User ID',

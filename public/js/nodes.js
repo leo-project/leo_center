@@ -153,7 +153,7 @@
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name} ({rows.length} node{[values.rows.length > 1 ? 's' : '']})"
+      groupHeaderTpl: "{name} [{rows.length}]"
     }),
 
     rewrite_status_body: function(self, node_stat) {
@@ -282,6 +282,9 @@
             border: false,
             forceFit: true,
             hideHeaders: true,
+            viewConfig: {
+              loadMask: false
+            },
             store: self.detail_store,
             columns: [
               {
@@ -340,23 +343,24 @@
           },
           items: [
             {
-              text: "Type",
-              dataIndex: "type"
-            }, {
               text: "Node",
               dataIndex: 'node',
-              sortable: true
+              sortable: true,
+              width: 150
             }, {
               text: "Status",
               dataIndex: 'status',
               renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
-              sortable: true
+              sortable: true,
+              width: 50
             }, {
               text: "Ring (Cur)",
-              dataIndex: 'ring_hash_current'
+              dataIndex: 'ring_hash_current',
+              width: 50
             }, {
               text: "Ring (Prev)",
-              dataIndex: 'ring_hash_previous'
+              dataIndex: 'ring_hash_previous',
+              width: 50
             }, {
               text: "Joined At",
               dataIndex: "joined_at"
@@ -367,7 +371,7 @@
           {
             xtype: "textfield",
             fieldLabel: "<img src='images/filter.png'> Filter:",
-            labelWidth: 50,
+            labelWidth: 60,
             listeners: {
               change: function(text_field, new_value) {
                 var store = self.store;

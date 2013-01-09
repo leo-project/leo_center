@@ -52,6 +52,7 @@
 
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Users",
+      groupField: 'role',
       proxy: {
         type: 'ajax',
         url: 'users/list.json',
@@ -197,6 +198,10 @@
       }
     },
 
+    grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
+      groupHeaderTpl: "{name} [{rows.length}]"
+    }),
+
     initComponent: function() {
       var self = this;
 
@@ -205,10 +210,11 @@
         border: false,
         forceFit: true,
         store: self.store,
+        features: [ self.grid_grouping ],
         tbar: [{
           xtype: "textfield",
           fieldLabel: "<img src='images/filter.png'> Filter:",
-          labelWidth: 50,
+          labelWidth: 60,
           listeners: {
             change: function(text_field, new_value) {
               var store = self.store;
