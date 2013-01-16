@@ -30,4 +30,34 @@
     fields: ["name", "value"]
   });
 
+  LeoTamer.confirm_password = function(callbacks) {
+    Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
+      console.log(Ext.util.Cookies.get("user_id"), value);
+      if (btn == "ok" ) {
+        Ext.Ajax.request({
+          url: "login",
+          method: "POST",
+          params: {
+            user_id: Ext.util.Cookies.get("user_id"),
+            password: value
+          },
+          success: function(response, opts) {
+            text = response.responseText;
+            result = Ext.JSON.decode(text);
+            if (result.success) {
+              // truely success
+              callbacks.success(response, opts);
+            }
+            else {
+              // failure
+              callbacks.failure(result.errors.reason);
+            }
+          },
+          failure: function(response, opts) {
+            callbacks.failure(response.responseText);
+          }
+        });
+      }
+    });
+  }
 }).call(this);
