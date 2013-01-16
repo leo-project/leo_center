@@ -27,7 +27,14 @@ Run on WEBrick
 ==============
 
 ```
-$ ruby config.ru ${PORT}
+$ ruby config_webrick.ru ${PORT}
+```
+
+Run on Unicorn
+==============
+
+```
+$ unicorn -c unicorn.conf config_unicorn.ru
 ```
 
 ICONS
