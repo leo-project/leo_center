@@ -27,7 +27,7 @@
 
   Ext.define("LeoTamer.model.NameValue", {
     extend: 'Ext.data.Model',
-    fields: ["name", "value"]
+    fields: ["name", "value", "group"]
   });
 
   LeoTamer.confirm_password = function(callbacks) {

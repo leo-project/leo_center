@@ -69,12 +69,13 @@
 
     detail_store: Ext.create("Ext.data.ArrayStore", {
       model: "LeoTamer.model.NameValue",
+      groupField: "group",
       proxy: {
-        type: 'ajax',
-        url: 'nodes/detail.json',
+        type: "ajax",
+        url: "nodes/detail.json",
         reader: {
-          type: 'json',
-          root: 'data'
+          type: "json",
+          root: "data"
         },
         // disabe unused params
         noCache: false,
@@ -168,6 +169,10 @@
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
       groupHeaderTpl: "{name} [{rows.length}]"
+    }),
+
+    detail_grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
+      groupHeaderTpl: "{name}"
     }),
 
     on_grid_select: function(self, record) {
@@ -269,13 +274,12 @@
         resizable: false,
         items: [
           {
-            xtype: 'grid',
+            xtype: "grid",
             border: false,
             forceFit: true,
             hideHeaders: true,
-            viewConfig: {
-              loadMask: false
-            },
+            viewConfig: { loadMask: false },
+            features: [ self.detail_grid_grouping ],
             store: self.detail_store,
             columns: [
               {
@@ -303,13 +307,13 @@
 
       self.store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Nodes",
-        groupField: 'type',
+        groupField: "type",
         proxy: {
-          type: 'ajax',
-          url: 'nodes/status.json',
+          type: "ajax",
+          url: "nodes/status.json",
           reader: {
-            type: 'json',
-            root: 'data'
+            type: "json",
+            root: "data"
           },
           // disable unused params
           noCache: false,

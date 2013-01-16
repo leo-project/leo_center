@@ -72,7 +72,15 @@ class LeoTamer
       node_stat = @@manager.status(node).node_stat
 
       result = Nodes::Properties.map do |property|
-        { name: property.to_s.gsub("_", " "), value: node_stat.__send__(property) }
+        property_str = property.to_s
+        property_str.capitalize!
+        property_str.gsub!("_", " ")
+
+        { 
+          name: property_str,
+          value: node_stat.__send__(property),
+          group: "Config/VM Status" #XXX: dummy grouping
+        }
       end
 
       if type == "Storage"
@@ -83,7 +91,8 @@ class LeoTamer
         else
           result.push({
             name: "total_of_objects",
-            value: storage_stat.total_of_objects
+            value: storage_stat.total_of_objects,
+            group: "Config/VM Status" #XXX: dummy grouping
           })
         end
       end
