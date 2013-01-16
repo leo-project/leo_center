@@ -69,7 +69,8 @@
         }],
         columns: [{
           dataIndex: "name",
-          text: "Name"
+          text: "Name",
+          width: 30
         }, {
           dataIndex: "value",
           text: "Value"
