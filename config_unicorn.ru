@@ -19,9 +19,8 @@
 #  under the License.
 #
 # ======================================================================
-# version: 0.2.5
+# version: 0.2.6
 # ======================================================================
 
-#require_relative "app"
 require File.expand_path("app", File.dirname(__FILE__)) # for unicorn
 run LeoTamer
