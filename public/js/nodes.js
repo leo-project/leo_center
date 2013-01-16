@@ -170,26 +170,18 @@
       groupHeaderTpl: "{name} [{rows.length}]"
     }),
 
-    rewrite_status_body: function(self, node_stat) {
-      var name = node_stat.node;
-      var status = node_stat.status;
-
-      self.status_body.update(self.get_status_icon(status) + " " + name);
-
+    on_grid_select: function(self, record) {
+      var node_stat = record.data;
       var change_status_button = Ext.getCmp("change_status_button");
 
+      self.status_panel.setTitle(self.get_status_icon(node_stat.status) + node_stat.node);
+ 
       if (node_stat.type == "Gateway") {
          change_status_button.hide();
       }
       else {
          change_status_button.show();
       }
-    },
-
-    on_grid_select: function(self, record) {
-      var node_stat = record.data;
-
-      self.rewrite_status_body(self, node_stat);
 
       if (node_stat.status === "stop") {
         self.detail_store.removeAll();
@@ -270,29 +262,14 @@
         }).show();
       };
 
-      self.status_body = Ext.create("Ext.Panel", {
-        id: "node_status",
-        border: false,
-        padding: 5,
-        height: 60,
-        buttons: [{
-          xtype: "button",
-          id: "change_status_button",
-          text: "Change Status",
-          handler: self.send_command
-        }]
-      });
-
       self.status_panel = Ext.create("Ext.Panel", {
-        title: "Node Status/Name",
+        title: "Config/VM Status",
         region: "east",
         width: 300,
         resizable: false,
         items: [
-          self.status_body,
           {
             xtype: 'grid',
-            title: "Config/VM Status",
             border: false,
             forceFit: true,
             hideHeaders: true,
@@ -313,7 +290,13 @@
               beforeselect: function() {
                 return false; // disable row select
               }
-            }
+            },
+            buttons: [{
+              id: "change_status_button",
+              margin: 10,
+              text: "Change Status",
+              handler: self.send_command
+            }]
           }
         ]
       });
