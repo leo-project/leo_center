@@ -116,10 +116,44 @@
         win.defaultFocus = 2; // set default focus to "No" button
       });
 
-      var msg = "Are you sure to send command '" + command + " " + node + "'?";
-      Ext.Msg.confirm("Confirm", msg, function(btn) {
-        if (btn == "yes") self.do_send_command(node, command);
-      });
+      switch (command) {
+        case "detach":
+        case "suspend":
+          Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
+            if (btn == "ok" ) {
+              console.log(tamer.user_id);
+              Ext.Ajax.request({
+                url: "login",
+                method: "POST",
+                params: {
+                  user_id: Ext.util.Cookies.get("user_id"),
+                  password: value
+                },
+                success: function(response, opts) {
+                  text = response.responseText;
+                  response = Ext.JSON.decode(text);
+                  if (response.success) {
+                    // truely success
+                    self.do_send_command(node, command);
+                  }
+                  else {
+                    // failure
+                    Ext.Msg.alert("Error!", response.errors.reason);
+                  }
+                },
+                failure: function(response, opts) {
+                  Ext.Msg.alert("Error!", response.responseText);
+                }
+              });
+            }
+          });
+          break;
+        default:
+          var msg = "Are you sure to send command '" + command + " " + node + "'?";
+          Ext.Msg.confirm("Confirm", msg, function(btn) {
+            if (btn == "yes") self.do_send_command(node, command);
+          });
+      }
     },
 
     get_status_icon: function(val) {
