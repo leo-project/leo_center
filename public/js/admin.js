@@ -26,6 +26,7 @@
     title: "Admin Tools",
     layout: "border",
 
+    system_conf: Ext.create("LeoTamer.SystemConf"),
     users: Ext.create("LeoTamer.Users"),
     buckets: Ext.create("LeoTamer.Buckets"),
     endpoints: Ext.create("LeoTamer.Endpoints"),
@@ -33,6 +34,7 @@
     admin_store: Ext.create("Ext.data.Store", {
       fields: ["name"],
       data: [
+        { name: "System Conf" },
         { name: "Users" },
         { name: "Buckets" },
         { name: "Endpoints" }
@@ -42,6 +44,9 @@
     set_icon: function(value) {
       var img = undefined;
       switch(value) {
+        case "System Conf":
+          img = "<img src='images/system_conf.png'> ";
+          break;
         case "Users":
           img = "<img src='images/users.png'> ";
           break;
@@ -51,6 +56,8 @@
         case "Endpoints":
           img = "<img src='images/endpoint.png'> ";
           break;
+        default:
+          throw "no icon for " + value;
       }
       return img + value;
     },
@@ -86,6 +93,7 @@
         layout: "card",
         activeItem: 0,
         items: [
+          self.system_conf,
           self.users,
           self.buckets,
           self.endpoints

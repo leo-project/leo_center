@@ -26,7 +26,7 @@
   };
 
   Ext.define("LeoTamer.model.NameValue", {
-    extend: 'Ext.data.Model',
+    extend: "Ext.data.Model",
     fields: ["name", "value", "group"]
   });
 
