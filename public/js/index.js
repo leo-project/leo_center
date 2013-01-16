@@ -66,6 +66,7 @@
       items: [
         {
           xtype: "image",
+          margin: 6,
           width: 75,
           height: 24,
           src: "images/logo_header.png"
