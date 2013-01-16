@@ -112,6 +112,7 @@
         forceFit: true,
         features: [ self.grid_grouping ],
         store: self.store,
+        border: false,
         tbar: [{
           xtype: "textfield",
           fieldLabel: "<img src='images/filter.png'> Filter:",
