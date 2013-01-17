@@ -201,19 +201,19 @@
       }
     },
 
-    available_command_filter: function(status, command) {
-      switch (status) {
-        case "running":
-          if (command === "suspend") return true;
-          if (command === "detach") return true;
-          return false;
-        case "suspend":
-        case "restarted":
-          if (command === "resume") return true;
-          return false;
-        case "stop":
-          if (command === "detach") return true;
-          return false;
+    available_commands_table: {
+      running: {
+        suspend: true,
+        detach: true
+      },
+      suspend: {
+        resume: true
+      },
+      restarted: {
+        resume: true
+      },
+      stop: {
+        detach: true
       }
     },
 
@@ -221,9 +221,10 @@
       var self = this;
 
       self.send_command = function() {
-        var node, command_combo, command_select_window;
+        var node, command_combo, command_select_window, status;
 
         node = self.grid.getSelectionModel().getSelection()[0].data;
+        status = node.status;
 
         command_combo = Ext.create("Ext.form.ComboBox", {
           padding: 10,
@@ -239,7 +240,7 @@
 
         self.command_store.filter({
           filterFn: function(record) {
-            return self.available_command_filter(node.status, record.data.command);
+            return self.available_commands_table[status][record.data.command] ? true : false;
           }
         });
 
