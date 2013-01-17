@@ -381,6 +381,27 @@
               }
             }
           },
+          "-",
+          {
+            xtype: "splitbutton",
+            text: "Grouping",
+            menu: [{
+              text: "Type",
+              handler: function() {
+                self.store.group("type");
+              }
+            }, {
+              text: "Status",
+              handler: function() {
+                self.store.group("status");
+              }
+            }, {
+              text: "Clear Grouping",
+              handler: function() {
+                self.store.clearGrouping();
+              }
+            }]
+          },
           "->",
           {
             xtype: "button",
