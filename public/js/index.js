@@ -61,6 +61,7 @@
     };
 
     header = Ext.create("Ext.toolbar.Toolbar", {
+      id: "viewport_header",
       region: "north",
       border: false,
       items: [
@@ -69,10 +70,11 @@
           margin: 6,
           width: 75,
           height: 24,
-          src: "images/logo_header.png"
+          src: "images/leofs-logo-w.png" //TODO: resize
         },
         "->",
         {
+          id: "user_menu",
           text: Ext.util.Cookies.get("user_id"),
           icon: "images/admin_user.png",
           menu: {
