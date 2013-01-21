@@ -20,7 +20,7 @@
 //
 // ======================================================================
 (function() {
-  /*
+  /* config for logs
   Highcharts.setOptions({
     credits: { enabled: false },
     global: { useUTC: false }
@@ -35,14 +35,14 @@
     user_group = Ext.create("LeoTamer.UserGroup");
 
     // items for only administrator
-    if (Ext.util.Cookies.get("admin") == "true") {
+    if (Ext.util.Cookies.get("admin") === "true") {
       node_status = Ext.create("LeoTamer.Nodes");
       admin = Ext.create("LeoTamer.Admin");
     }
 
     tabs = Ext.create("Ext.TabPanel", {
       region: "center",
-      activeTab: 0,
+      activeTab: 0, // first tab
       defaults: { bodyPadding: 5 },
       items: [bucket_status, node_status, admin]
     });
@@ -64,40 +64,36 @@
       id: "viewport_header",
       region: "north",
       border: false,
-      items: [
-        {
-          xtype: "image",
-          margin: 6,
-          width: 75,
-          height: 24,
-          src: "images/leofs-logo-w.png" //TODO: resize
-        },
-        "->",
-        {
-          id: "user_menu",
-          text: Ext.util.Cookies.get("user_id"),
-          icon: "images/admin_user.png",
-          menu: {
-            xtype: "menu",
-            showSeparator: false,
-            items: [
-              {
-                text: "Security Credentials",
-                icon: "images/credential.png",
-                handler: get_credential
-              },
-              "-",
-              {
-                text: "Sign Out",
-                icon: "images/logout.png",
-                handler: function() {
-                  window.location = "/logout"
-                }
-              }
-            ]
-          }
+      items: [{
+        xtype: "image",
+        margin: 6,
+        width: 75,
+        height: 24,
+        src: "images/leofs-logo-w.png" //TODO: resize
+      },
+      "->",
+      {
+        id: "user_menu",
+        text: Ext.util.Cookies.get("user_id"), // raw cookie from server
+        icon: "images/admin_user.png",
+        menu: {
+          xtype: "menu",
+          showSeparator: false,
+          items: [{
+            text: "Security Credentials",
+            icon: "images/credential.png",
+            handler: get_credential
+          },
+          "-",
+          {
+            text: "Sign Out",
+            icon: "images/logout.png",
+            handler: function() {
+              window.location = "/logout"
+            }
+          }]
         }
-      ]
+      }]
     });
 
     return Ext.create("Ext.Viewport", {

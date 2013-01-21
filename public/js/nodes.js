@@ -121,6 +121,7 @@
       switch (command) {
         case "detach":
         case "suspend":
+          // confirm user's password before dangerous action
           LeoTamer.confirm_password({
             success: function(response) {
               self.do_send_command(node, command);
@@ -182,7 +183,7 @@
 
       self.status_panel.setTitle(self.get_status_icon(node_stat.status) + node_stat.node);
  
-      if (node_stat.type == "Gateway") {
+      if (node_stat.type === "Gateway") {
          change_status_button.hide();
       }
       else {
@@ -241,6 +242,7 @@
         });
 
         self.command_store.filter({
+          // filter to show only available commands on the state
           filterFn: function(record) {
             return self.available_commands_table[status][record.data.command] ? true : false;
           }
@@ -275,42 +277,38 @@
         region: "east",
         width: 300,
         resizable: false,
-        items: [
-          {
-            xtype: "grid",
-            border: false,
-            forceFit: true,
-            hideHeaders: true,
-            viewConfig: { loadMask: false },
-            features: [ self.detail_grid_grouping ],
-            store: self.detail_store,
-            columns: [
-              {
-                dataIndex: "name",
-                text: "Name"
-              }, {
-                dataIndex: "value",
-                text: "Value"
-              }
-            ],
-            listeners: {
-              beforeselect: function() {
-                return false; // disable row selection
-              }
-            },
-            buttons: [{
-              id: "change_status_button",
-              margin: 10,
-              text: "Change Status",
-              handler: self.send_command
-            }]
-          }
-        ]
+        items: [{
+          xtype: "grid",
+          border: false,
+          forceFit: true,
+          hideHeaders: true,
+          viewConfig: { loadMask: false },
+          features: [ self.detail_grid_grouping ],
+          store: self.detail_store,
+          columns: [{
+            dataIndex: "name",
+            text: "Name"
+          }, {
+            dataIndex: "value",
+            text: "Value"
+          }],
+          listeners: {
+            beforeselect: function() {
+              return false; // disable row selection
+            }
+          },
+          buttons: [{
+            id: "change_status_button",
+            margin: 10,
+            text: "Change Status",
+            handler: self.send_command
+          }]
+        }]
       });
 
       self.store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Nodes",
-        groupField: "type",
+        groupField: "type", // default grouping
         proxy: {
           type: "ajax",
           url: "nodes/status.json",
@@ -340,51 +338,52 @@
         features: [ self.grid_grouping ],
         columns: {
           defaults: { resizable: false },
-          items: [
-            {
-              text: "Node",
-              dataIndex: 'node',
-              sortable: true,
-              width: 150
-            }, {
-              text: "Status",
-              dataIndex: 'status',
-              renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
-              sortable: true,
-              width: 50
-            }, {
-              text: "Ring (Cur)",
-              dataIndex: 'ring_hash_current',
-              width: 50
-            }, {
-              text: "Ring (Prev)",
-              dataIndex: 'ring_hash_previous',
-              width: 50
-            }, {
-              text: "Joined At",
-              dataIndex: "joined_at"
-            }
-          ]
+          items: [{
+            text: "Node",
+            dataIndex: 'node',
+            sortable: true,
+            width: 150
+          }, {
+            text: "Status",
+            dataIndex: 'status',
+            renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
+            sortable: true,
+            width: 50
+          }, {
+            text: "Ring (Cur)",
+            dataIndex: 'ring_hash_current',
+            width: 50
+          }, {
+            text: "Ring (Prev)",
+            dataIndex: 'ring_hash_previous',
+            width: 50
+          }, {
+            text: "Joined At",
+            dataIndex: "joined_at"
+          }]
         },
-        tbar: [
-          {
-            xtype: "textfield",
-            fieldLabel: "<img src='images/filter.png'> Filter:",
-            labelWidth: 60,
-            listeners: {
-              change: function(text_field, new_value) {
-                var store = self.store;
-                store.clearFilter();
-                store.filter("node", new RegExp(new_value));
-              }
+        tbar: [{
+          xtype: "textfield",
+          fieldLabel: "<img src='images/filter.png'> Filter:",
+          labelWidth: 60,
+          listeners: {
+            change: function(text_field, new_value) {
+              var store = self.store;
+              store.clearFilter();
+              store.filter("node", new RegExp(new_value));
             }
-          },
-          "-",
-          {
-            xtype: "splitbutton",
-            id: "nodes_grid_current_grouping",
-            text: "Type", // default grouping state
-            menu: [{
+          }
+        },
+        "-",
+        {
+          xtype: "splitbutton",
+          id: "nodes_grid_current_grouping",
+          text: "Type", // default grouping state
+          //TODO: use icons
+          menu: {
+            xtype: "menu",
+            showSeparator: false,
+            items: [{
               text: "Type",
               handler: function(button) {
                 splitbutton = Ext.getCmp("nodes_grid_current_grouping");
@@ -399,16 +398,16 @@
                 self.store.group("status");
               }
             }]
-          },
-          "->",
-          {
-            xtype: "button",
-            icon: "images/reload.png",
-            handler: function() {
-              self.store.load();
-            }
           }
-        ],
+        },
+        "->",
+        {
+          xtype: "button",
+          icon: "images/reload.png",
+          handler: function() {
+            self.store.load();
+          }
+        }],
         listeners: {
           render: function(grid) {
             grid.getStore().on("load", function() {
