@@ -439,6 +439,7 @@
         {
           text: "Rebalance",
           id: "nodes_rebalance_button",
+          icon: "images/rebalance.png",
           handler: function() {
             rebalance_ready = self.store.find("status", /attached|detached/) != -1;
             if (rebalance_ready) {

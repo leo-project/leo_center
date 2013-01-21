@@ -133,7 +133,7 @@
         }
       }],
       buttons: [{
-        text: "Login",
+        text: "Sign In",
         handler: login_form_submit
       }]
     });

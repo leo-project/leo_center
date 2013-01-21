@@ -122,20 +122,6 @@ class LeoTamer
     end
 
     post "/rebalance" do
-      number_of_replicas = @@manager.status.system_info.n
-      storage_node_list = @@manager.status.node_list.select {|node| node.type == "S" }
-      number_of_running_storages = storage_node_list.count {|node| node.state == "running" }
-      number_of_attached_storages = storage_node_list.count {|node| node.state == "attached" }
-
-      if number_of_running_storages + number_of_attached_storages <= number_of_replicas
-        halt 500, <<-EOS
-You can't rebalance the cluster.<br>
-# of replicas: #{number_of_replicas}<br>
-# of running storages: #{number_of_running_storages}<br>
-# of attached storages: #{number_of_attached_storages}<br>
-        EOS
-      end
-
       @@manager.rebalance
     end
   end
