@@ -7,10 +7,10 @@ class LeoTamer
     ]
 
     SystemConf::NameMap = {
-      n: "number of replicas",
-      r: "number of replicas for READ",
-      w: "number of replicas for WRITE",
-      d: "number of replicas for DELETE"
+      n: "Number of replicas",
+      r: "Number of successful READ",
+      w: "Number of successful WRITE",
+      d: "Number of successful DELETE"
     }
 
     get "/list.json" do

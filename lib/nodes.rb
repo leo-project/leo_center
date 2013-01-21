@@ -66,15 +66,22 @@ class LeoTamer
       :limit_of_procs, :thread_pool_size
     ]
 
+    Nodes::NameMap = {
+      ring_cur: "Current Ring-hash",
+      ring_prev: "Previous Ring-hash"
+    }
+
     get "/detail.json" do
       node, type = required_params(:node, :type)
 
       node_stat = @@manager.status(node).node_stat
 
       result = Nodes::Properties.map do |property|
-        property_str = property.to_s
-        property_str.capitalize!
-        property_str.gsub!("_", " ")
+        unless property_str = Nodes::NameMap[property]
+          property_str = property.to_s
+          property_str.capitalize!
+          property_str.gsub!("_", " ")
+        end
 
         { 
           name: property_str,

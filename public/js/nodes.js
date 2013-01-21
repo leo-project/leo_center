@@ -170,7 +170,8 @@
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name} [{rows.length}]"
+      groupHeaderTpl: "{name} [{rows.length}]",
+      collapsible: false
     }),
 
     select_grouping: function(self, text, group) {
@@ -180,7 +181,8 @@
     },
 
     detail_grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name}"
+      groupHeaderTpl: "{name}",
+      collapsible: false
     }),
 
     on_grid_select: function(self, record) {
@@ -358,11 +360,11 @@
             sortable: true,
             width: 50
           }, {
-            text: "Ring (Cur)",
+            text: "Current Ring-hash",
             dataIndex: 'ring_hash_current',
             width: 50
           }, {
-            text: "Ring (Prev)",
+            text: "Previous Ring-hash",
             dataIndex: 'ring_hash_previous',
             width: 50
           }, {

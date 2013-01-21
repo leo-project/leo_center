@@ -203,7 +203,8 @@
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name} [{rows.length}]"
+      groupHeaderTpl: "{name} [{rows.length}]",
+      collapsible: false
     }),
 
     initComponent: function() {
