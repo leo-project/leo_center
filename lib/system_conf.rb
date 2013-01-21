@@ -2,11 +2,8 @@ class LeoTamer
   module SystemConf; end
 
   namespace "/system_conf" do
-    SystemConf::Properties = [
-      :version, :n, :r, :w, :d, #:ring_size, :ring_cur, :ring_prev
-    ]
-
-    SystemConf::NameMap = {
+    SystemConf::Properties = {
+      version: "Version",
       n: "Number of replicas",
       r: "Number of successful READ",
       w: "Number of successful WRITE",
@@ -16,11 +13,9 @@ class LeoTamer
     get "/list.json" do
       system_info = @@manager.status.system_info
 
-      data = SystemConf::Properties.map do |property|
-        name = SystemConf::NameMap[property] || property.to_s
-        name[0] = name[0].upcase
+      data = SystemConf::Properties.map do |property, text|
         {
-          name: name,
+          name: text,
           value: system_info.__send__(property)
         }
       end

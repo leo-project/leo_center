@@ -194,10 +194,17 @@
       self.status_panel.setTitle(self.get_status_icon(node_stat.status) + "&nbsp;" + node_stat.node);
  
       if (node_stat.type === "Gateway") {
-         change_status_button.hide();
+        change_status_button.hide();
       }
       else {
-         change_status_button.show();
+        switch (node_stat.status) {
+          case "stop":
+          case "attached":
+            change_status_button.hide();
+            break;
+          default:
+            change_status_button.show();
+        }
       }
 
       if (node_stat.status === "stop") {
