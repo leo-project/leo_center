@@ -194,9 +194,9 @@
     role_renderer: function(value) {
       switch (value) {
         case "admin":
-          return "<img src='images/admin_user.png'> " + value;
+          return "<img src='images/admin_user.png'> " + Ext.String.capitalize(value);
         case "general":
-          return "<img src='images/user.png'> " + value;
+          return "<img src='images/user.png'> " + Ext.String.capitalize(value);
         default:
           throw "invalid value: " + value;
       }
