@@ -384,7 +384,6 @@
         {
           xtype: "splitbutton",
           id: "nodes_grid_current_grouping",
-          //TODO: use icons
           handler: function(splitbutton) {
             // show menu when splitbutton itself is pressed
             splitbutton.showMenu();
@@ -394,11 +393,13 @@
             showSeparator: false,
             items: [{
               text: "Type",
+              icon: "images/type.png",
               handler: function(button) {
                 self.select_grouping(self, button.text, "type");
               }
             }, {
               text: "Status",
+              icon: "images/running.png",
               handler: function(button) {
                 self.select_grouping(self, button.text, "status");
               }
