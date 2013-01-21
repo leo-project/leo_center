@@ -175,7 +175,7 @@
 
     select_grouping: function(self, text, group) {
       var splitbutton = Ext.getCmp("nodes_grid_current_grouping");
-      splitbutton.setText("Group by " + text);
+      splitbutton.setText(text);
       self.store.group(group);
     },
 
@@ -189,7 +189,7 @@
 
       // using HTML 4.0 character entity references to avoid Ext.Panel#setTitle()'s cutting space
       // &nbsp; //=> non-breaking space
-      self.status_panel.setTitle(self.get_status_icon(node_stat.status) + "&nbsp;&nbsp;" + node_stat.node);
+      self.status_panel.setTitle(self.get_status_icon(node_stat.status) + "&nbsp;" + node_stat.node);
  
       if (node_stat.type === "Gateway") {
          change_status_button.hide();
@@ -396,13 +396,20 @@
           menu: {
             xtype: "menu",
             showSeparator: false,
+            defaults: {
+              style: {
+                "font-weight": "bold"
+              },
+            },
             items: [{
-              text: "Type",
+              text: "Group by Type",
+              icon: "images/table.png",
               handler: function(button) {
                 self.select_grouping(self, button.text, "type");
               }
             }, {
-              text: "Status",
+              text: "Group by Status",
+              icon: "images/table.png",
               handler: function(button) {
                 self.select_grouping(self, button.text, "status");
               }
@@ -411,7 +418,7 @@
           listeners: {
             render: function() {
               // default grouping state
-              self.select_grouping(self, "Type", "type");
+              self.select_grouping(self, "Group by Type", "type");
             }
           }
         },
