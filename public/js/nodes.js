@@ -42,6 +42,7 @@
     },
 
     listeners: {
+      // it fires when "Node Status" tab is selected
       activate: function(self) {
         self.select_first_row();
 
@@ -201,6 +202,7 @@
       }
     },
 
+    // it shows what commands are available on each state
     available_commands_table: {
       running: {
         suspend: true,
@@ -293,7 +295,7 @@
             ],
             listeners: {
               beforeselect: function() {
-                return false; // disable row select
+                return false; // disable row selection
               }
             },
             buttons: [{
@@ -336,13 +338,8 @@
         region: "center",
         forceFit: true,
         features: [ self.grid_grouping ],
-        viewConfig: {
-          trackOver: false
-        },
         columns: {
-          defaults: {
-            resizable: false
-          },
+          defaults: { resizable: false },
           items: [
             {
               text: "Node",
@@ -385,21 +382,21 @@
           "-",
           {
             xtype: "splitbutton",
-            text: "Grouping",
+            id: "nodes_grid_current_grouping",
+            text: "Type", // default grouping state
             menu: [{
               text: "Type",
-              handler: function() {
+              handler: function(button) {
+                splitbutton = Ext.getCmp("nodes_grid_current_grouping");
+                splitbutton.setText(button.text);
                 self.store.group("type");
               }
             }, {
               text: "Status",
-              handler: function() {
+              handler: function(button) {
+                splitbutton = Ext.getCmp("nodes_grid_current_grouping");
+                splitbutton.setText(button.text);
                 self.store.group("status");
-              }
-            }, {
-              text: "Clear Grouping",
-              handler: function() {
-                self.store.clearGrouping();
               }
             }]
           },
@@ -415,11 +412,12 @@
         listeners: {
           render: function(grid) {
             grid.getStore().on("load", function() {
+              // select row which was selected before reload
               grid.getSelectionModel().select(self.selected_index);
             });
           },
           beforeselect: function(grid, record, index) {
-            self.selected_index = index;
+            self.selected_index = index; // save which row is selected before reload
           },
           select: function(grid, record, index) {
             self.on_grid_select(self, record);
