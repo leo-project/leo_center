@@ -72,7 +72,7 @@
                 login_form_submit();
               },
               failure: function(form, action) {
-                Ext.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
+                LeoTamer.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
               }
             });
           }
@@ -93,7 +93,7 @@
           window.location = "/"
         },
         failure: function(form, action) {
-          Ext.Msg.alert("Login Faild!", action.result.errors.reason);
+          LeoTamer.Msg.alert("Login Faild!", action.result.errors.reason);
           login_form.getForm().reset();
         }
       });

@@ -36,7 +36,7 @@
           startParam: undefined,
           listeners: {
             exception: function(store, response, operation) {
-              Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+              LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
             }
           }
         }

@@ -68,7 +68,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response) {
-            Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }
@@ -88,7 +88,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              Ext.Msg.alert("Error!", response.responseText);
+              LeoTamer.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -101,7 +101,7 @@
       var last_selected = self.grid.getSelectionModel().getLastSelected();
 
       if (!last_selected) {
-        Ext.Msg.alert("Error!", "Please select a user.");
+        LeoTamer.Msg.alert("Error!", "Please select a user.");
         return;
       }
 
@@ -123,7 +123,7 @@
               self.load();
             },
             failure: function(response) {
-              Ext.Msg.alert("Error!", response.responseText);
+              LeoTamer.Msg.alert("Error!", response.responseText);
             }
           });
         }
@@ -143,7 +143,7 @@
           self.load();
         },
         failure: function(response, opts) {
-          Ext.Msg.alert("Error!", response.responseText);
+          LeoTamer.Msg.alert("Error!", response.responseText);
         }
       });
     },
@@ -152,7 +152,7 @@
       var self = this;
       var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
-        Ext.Msg.alert("Error!", "Please select a user.");
+        LeoTamer.Msg.alert("Error!", "Please select a user.");
       }
       else {
         var user_id = last_selected.data.user_id;

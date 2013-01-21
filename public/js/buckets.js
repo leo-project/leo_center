@@ -61,7 +61,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              Ext.Msg.alert("Error!", response.responseText);
+              LeoTamer.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -99,7 +99,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response, operation) {
-            Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }
