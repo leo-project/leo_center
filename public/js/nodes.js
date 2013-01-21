@@ -86,7 +86,7 @@
         startParam: undefined,
         listeners: {
           exception: function(self, response, operation) {
-            Ext.Msg.alert("Error on: \'" + self.url + "\'", response.responseText);
+            LeoTamer.Msg.alert("Error on: \'" + self.url + "\'", response.responseText);
           }
         }
       }
@@ -106,7 +106,7 @@
           self.store.load();
         },
         failure: function(response) {
-          Ext.Msg.alert("Error!", response.responseText);
+          LeoTamer.Msg.alert("Error!", response.responseText);
         }
       });
     },
@@ -124,7 +124,7 @@
           self.do_send_command(node, command);
         },
         failure: function(reason) {
-          Ext.Msg.alert("Error!", reason);
+          LeoTamer.Msg.alert("Error!", reason);
         }
       });
     },
@@ -268,7 +268,7 @@
 
               }
               else {
-                Ext.Msg.alert("Error!", "Command not specified");
+                LeoTamer.Msg.alert("Error!", "Command not specified");
               }
               command_select_window.close();
             }
@@ -338,7 +338,7 @@
           groupParam: undefined,
           listeners: {
             exception: function(store, response, operation) {
-              Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+              LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
             }
           }
         }
@@ -437,7 +437,7 @@
                     self.store.load();
                   },
                   failure: function(response) {
-                    Ext.Msg.alert("Error!", response.responseText);
+                    LeoTamer.Msg.alert("Error!", response.responseText);
                   }
                 });
               }
