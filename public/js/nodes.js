@@ -118,25 +118,15 @@
         win.defaultFocus = 2; // set default focus to "No" button
       });
 
-      switch (command) {
-        case "detach":
-        case "suspend":
-          // confirm user's password before dangerous action
-          LeoTamer.confirm_password({
-            success: function(response) {
-              self.do_send_command(node, command);
-            },
-            failure: function(reason) {
-              Ext.Msg.alert("Error!", reason);
-            }
-          });
-          break;
-        default:
-          var msg = "Are you sure to send command '" + command + " " + node + "'?";
-          Ext.Msg.confirm("Confirm", msg, function(btn) {
-            if (btn == "yes") self.do_send_command(node, command);
-          });
-      }
+      // confirm user's password before dangerous action
+      LeoTamer.confirm_password({
+        success: function(response) {
+          self.do_send_command(node, command);
+        },
+        failure: function(reason) {
+          Ext.Msg.alert("Error!", reason);
+        }
+      });
     },
 
     get_status_icon: function(val) {
@@ -273,7 +263,13 @@
             text: "Apply",
             handler: function() {
               var command = command_combo.getValue();
-              self.confirm_send_command(node.node, command);
+              if (command) {
+                self.confirm_send_command(node.node, command);
+
+              }
+              else {
+                Ext.Msg.alert("Error!", "Command not specified");
+              }
               command_select_window.close();
             }
           }, {
@@ -399,16 +395,12 @@
             // show menu when splitbutton itself is pressed
             splitbutton.showMenu();
           },
-          style: {
-            "font-weight": "bold"
-          },
+          style: { "font-weight": "bold" },
           menu: {
             xtype: "menu",
             showSeparator: false,
             defaults: {
-              style: {
-                "font-weight": "bold"
-              },
+              style: { "font-weight": "bold" },
             },
             items: [{
               text: "Group by Type",
@@ -429,6 +421,27 @@
               // default grouping state
               self.select_grouping(self, "Group by Type", "type");
             }
+          }
+        },
+        "-",
+        {
+          text: "Rebalance",
+          handler: function() {
+            var msg = "Are you sure to send command 'rebalance'?";
+            Ext.Msg.confirm("Confirm", msg, function(btn) {
+              if (btn == "yes") {
+                Ext.Ajax.request({
+                  url: "nodes/rebalance",
+                  method: "POST",
+                  success: function(response) {
+                    self.store.load();
+                  },
+                  failure: function(response) {
+                    Ext.Msg.alert("Error!", response.responseText);
+                  }
+                });
+              }
+            });
           }
         },
         "->",

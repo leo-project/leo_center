@@ -76,6 +76,8 @@ class LeoTamer
       thread_pool_size: "Thread Pool Size"
     }
 
+    Nodes::DetailGridDummyGrouping = "Config/VM Status"
+
     get "/detail.json" do
       node, type = required_params(:node, :type)
 
@@ -85,7 +87,7 @@ class LeoTamer
         { 
           name: text,
           value: node_stat.__send__(property),
-          group: "Config/VM Status" #XXX: dummy grouping
+          group: Nodes::DetailGridDummyGrouping
         }
       end
 
@@ -98,7 +100,7 @@ class LeoTamer
           result.push({
             name: "Total of Objects",
             value: storage_stat.total_of_objects,
-            group: "Config/VM Status" #XXX: dummy grouping
+            group: Nodes::DetailGridDummyGrouping
           })
         end
       end
@@ -117,6 +119,10 @@ class LeoTamer
         raise "invalid operation command: #{command}"
       end
       200
+    end
+
+    post "/rebalance" do
+      @@manager.rebalance
     end
   end
 end
