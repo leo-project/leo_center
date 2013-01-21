@@ -60,15 +60,20 @@ class LeoTamer
       { data: data }.to_json
     end
 
-    Nodes::Properties = [
-      :version, :vm_version, :log_dir, :ring_cur, :ring_prev, :total_mem_usage,
-      :system_mem_usage, :procs_mem_usage, :ets_mem_usage, :num_of_procs,
-      :limit_of_procs, :thread_pool_size
-    ]
-
-    Nodes::NameMap = {
+    # property: "text"
+    Nodes::Properties = {
+      version: "Version",
+      vm_version: "VM Version",
+      log_dir: "Log Dir",
       ring_cur: "Current Ring-hash",
-      ring_prev: "Previous Ring-hash"
+      ring_prev: "Previous Ring-hash",
+      total_mem_usage: "Total Mem Usage",
+      system_mem_usage: "System Mem Usage",
+      procs_mem_usage: "Procs Mem Usage",
+      ets_mem_usage: "ETS MEM Usage",
+      num_of_procs: "Num of Procs",
+      limit_of_procs: "Limit of Procs",
+      thread_pool_size: "Thread Pool Size"
     }
 
     get "/detail.json" do
@@ -76,15 +81,9 @@ class LeoTamer
 
       node_stat = @@manager.status(node).node_stat
 
-      result = Nodes::Properties.map do |property|
-        unless property_str = Nodes::NameMap[property]
-          property_str = property.to_s
-          property_str.capitalize!
-          property_str.gsub!("_", " ")
-        end
-
+      result = Nodes::Properties.map do |property, text|
         { 
-          name: property_str,
+          name: text,
           value: node_stat.__send__(property),
           group: "Config/VM Status" #XXX: dummy grouping
         }
@@ -97,7 +96,7 @@ class LeoTamer
           warn ex.message
         else
           result.push({
-            name: "total_of_objects",
+            name: "Total of Objects",
             value: storage_stat.total_of_objects,
             group: "Config/VM Status" #XXX: dummy grouping
           })
