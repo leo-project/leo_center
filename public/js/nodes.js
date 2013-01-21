@@ -341,6 +341,18 @@
               LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
             }
           }
+        },
+        listeners: {
+          load: function() {
+            var rebalance_button = Ext.getCmp("nodes_rebalance_button");
+            var rebalance_ready = self.store.find("status", /attached|detached/) != -1;
+            if (rebalance_ready) {
+              rebalance_button.enable();
+            }
+            else {
+              rebalance_button.disable();
+            }
+          }
         }
       });
 
@@ -426,22 +438,26 @@
         "-",
         {
           text: "Rebalance",
+          id: "nodes_rebalance_button",
           handler: function() {
-            var msg = "Are you sure to send command 'rebalance'?";
-            Ext.Msg.confirm("Confirm", msg, function(btn) {
-              if (btn == "yes") {
-                Ext.Ajax.request({
-                  url: "nodes/rebalance",
-                  method: "POST",
-                  success: function(response) {
-                    self.store.load();
-                  },
-                  failure: function(response) {
-                    LeoTamer.Msg.alert("Error!", response.responseText);
-                  }
-                });
-              }
-            });
+            rebalance_ready = self.store.find("status", /attached|detached/) != -1;
+            if (rebalance_ready) {
+              var msg = "Are you sure to send command 'rebalance'?";
+              Ext.Msg.confirm("Confirm", msg, function(btn) {
+                if (btn == "yes") {
+                  Ext.Ajax.request({
+                    url: "nodes/rebalance",
+                    method: "POST",
+                    success: function(response) {
+                      self.store.load();
+                    },
+                    failure: function(response) {
+                      LeoTamer.Msg.alert("Error!", response.responseText);
+                    }
+                  });
+                }
+              });
+            }
           }
         },
         "->",

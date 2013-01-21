@@ -52,7 +52,7 @@
         url: "user_credential",
         method: "GET",
         success: function(response) {
-          LeoTamer.Msg.alert("Your Credential", response.responseText);
+          Ext.Msg.alert("Your Credential", response.responseText);
         },
         failure: function(response) {
           LeoTamer.Msg.alert("Error!", response.responseText);
