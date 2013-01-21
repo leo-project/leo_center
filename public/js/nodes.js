@@ -173,6 +173,12 @@
       groupHeaderTpl: "{name} [{rows.length}]"
     }),
 
+    select_grouping: function(self, text, group) {
+      var splitbutton = Ext.getCmp("nodes_grid_current_grouping");
+      splitbutton.setText("Group by: " + text);
+      self.store.group(group);
+    },
+
     detail_grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
       groupHeaderTpl: "{name}"
     }),
@@ -191,6 +197,7 @@
       }
 
       if (node_stat.status === "stop") {
+        // can't get detail information from stopped node
         self.detail_store.removeAll();
       }
       else {
@@ -308,7 +315,6 @@
 
       self.store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Nodes",
-        groupField: "type", // default grouping
         proxy: {
           type: "ajax",
           url: "nodes/status.json",
@@ -378,26 +384,31 @@
         {
           xtype: "splitbutton",
           id: "nodes_grid_current_grouping",
-          text: "Type", // default grouping state
           //TODO: use icons
+          handler: function(splitbutton) {
+            // show menu when splitbutton itself is pressed
+            splitbutton.showMenu();
+          },
           menu: {
             xtype: "menu",
             showSeparator: false,
             items: [{
               text: "Type",
               handler: function(button) {
-                splitbutton = Ext.getCmp("nodes_grid_current_grouping");
-                splitbutton.setText(button.text);
-                self.store.group("type");
+                self.select_grouping(self, button.text, "type");
               }
             }, {
               text: "Status",
               handler: function(button) {
-                splitbutton = Ext.getCmp("nodes_grid_current_grouping");
-                splitbutton.setText(button.text);
-                self.store.group("status");
+                self.select_grouping(self, button.text, "status");
               }
             }]
+          },
+          listeners: {
+            render: function() {
+              // default grouping state
+              self.select_grouping(self, "Type", "type");
+            }
           }
         },
         "->",
