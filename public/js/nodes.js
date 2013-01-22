@@ -407,21 +407,18 @@
                    // show menu when splitbutton itself is pressed
                    splitbutton.showMenu();
                  },
-                 style: { "font-weight": "bold" },
-                 menu: {
+                 style: { "font-weight": "bold"},
+                 menu:  {
                    xtype: "menu",
                    showSeparator: false,
-                   defaults: {
-                     style: { "font-weight": "bold" },
-                   },
                    items: [{
-                     text: "Group by Type",
+                     text: "Group by type",
                      icon: "images/table.png",
                      handler: function(button) {
                        self.select_grouping(self, button.text, "type");
                      }
                    }, {
-                     text: "Group by Status",
+                     text: "Group by status",
                      icon: "images/table.png",
                      handler: function(button) {
                        self.select_grouping(self, button.text, "status");
@@ -431,7 +428,7 @@
                  listeners: {
                    render: function() {
                      // default grouping state
-                     self.select_grouping(self, "Group by Type", "type");
+                     self.select_grouping(self, "Group by type", "type");
                    }
                  }
                },
