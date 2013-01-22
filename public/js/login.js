@@ -106,8 +106,8 @@
       padding: "0 12 24",
       defaults: {
         padding: 5,
-        labelWidth: 150,
-        labelStyle: "font-size: x-large",
+        labelWidth: 85,
+        labelStyle: "font-size: 18px",
         allowBlank: false,
         validateOnBlur: false,
         validateOnChange: false,
@@ -166,7 +166,7 @@
             "text-align": "center",
             padding: "10px",
           },
-          html: "Have an account? <a href='#'>Sign Up</a>",
+          html: "Have an account? <a href='#' style=\"text-decoration:none\">Sign Up</a>",
           listeners: {
             render: function(component) {
               component.getEl().on('click', function(e) {

@@ -62,16 +62,16 @@ class LeoTamer
 
     # property: "text"
     Nodes::Properties = {
-      version: "Version",
+      version: "LeoFS Version",
       vm_version: "VM Version",
-      log_dir: "Log Dir",
+      log_dir: "Log Directory",
       ring_cur: "Current Ring-hash",
       ring_prev: "Previous Ring-hash",
-      total_mem_usage: "Total Mem Usage",
-      system_mem_usage: "System Mem Usage",
-      procs_mem_usage: "Procs Mem Usage",
-      ets_mem_usage: "ETS MEM Usage",
-      num_of_procs: "Num of Procs",
+      total_mem_usage: "Total Memory Usage",
+      system_mem_usage: "System Memory Usage",
+      procs_mem_usage: "Procs Memory Usage",
+      ets_mem_usage: "ETS Memory Usage",
+      num_of_procs: "Number of Procs",
       limit_of_procs: "Limit of Procs",
       thread_pool_size: "Thread Pool Size"
     }
