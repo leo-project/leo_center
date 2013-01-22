@@ -39,7 +39,8 @@
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name} [{rows.length}]"
+      groupHeaderTpl: "{name} [{rows.length}]",
+      collapsible: false
     }),
 
     load: function() {
@@ -60,7 +61,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              Ext.Msg.alert("Error!", response.responseText);
+              LeoTamer.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -98,7 +99,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response, operation) {
-            Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }
@@ -112,6 +113,7 @@
         forceFit: true,
         features: [ self.grid_grouping ],
         store: self.store,
+        border: false,
         tbar: [{
           xtype: "textfield",
           fieldLabel: "<img src='images/filter.png'> Filter:",
@@ -124,21 +126,21 @@
             }
           }
         },
-        "-",
-        {
-          text: "Add Bucket",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_bucket(self);
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               "-",
+               {
+                 text: "Add Bucket",
+                 icon: "images/add.png",
+                 handler: function() {
+                   self.add_bucket(self);
+                 }
+               },
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: {
             resizable: false

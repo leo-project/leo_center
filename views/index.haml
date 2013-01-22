@@ -6,6 +6,7 @@
     %link{ :rel => "stylesheet", :href => "js/ext/resources/css/ext-all.css", :type => "text/css"}
     %script{:src => "js/ext/bootstrap.js", :type => "text/javascript"}
     // %script{:src => "js/highcharts/highcharts.js", :type => "text/javascript"}
+    %script{:src => "js/system_conf.js", :type => "text/javascript"}
     %script{:src => "js/util.js", :type => "text/javascript"}
     %script{:src => "js/bucket_status.js", :type => "text/javascript"}
     %script{:src => "js/user_group.js", :type => "text/javascript"}
@@ -20,16 +21,32 @@
         vertical-align: middle;
       }
 
+      tr img {
+        vertical-align: middle;
+      }
+
+      #viewport_header-innerCt {
+        background-color: #5682AD;
+      }
+
+      #user_menu-btnInnerEl {
+        color: white;
+      }
+
+      #nodes_grid_current_grouping-btnInnerEl {
+        font-weight: bold;
+      }
+
+      #nodes_rebalance_button-btnInnerEl {
+        font-weight: bold;
+      }
+
       #admin_grid .x-grid-row td {
         height: 20px;
         padding: 5px;
       }
-
+      /*
       .x-grid-row-summary {
         background-color: #efefef;
-      }
-
-      tr img {
-        vertical-align: middle;
-      }
+      } */
   %body

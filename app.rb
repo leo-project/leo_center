@@ -1,3 +1,24 @@
+# ======================================================================
+#
+#  Leo Tamer
+#
+#  Copyright (c) 2012 Rakuten, Inc.
+#
+#  This file is provided to you under the Apache License,
+#  Version 2.0 (the "License"); you may not use this file
+#  except in compliance with the License.  You may obtain
+#  a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing,
+#  software distributed under the License is distributed on an
+#  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+#  KIND, either express or implied.  See the License for the
+#  specific language governing permissions and limitations
+#  under the License.
+#
+# ======================================================================
 require "json"
 require "haml"
 require "sinatra/base"
@@ -8,8 +29,8 @@ require_relative "lib/helpers"
 class LeoTamer < Sinatra::Base
   Version = "0.2.2"
   Config = TamerHelpers.load_config
-  SessionKey = "leotamer_session" 
- 
+  SessionKey = "leotamer_session"
+
   class Error < StandardError; end
 
   session_config = Config[:session]
@@ -114,9 +135,9 @@ class LeoTamer < Sinatra::Base
     session[:secret_access_key] = credential.secret_key
 
     # raw cookie to use in ExtJS
-    response.set_cookie("user_id", user_id) 
+    response.set_cookie("user_id", user_id)
     response.set_cookie("admin", admin)
-    
+
     { success: true }.to_json
   end
 
@@ -144,3 +165,4 @@ require_relative "lib/nodes"
 require_relative "lib/users"
 require_relative "lib/buckets"
 require_relative "lib/endpoints"
+require_relative "lib/system_conf"

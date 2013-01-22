@@ -1,6 +1,9 @@
 LeoTamer
 =========
 
+**LeoTamer** is more powerful and user-friendly LeoFS's Web GUI. You can easily operate LeoFS.
+
+
 Install
 ========
 
@@ -27,7 +30,14 @@ Run on WEBrick
 ==============
 
 ```
-$ ruby config.ru ${PORT}
+$ ruby config_webrick.ru ${PORT}
+```
+
+Run on Unicorn
+==============
+
+```
+$ unicorn -c unicorn.conf config_unicorn.ru
 ```
 
 ICONS

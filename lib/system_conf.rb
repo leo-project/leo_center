@@ -19,9 +19,29 @@
 #  under the License.
 #
 # ======================================================================
-# version: 0.2.8
-# ======================================================================
+class LeoTamer
+  module SystemConf; end
 
-require File.expand_path("app", File.dirname(__FILE__)) # for unicorn
+  namespace "/system_conf" do
+    SystemConf::Properties = {
+      version: "Version",
+      n: "Number of replicas",
+      r: "Number of successful READ",
+      w: "Number of successful WRITE",
+      d: "Number of successful DELETE"
+    }
 
-run LeoTamer
+    get "/list.json" do
+      system_info = @@manager.status.system_info
+
+      data = SystemConf::Properties.map do |property, text|
+        {
+          name: text,
+          value: system_info.__send__(property)
+        }
+      end
+
+      { data: data }.to_json
+    end
+  end
+end

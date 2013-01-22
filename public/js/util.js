@@ -20,14 +20,62 @@
 //
 // ======================================================================
 (function() {
-
   Object.clone = function(source) {
     return $.extend({}, source);
   };
 
-  Ext.define("LeoTamer.model.NameValue", {
-    extend: 'Ext.data.Model',
-    fields: ["name", "value"]
+  Ext.define("LeoTamer.Msg", {
+    statics: {
+      // alert with ERROR icon
+      alert: function(title, msg, fn, scope) {
+        Ext.Msg.show({
+          title: title,
+          msg: msg,
+          fn: fn,
+          scope: scope,
+          buttons: Ext.Msg.OK,
+          icon: Ext.Msg.ERROR // set icon
+        });
+      }
+    },
+
+    constructor: function () {
+      this.callSuper(arguments);
+    }
   });
 
+  Ext.define("LeoTamer.model.NameValue", {
+    extend: "Ext.data.Model",
+    fields: ["name", "value", "group"]
+  });
+
+  LeoTamer.confirm_password = function(callbacks) {
+    Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
+      if (btn == "ok" ) {
+        Ext.Ajax.request({
+          url: "login",
+          method: "POST",
+          params: {
+            user_id: Ext.util.Cookies.get("user_id"),
+            password: value
+          },
+          success: function(response, opts) {
+            text = response.responseText;
+            result = Ext.JSON.decode(text);
+            if (result.success) {
+              // truely success
+              callbacks.success(response, opts);
+            }
+            else {
+              // failure
+              callbacks.failure(result.errors.reason);
+            }
+          },
+          failure: function(response, opts) {
+            callbacks.failure(response.responseText);
+          }
+        });
+      }
+    });
+  }
 }).call(this);

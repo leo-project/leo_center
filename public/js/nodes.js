@@ -42,6 +42,7 @@
     },
 
     listeners: {
+      // it fires when "Node Status" tab is selected
       activate: function(self) {
         self.select_first_row();
 
@@ -69,12 +70,13 @@
 
     detail_store: Ext.create("Ext.data.ArrayStore", {
       model: "LeoTamer.model.NameValue",
+      groupField: "group",
       proxy: {
-        type: 'ajax',
-        url: 'nodes/detail.json',
+        type: "ajax",
+        url: "nodes/detail.json",
         reader: {
-          type: 'json',
-          root: 'data'
+          type: "json",
+          root: "data"
         },
         // disabe unused params
         noCache: false,
@@ -84,7 +86,7 @@
         startParam: undefined,
         listeners: {
           exception: function(self, response, operation) {
-            Ext.Msg.alert("Error on: \'" + self.url + "\'", response.responseText);
+            LeoTamer.Msg.alert("Error on: \'" + self.url + "\'", response.responseText);
           }
         }
       }
@@ -104,7 +106,7 @@
           self.store.load();
         },
         failure: function(response) {
-          Ext.Msg.alert("Error!", response.responseText);
+          LeoTamer.Msg.alert("Error!", response.responseText);
         }
       });
     },
@@ -116,32 +118,37 @@
         win.defaultFocus = 2; // set default focus to "No" button
       });
 
-      var msg = "Are you sure to send command '" + command + " " + node + "'?";
-      Ext.Msg.confirm("Confirm", msg, function(btn) {
-        if (btn == "yes") self.do_send_command(node, command);
+      // confirm user's password before dangerous action
+      LeoTamer.confirm_password({
+        success: function(response) {
+          self.do_send_command(node, command);
+        },
+        failure: function(reason) {
+          LeoTamer.Msg.alert("Error!", reason);
+        }
       });
     },
 
     get_status_icon: function(val) {
       var src;
       switch (val) {
-        case "running":
-          src = "images/running.png";
-          break;
-        case "stop":
-        case "downed":
-        case "detached":
-          src = "images/downed.png";
-          break;
-        case "restarted":
-        case "attached":
-          src = "images/add.png";
-          break;
-        case "suspend":
-          src = "images/warn.png";
-          break;
-        default:
-          throw "invalid status specified: " + val;
+      case "running":
+        src = "images/running.png";
+        break;
+      case "stop":
+      case "downed":
+      case "detached":
+        src = "images/downed.png";
+        break;
+      case "restarted":
+      case "attached":
+        src = "images/add.png";
+        break;
+      case "suspend":
+        src = "images/warn.png";
+        break;
+      default:
+        throw "invalid status specified: " + val;
       }
       return "<img class='status' src='" + src + "'> ";
     },
@@ -153,31 +160,45 @@
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name} [{rows.length}]"
+      groupHeaderTpl: "{name} [{rows.length}]",
+      collapsible: false
     }),
 
-    rewrite_status_body: function(self, node_stat) {
-      var name = node_stat.node;
-      var status = node_stat.status;
-
-      self.status_body.update(self.get_status_icon(status) + " " + name);
-
-      var change_status_button = Ext.getCmp("change_status_button");
-
-      if (node_stat.type == "Gateway") {
-         change_status_button.hide();
-      }
-      else {
-         change_status_button.show();
-      }
+    select_grouping: function(self, text, group) {
+      var splitbutton = Ext.getCmp("nodes_grid_current_grouping");
+      splitbutton.setText(text);
+      self.store.group(group);
     },
+
+    detail_grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
+      groupHeaderTpl: "{name}",
+      collapsible: false
+    }),
 
     on_grid_select: function(self, record) {
       var node_stat = record.data;
+      var change_status_button = Ext.getCmp("change_status_button");
 
-      self.rewrite_status_body(self, node_stat);
+      // using HTML 4.0 character entity references to avoid Ext.Panel#setTitle()'s cutting space
+      // &nbsp; //=> non-breaking space
+      self.status_panel.setTitle(self.get_status_icon(node_stat.status) + "&nbsp;" + node_stat.node);
+
+      if (node_stat.type === "Gateway") {
+        change_status_button.hide();
+      }
+      else {
+        switch (node_stat.status) {
+        case "stop":
+        case "attached":
+          change_status_button.hide();
+          break;
+        default:
+          change_status_button.show();
+        }
+      }
 
       if (node_stat.status === "stop") {
+        // can't get detail information from stopped node
         self.detail_store.removeAll();
       }
       else {
@@ -190,19 +211,20 @@
       }
     },
 
-    available_command_filter: function(status, command) {
-      switch (status) {
-        case "running":
-          if (command === "suspend") return true;
-          if (command === "detach") return true;
-          return false;
-        case "suspend":
-        case "restarted":
-          if (command === "resume") return true;
-          return false;
-        case "stop":
-          if (command === "detach") return true;
-          return false;
+    // it shows what commands are available on each state
+    available_commands_table: {
+      running: {
+        suspend: true,
+        detach: true
+      },
+      suspend: {
+        resume: true
+      },
+      restarted: {
+        resume: true
+      },
+      stop: {
+        detach: true
       }
     },
 
@@ -210,9 +232,10 @@
       var self = this;
 
       self.send_command = function() {
-        var node, command_combo, command_select_window;
+        var node, command_combo, command_select_window, status;
 
         node = self.grid.getSelectionModel().getSelection()[0].data;
+        status = node.status;
 
         command_combo = Ext.create("Ext.form.ComboBox", {
           padding: 10,
@@ -227,8 +250,9 @@
         });
 
         self.command_store.filter({
+          // filter to show only available commands on the state
           filterFn: function(record) {
-            return self.available_command_filter(node.status, record.data.command);
+            return self.available_commands_table[status][record.data.command] ? true : false;
           }
         });
 
@@ -239,7 +263,13 @@
             text: "Apply",
             handler: function() {
               var command = command_combo.getValue();
-              self.confirm_send_command(node.node, command);
+              if (command) {
+                self.confirm_send_command(node.node, command);
+
+              }
+              else {
+                LeoTamer.Msg.alert("Error!", "Command not specified");
+              }
               command_select_window.close();
             }
           }, {
@@ -256,63 +286,48 @@
         }).show();
       };
 
-      self.status_body = Ext.create("Ext.Panel", {
-        id: "node_status",
-        border: false,
-        padding: 5,
-        height: 60,
-        buttons: [{
-          xtype: "button",
-          id: "change_status_button",
-          text: "Change Status",
-          handler: self.send_command
-        }]
-      });
-
       self.status_panel = Ext.create("Ext.Panel", {
-        title: "Node Status/Name",
+        title: "Config/VM Status",
         region: "east",
         width: 300,
         resizable: false,
-        items: [
-          self.status_body,
-          {
-            xtype: 'grid',
-            title: "Config/VM Status",
-            border: false,
-            forceFit: true,
-            hideHeaders: true,
-            viewConfig: {
-              loadMask: false
-            },
-            store: self.detail_store,
-            columns: [
-              {
-                dataIndex: "name",
-                text: "Name"
-              }, {
-                dataIndex: "value",
-                text: "Value"
-              }
-            ],
-            listeners: {
-              beforeselect: function() {
-                return false; // disable row select
-              }
+        items: [{
+          xtype: "grid",
+          border: false,
+          forceFit: true,
+          hideHeaders: true,
+          viewConfig: { loadMask: false },
+          features: [ self.detail_grid_grouping ],
+          store: self.detail_store,
+          columns: [{
+            dataIndex: "name",
+            text: "Name"
+          }, {
+            dataIndex: "value",
+            text: "Value"
+          }],
+          listeners: {
+            beforeselect: function() {
+              return false; // disable row selection
             }
-          }
-        ]
+          },
+          buttons: [{
+            id: "change_status_button",
+            margin: 10,
+            text: "Change Status",
+            handler: self.send_command
+          }]
+        }]
       });
 
       self.store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Nodes",
-        groupField: 'type',
         proxy: {
-          type: 'ajax',
-          url: 'nodes/status.json',
+          type: "ajax",
+          url: "nodes/status.json",
           reader: {
-            type: 'json',
-            root: 'data'
+            type: "json",
+            root: "data"
           },
           // disable unused params
           noCache: false,
@@ -323,7 +338,19 @@
           groupParam: undefined,
           listeners: {
             exception: function(store, response, operation) {
-              Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+              LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            }
+          }
+        },
+        listeners: {
+          load: function() {
+            var rebalance_button = Ext.getCmp("nodes_rebalance_button");
+            var rebalance_ready = self.store.find("status", /attached|detached/) != -1;
+            if (rebalance_ready) {
+              rebalance_button.enable();
+            }
+            else {
+              rebalance_button.disable();
             }
           }
         }
@@ -334,69 +361,123 @@
         region: "center",
         forceFit: true,
         features: [ self.grid_grouping ],
-        viewConfig: {
-          trackOver: false
-        },
         columns: {
-          defaults: {
-            resizable: false
-          },
-          items: [
-            {
-              text: "Node",
-              dataIndex: 'node',
-              sortable: true,
-              width: 150
-            }, {
-              text: "Status",
-              dataIndex: 'status',
-              renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
-              sortable: true,
-              width: 50
-            }, {
-              text: "Ring (Cur)",
-              dataIndex: 'ring_hash_current',
-              width: 50
-            }, {
-              text: "Ring (Prev)",
-              dataIndex: 'ring_hash_previous',
-              width: 50
-            }, {
-              text: "Joined At",
-              dataIndex: "joined_at"
-            }
-          ]
+          defaults: { resizable: false },
+          items: [{
+            text: "Node",
+            dataIndex: 'node',
+            sortable: true,
+            width: 150
+          }, {
+            text: "Status",
+            dataIndex: 'status',
+            renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
+            sortable: true,
+            width: 50
+          }, {
+            text: "Current Ring",
+            dataIndex: 'ring_hash_current',
+            width: 50
+          }, {
+            text: "Prev Ring",
+            dataIndex: 'ring_hash_previous',
+            width: 50
+          }, {
+            text: "Joined At",
+            dataIndex: "joined_at"
+          }]
         },
-        tbar: [
-          {
-            xtype: "textfield",
-            fieldLabel: "<img src='images/filter.png'> Filter:",
-            labelWidth: 60,
-            listeners: {
-              change: function(text_field, new_value) {
-                var store = self.store;
-                store.clearFilter();
-                store.filter("node", new RegExp(new_value));
-              }
-            }
-          },
-          "->",
-          {
-            xtype: "button",
-            icon: "images/reload.png",
-            handler: function() {
-              self.store.load();
+        tbar: [{
+          xtype: "textfield",
+          fieldLabel: "<img src='images/filter.png'> Filter:",
+          labelWidth: 60,
+          listeners: {
+            change: function(text_field, new_value) {
+              var store = self.store;
+              store.clearFilter();
+              store.filter("node", new RegExp(new_value));
             }
           }
-        ],
+        },
+               "-",
+               {
+                 xtype: "splitbutton",
+                 id: "nodes_grid_current_grouping",
+                 handler: function(splitbutton) {
+                   // show menu when splitbutton itself is pressed
+                   splitbutton.showMenu();
+                 },
+                 style: { "font-weight": "bold" },
+                 menu: {
+                   xtype: "menu",
+                   showSeparator: false,
+                   defaults: {
+                     style: { "font-weight": "bold" },
+                   },
+                   items: [{
+                     text: "Group by Type",
+                     icon: "images/table.png",
+                     handler: function(button) {
+                       self.select_grouping(self, button.text, "type");
+                     }
+                   }, {
+                     text: "Group by Status",
+                     icon: "images/table.png",
+                     handler: function(button) {
+                       self.select_grouping(self, button.text, "status");
+                     }
+                   }]
+                 },
+                 listeners: {
+                   render: function() {
+                     // default grouping state
+                     self.select_grouping(self, "Group by Type", "type");
+                   }
+                 }
+               },
+               "-",
+               {
+                 text: "Rebalance",
+                 id: "nodes_rebalance_button",
+                 icon: "images/rebalance.png",
+                 handler: function() {
+                   rebalance_ready = self.store.find("status", /attached|detached/) != -1;
+                   if (rebalance_ready) {
+                     var msg = "Are you sure to send 'rebalance'?";
+                     Ext.Msg.confirm("Confirm", msg, function(btn) {
+                       if (btn == "yes") {
+                         Ext.Ajax.request({
+                           url: "nodes/rebalance",
+                           method: "POST",
+                           success: function(response) {
+                             self.store.load();
+                           },
+                           failure: function(response) {
+                             LeoTamer.Msg.alert("Error!", response.responseText);
+                           }
+                         });
+                       }
+                     });
+                   }
+                 }
+               },
+               "->",
+               {
+                 xtype: "button",
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.store.load();
+                 }
+               }],
         listeners: {
           render: function(grid) {
             grid.getStore().on("load", function() {
+              // select row which was selected before reload
               grid.getSelectionModel().select(self.selected_index);
             });
           },
           beforeselect: function(grid, record, index) {
-            self.selected_index = index;
+            self.selected_index = index; // save which row is selected before reload
           },
           select: function(grid, record, index) {
             self.on_grid_select(self, record);

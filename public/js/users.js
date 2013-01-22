@@ -68,7 +68,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response) {
-            Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }
@@ -88,7 +88,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              Ext.Msg.alert("Error!", response.responseText);
+              LeoTamer.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -99,31 +99,35 @@
       var self = this;
       var title = "Delete User";
       var last_selected = self.grid.getSelectionModel().getLastSelected();
+
       if (!last_selected) {
-        Ext.Msg.alert("Error!", "Please select a user.");
+        LeoTamer.Msg.alert("Error!", "Please select a user.");
+        return;
       }
-      else {
-        var user_id = last_selected.data.user_id;
+
+      var user_id = last_selected.data.user_id;
+
+      /*
         var msg = "Are you sure to delete user: '" + user_id + "'?";
         Ext.Msg.on("beforeshow",  function (win) {
-          win.defaultFocus = 2; // set default focus to "No" button
-        });
-        Ext.Msg.confirm(title, msg, function(btn) {
-          if (btn == "yes") {
-            Ext.Ajax.request({
-              url: "users/delete_user",
-              method: "DELETE",
-              params: { user_id: user_id },
-              success: function(response) {
-                self.load();
-              },
-              failure: function(response) {
-                Ext.Msg.alert("Error!", response.responseText);
-              }
-            });
-          }
-        });
-      }
+        win.defaultFocus = 2; // set default focus to "No" button
+        }); */
+
+      LeoTamer.confirm_password({
+        success: function() {
+          Ext.Ajax.request({
+            url: "users/delete_user",
+            method: "DELETE",
+            params: { user_id: user_id },
+            success: function(response) {
+              self.load();
+            },
+            failure: function(response) {
+              LeoTamer.Msg.alert("Error!", response.responseText);
+            }
+          });
+        }
+      });
     },
 
     do_update_user: function(user_id, role_id) {
@@ -139,7 +143,7 @@
           self.load();
         },
         failure: function(response, opts) {
-          Ext.Msg.alert("Error!", response.responseText);
+          LeoTamer.Msg.alert("Error!", response.responseText);
         }
       });
     },
@@ -148,7 +152,7 @@
       var self = this;
       var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
-        Ext.Msg.alert("Error!", "Please select a user.");
+        LeoTamer.Msg.alert("Error!", "Please select a user.");
       }
       else {
         var user_id = last_selected.data.user_id;
@@ -189,17 +193,18 @@
 
     role_renderer: function(value) {
       switch (value) {
-        case "admin":
-          return "<img src='images/admin_user.png'> " + value;
-        case "general":
-          return "<img src='images/user.png'> " + value;
-        default:
-          throw "invalid value: " + value;
+      case "admin":
+        return "<img src='images/admin_user.png'> " + Ext.String.capitalize(value);
+      case "general":
+        return "<img src='images/user.png'> " + Ext.String.capitalize(value);
+      default:
+        throw "invalid value: " + value;
       }
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name} [{rows.length}]"
+      groupHeaderTpl: "{name} [{rows.length}]",
+      collapsible: false
     }),
 
     initComponent: function() {
@@ -223,36 +228,36 @@
             }
           }
         },
-        "-",
-        /*
-        {
-          text: "Add User",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_user();
-          }
-        },
-        */
-        {
-          text: "Delete User",
-          icon: "images/remove.png",
-          handler: function() {
-            self.delete_user();
-          }
-        }, {
-          text: "Update Role",
-          icon: "images/update_user.png",
-          handler: function() {
-            self.update_user();
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               "-",
+               /*
+                 {
+                 text: "Add User",
+                 icon: "images/add.png",
+                 handler: function() {
+                 self.add_user();
+                 }
+                 },
+               */
+               {
+                 text: "Delete User",
+                 icon: "images/remove.png",
+                 handler: function() {
+                   self.delete_user();
+                 }
+               }, {
+                 text: "Update Role",
+                 icon: "images/update_user.png",
+                 handler: function() {
+                   self.update_user();
+                 }
+               },
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: {
             resizable: false

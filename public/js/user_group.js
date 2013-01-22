@@ -76,7 +76,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response) {
-            Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }
@@ -96,7 +96,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              Ext.Msg.alert("Error!", response.responseText);
+              LeoTamer.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -144,7 +144,7 @@
               },
               failure: function(form, action) {
                 alert("foo");
-                Ext.Msg.alert("Add User Faild!", "reason: " + action.result.errors.reason);
+                LeoTamer.Msg.alert("Add User Faild!", "reason: " + action.result.errors.reason);
               }
             });
           }
@@ -163,7 +163,7 @@
       var title = "Delete User";
       var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
-        Ext.Msg.alert("Error!", "Please select a user.");
+        LeoTamer.Msg.alert("Error!", "Please select a user.");
       }
       else {
         var user_id = last_selected.data.user_id;
@@ -181,7 +181,7 @@
                 self.load();
               },
               failure: function(response) {
-                Ext.Msg.alert("Error!", response.responseText);
+                LeoTamer.Msg.alert("Error!", response.responseText);
               }
             });
           }
@@ -191,12 +191,12 @@
 
     role_renderer: function(value) {
       switch (value) {
-        case "admin":
-          return "<img src='images/admin_user.png'> " + value;
-        case "general":
-          return "<img src='images/user.png'> " + value;
-        default:
-          throw "invalid value: " + value;
+      case "admin":
+        return "<img src='images/admin_user.png'> " + value;
+      case "general":
+        return "<img src='images/user.png'> " + value;
+      default:
+        throw "invalid value: " + value;
       }
     },
 
@@ -226,49 +226,49 @@
             }
           }
         },
-        {
-          text: "Add Group",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_user_group();
-          }
-        },
-        {
-          text: "Update Group",
-          icon: "images/update_user.png",
-          handler: function() {
-            // TODO
-          }
-        },
-        {
-          text: "Delete Group",
-          icon: "images/remove.png",
-          handler: function() {
-            // TODO
-          }
-        }, 
-        "-",
-        {
-          text: "Add User",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_user();
-          }
-        },
-        {
-          text: "Delete User",
-          icon: "images/remove.png",
-          handler: function() {
-            self.delete_user();
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               {
+                 text: "Add Group",
+                 icon: "images/add.png",
+                 handler: function() {
+                   self.add_user_group();
+                 }
+               },
+               {
+                 text: "Update Group",
+                 icon: "images/update_user.png",
+                 handler: function() {
+                   // TODO
+                 }
+               },
+               {
+                 text: "Delete Group",
+                 icon: "images/remove.png",
+                 handler: function() {
+                   // TODO
+                 }
+               },
+               "-",
+               {
+                 text: "Add User",
+                 icon: "images/add.png",
+                 handler: function() {
+                   self.add_user();
+                 }
+               },
+               {
+                 text: "Delete User",
+                 icon: "images/remove.png",
+                 handler: function() {
+                   self.delete_user();
+                 }
+               },
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: {
             resizable: false

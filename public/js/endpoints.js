@@ -59,7 +59,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response, operation) {
-            Ext.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }
@@ -79,7 +79,7 @@
               self.load();
             },
             failure: function(response) {
-              Ext.Msg.alert("Error!", response.responseText);
+              LeoTamer.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -91,7 +91,7 @@
       var title = "Delete Endpoint";
       var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
-        Ext.Msg.alert("Error!", "Please select a endpoint.");
+        LeoTamer.Msg.alert("Error!", "Please select a endpoint.");
       }
       else {
         var endpoint = last_selected.data.endpoint;
@@ -109,7 +109,7 @@
                 self.load();
               },
               failure: function(response, opts) {
-                Ext.Msg.alert("Error!", response.responseText);
+                LeoTamer.Msg.alert("Error!", response.responseText);
               }
             })
           }
@@ -137,28 +137,28 @@
             }
           }
         },
-        "-",
-        {
-          text: "Add Endpoint",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_endpoint(self);
-          }
-        },
-        {
-          text: "Delete Endpoint",
-          icon: "images/remove.png",
-          handler: function() {
-            self.delete_endpoint(self);
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               "-",
+               {
+                 text: "Add Endpoint",
+                 icon: "images/add.png",
+                 handler: function() {
+                   self.add_endpoint(self);
+                 }
+               },
+               {
+                 text: "Delete Endpoint",
+                 icon: "images/remove.png",
+                 handler: function() {
+                   self.delete_endpoint(self);
+                 }
+               },
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: { resizable: false },
           items: [

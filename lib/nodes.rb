@@ -60,19 +60,35 @@ class LeoTamer
       { data: data }.to_json
     end
 
-    Nodes::Properties = [
-      :version, :vm_version, :log_dir, :ring_cur, :ring_prev, :total_mem_usage,
-      :system_mem_usage, :procs_mem_usage, :ets_mem_usage, :num_of_procs,
-      :limit_of_procs, :thread_pool_size
-    ]
+    # property: "text"
+    Nodes::Properties = {
+      version: "Version",
+      vm_version: "VM Version",
+      log_dir: "Log Dir",
+      ring_cur: "Current Ring-hash",
+      ring_prev: "Previous Ring-hash",
+      total_mem_usage: "Total Mem Usage",
+      system_mem_usage: "System Mem Usage",
+      procs_mem_usage: "Procs Mem Usage",
+      ets_mem_usage: "ETS MEM Usage",
+      num_of_procs: "Num of Procs",
+      limit_of_procs: "Limit of Procs",
+      thread_pool_size: "Thread Pool Size"
+    }
+
+    Nodes::DetailGridDummyGrouping = "Config/VM Status"
 
     get "/detail.json" do
       node, type = required_params(:node, :type)
 
       node_stat = @@manager.status(node).node_stat
 
-      result = Nodes::Properties.map do |property|
-        { name: property.to_s.gsub("_", " "), value: node_stat.__send__(property) }
+      result = Nodes::Properties.map do |property, text|
+        { 
+          name: text,
+          value: node_stat.__send__(property),
+          group: Nodes::DetailGridDummyGrouping
+        }
       end
 
       if type == "Storage"
@@ -82,8 +98,9 @@ class LeoTamer
           warn ex.message
         else
           result.push({
-            name: "total_of_objects",
-            value: storage_stat.total_of_objects
+            name: "Total of Objects",
+            value: storage_stat.total_of_objects,
+            group: Nodes::DetailGridDummyGrouping
           })
         end
       end
@@ -102,6 +119,10 @@ class LeoTamer
         raise "invalid operation command: #{command}"
       end
       200
+    end
+
+    post "/rebalance" do
+      @@manager.rebalance
     end
   end
 end
