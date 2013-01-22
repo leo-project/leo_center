@@ -126,21 +126,21 @@
             }
           }
         },
-        "-",
-        {
-          text: "Add Bucket",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_bucket(self);
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               "-",
+               {
+                 text: "Add Bucket",
+                 icon: "images/add.png",
+                 handler: function() {
+                   self.add_bucket(self);
+                 }
+               },
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: {
             resizable: false

@@ -21,10 +21,10 @@
 // ======================================================================
 (function() {
   /* config for logs
-  Highcharts.setOptions({
-    credits: { enabled: false },
-    global: { useUTC: false }
-  });
+     Highcharts.setOptions({
+     credits: { enabled: false },
+     global: { useUTC: false }
+     });
   */
 
   Ext.onReady(function() {
@@ -71,29 +71,29 @@
         height: 24,
         src: "images/leofs-logo-w.png" //TODO: resize
       },
-      "->",
-      {
-        id: "user_menu",
-        text: Ext.util.Cookies.get("user_id"), // raw cookie from server
-        icon: "images/admin_user.png",
-        menu: {
-          xtype: "menu",
-          showSeparator: false,
-          items: [{
-            text: "Security Credentials",
-            icon: "images/credential.png",
-            handler: get_credential
-          },
-          "-",
-          {
-            text: "Sign Out",
-            icon: "images/logout.png",
-            handler: function() {
-              window.location = "/logout"
-            }
-          }]
-        }
-      }]
+              "->",
+              {
+                id: "user_menu",
+                text: Ext.util.Cookies.get("user_id"), // raw cookie from server
+                icon: "images/admin_user.png",
+                menu: {
+                  xtype: "menu",
+                  showSeparator: false,
+                  items: [{
+                    text: "Security Credentials",
+                    icon: "images/credential.png",
+                    handler: get_credential
+                  },
+                          "-",
+                          {
+                            text: "Sign Out",
+                            icon: "images/logout.png",
+                            handler: function() {
+                              window.location = "/logout"
+                            }
+                          }]
+                }
+              }]
     });
 
     return Ext.create("Ext.Viewport", {

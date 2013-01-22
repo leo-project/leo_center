@@ -137,28 +137,28 @@
             }
           }
         },
-        "-",
-        {
-          text: "Add Endpoint",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_endpoint(self);
-          }
-        },
-        {
-          text: "Delete Endpoint",
-          icon: "images/remove.png",
-          handler: function() {
-            self.delete_endpoint(self);
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               "-",
+               {
+                 text: "Add Endpoint",
+                 icon: "images/add.png",
+                 handler: function() {
+                   self.add_endpoint(self);
+                 }
+               },
+               {
+                 text: "Delete Endpoint",
+                 icon: "images/remove.png",
+                 handler: function() {
+                   self.delete_endpoint(self);
+                 }
+               },
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: { resizable: false },
           items: [

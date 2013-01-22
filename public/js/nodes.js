@@ -132,23 +132,23 @@
     get_status_icon: function(val) {
       var src;
       switch (val) {
-        case "running":
-          src = "images/running.png";
-          break;
-        case "stop":
-        case "downed":
-        case "detached":
-          src = "images/downed.png";
-          break;
-        case "restarted":
-        case "attached":
-          src = "images/add.png";
-          break;
-        case "suspend":
-          src = "images/warn.png";
-          break;
-        default:
-          throw "invalid status specified: " + val;
+      case "running":
+        src = "images/running.png";
+        break;
+      case "stop":
+      case "downed":
+      case "detached":
+        src = "images/downed.png";
+        break;
+      case "restarted":
+      case "attached":
+        src = "images/add.png";
+        break;
+      case "suspend":
+        src = "images/warn.png";
+        break;
+      default:
+        throw "invalid status specified: " + val;
       }
       return "<img class='status' src='" + src + "'> ";
     },
@@ -182,18 +182,18 @@
       // using HTML 4.0 character entity references to avoid Ext.Panel#setTitle()'s cutting space
       // &nbsp; //=> non-breaking space
       self.status_panel.setTitle(self.get_status_icon(node_stat.status) + "&nbsp;" + node_stat.node);
- 
+
       if (node_stat.type === "Gateway") {
         change_status_button.hide();
       }
       else {
         switch (node_stat.status) {
-          case "stop":
-          case "attached":
-            change_status_button.hide();
-            break;
-          default:
-            change_status_button.show();
+        case "stop":
+        case "attached":
+          change_status_button.hide();
+          break;
+        default:
+          change_status_button.show();
         }
       }
 
@@ -375,11 +375,11 @@
             sortable: true,
             width: 50
           }, {
-            text: "Current Ring-hash",
+            text: "Current Ring",
             dataIndex: 'ring_hash_current',
             width: 50
           }, {
-            text: "Previous Ring-hash",
+            text: "Prev Ring",
             dataIndex: 'ring_hash_previous',
             width: 50
           }, {
@@ -399,76 +399,76 @@
             }
           }
         },
-        "-",
-        {
-          xtype: "splitbutton",
-          id: "nodes_grid_current_grouping",
-          handler: function(splitbutton) {
-            // show menu when splitbutton itself is pressed
-            splitbutton.showMenu();
-          },
-          style: { "font-weight": "bold" },
-          menu: {
-            xtype: "menu",
-            showSeparator: false,
-            defaults: {
-              style: { "font-weight": "bold" },
-            },
-            items: [{
-              text: "Group by Type",
-              icon: "images/table.png",
-              handler: function(button) {
-                self.select_grouping(self, button.text, "type");
-              }
-            }, {
-              text: "Group by Status",
-              icon: "images/table.png",
-              handler: function(button) {
-                self.select_grouping(self, button.text, "status");
-              }
-            }]
-          },
-          listeners: {
-            render: function() {
-              // default grouping state
-              self.select_grouping(self, "Group by Type", "type");
-            }
-          }
-        },
-        "-",
-        {
-          text: "Rebalance",
-          id: "nodes_rebalance_button",
-          icon: "images/rebalance.png",
-          handler: function() {
-            rebalance_ready = self.store.find("status", /attached|detached/) != -1;
-            if (rebalance_ready) {
-              var msg = "Are you sure to send command 'rebalance'?";
-              Ext.Msg.confirm("Confirm", msg, function(btn) {
-                if (btn == "yes") {
-                  Ext.Ajax.request({
-                    url: "nodes/rebalance",
-                    method: "POST",
-                    success: function(response) {
-                      self.store.load();
-                    },
-                    failure: function(response) {
-                      LeoTamer.Msg.alert("Error!", response.responseText);
-                    }
-                  });
-                }
-              });
-            }
-          }
-        },
-        "->",
-        {
-          xtype: "button",
-          icon: "images/reload.png",
-          handler: function() {
-            self.store.load();
-          }
-        }],
+               "-",
+               {
+                 xtype: "splitbutton",
+                 id: "nodes_grid_current_grouping",
+                 handler: function(splitbutton) {
+                   // show menu when splitbutton itself is pressed
+                   splitbutton.showMenu();
+                 },
+                 style: { "font-weight": "bold" },
+                 menu: {
+                   xtype: "menu",
+                   showSeparator: false,
+                   defaults: {
+                     style: { "font-weight": "bold" },
+                   },
+                   items: [{
+                     text: "Group by Type",
+                     icon: "images/table.png",
+                     handler: function(button) {
+                       self.select_grouping(self, button.text, "type");
+                     }
+                   }, {
+                     text: "Group by Status",
+                     icon: "images/table.png",
+                     handler: function(button) {
+                       self.select_grouping(self, button.text, "status");
+                     }
+                   }]
+                 },
+                 listeners: {
+                   render: function() {
+                     // default grouping state
+                     self.select_grouping(self, "Group by Type", "type");
+                   }
+                 }
+               },
+               "-",
+               {
+                 text: "Rebalance",
+                 id: "nodes_rebalance_button",
+                 icon: "images/rebalance.png",
+                 handler: function() {
+                   rebalance_ready = self.store.find("status", /attached|detached/) != -1;
+                   if (rebalance_ready) {
+                     var msg = "Are you sure to send command 'rebalance'?";
+                     Ext.Msg.confirm("Confirm", msg, function(btn) {
+                       if (btn == "yes") {
+                         Ext.Ajax.request({
+                           url: "nodes/rebalance",
+                           method: "POST",
+                           success: function(response) {
+                             self.store.load();
+                           },
+                           failure: function(response) {
+                             LeoTamer.Msg.alert("Error!", response.responseText);
+                           }
+                         });
+                       }
+                     });
+                   }
+                 }
+               },
+               "->",
+               {
+                 xtype: "button",
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.store.load();
+                 }
+               }],
         listeners: {
           render: function(grid) {
             grid.getStore().on("load", function() {

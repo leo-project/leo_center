@@ -44,20 +44,20 @@
     set_icon: function(value) {
       var img = undefined;
       switch(value) {
-        case "System Conf":
-          img = "<img src='images/system_conf.png'> ";
-          break;
-        case "Users":
-          img = "<img src='images/users.png'> ";
-          break;
-        case "Buckets":
-          img = "<img src='images/bucket.png'> ";
-          break;
-        case "Endpoints":
-          img = "<img src='images/endpoint.png'> ";
-          break;
-        default:
-          throw "no icon for " + value;
+      case "System Conf":
+        img = "<img src='images/system_conf.png'> ";
+        break;
+      case "Users":
+        img = "<img src='images/users.png'> ";
+        break;
+      case "Buckets":
+        img = "<img src='images/bucket.png'> ";
+        break;
+      case "Endpoints":
+        img = "<img src='images/endpoint.png'> ";
+        break;
+      default:
+        throw "no icon for " + value;
       }
       return img + value;
     },

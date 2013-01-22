@@ -108,10 +108,10 @@
       var user_id = last_selected.data.user_id;
 
       /*
-      var msg = "Are you sure to delete user: '" + user_id + "'?";
-      Ext.Msg.on("beforeshow",  function (win) {
+        var msg = "Are you sure to delete user: '" + user_id + "'?";
+        Ext.Msg.on("beforeshow",  function (win) {
         win.defaultFocus = 2; // set default focus to "No" button
-      }); */
+        }); */
 
       LeoTamer.confirm_password({
         success: function() {
@@ -193,12 +193,12 @@
 
     role_renderer: function(value) {
       switch (value) {
-        case "admin":
-          return "<img src='images/admin_user.png'> " + Ext.String.capitalize(value);
-        case "general":
-          return "<img src='images/user.png'> " + Ext.String.capitalize(value);
-        default:
-          throw "invalid value: " + value;
+      case "admin":
+        return "<img src='images/admin_user.png'> " + Ext.String.capitalize(value);
+      case "general":
+        return "<img src='images/user.png'> " + Ext.String.capitalize(value);
+      default:
+        throw "invalid value: " + value;
       }
     },
 
@@ -228,36 +228,36 @@
             }
           }
         },
-        "-",
-        /*
-        {
-          text: "Add User",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_user();
-          }
-        },
-        */
-        {
-          text: "Delete User",
-          icon: "images/remove.png",
-          handler: function() {
-            self.delete_user();
-          }
-        }, {
-          text: "Update Role",
-          icon: "images/update_user.png",
-          handler: function() {
-            self.update_user();
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               "-",
+               /*
+                 {
+                 text: "Add User",
+                 icon: "images/add.png",
+                 handler: function() {
+                 self.add_user();
+                 }
+                 },
+               */
+               {
+                 text: "Delete User",
+                 icon: "images/remove.png",
+                 handler: function() {
+                   self.delete_user();
+                 }
+               }, {
+                 text: "Update Role",
+                 icon: "images/update_user.png",
+                 handler: function() {
+                   self.update_user();
+                 }
+               },
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: {
             resizable: false

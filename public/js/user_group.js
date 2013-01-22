@@ -191,12 +191,12 @@
 
     role_renderer: function(value) {
       switch (value) {
-        case "admin":
-          return "<img src='images/admin_user.png'> " + value;
-        case "general":
-          return "<img src='images/user.png'> " + value;
-        default:
-          throw "invalid value: " + value;
+      case "admin":
+        return "<img src='images/admin_user.png'> " + value;
+      case "general":
+        return "<img src='images/user.png'> " + value;
+      default:
+        throw "invalid value: " + value;
       }
     },
 
@@ -226,49 +226,49 @@
             }
           }
         },
-        {
-          text: "Add Group",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_user_group();
-          }
-        },
-        {
-          text: "Update Group",
-          icon: "images/update_user.png",
-          handler: function() {
-            // TODO
-          }
-        },
-        {
-          text: "Delete Group",
-          icon: "images/remove.png",
-          handler: function() {
-            // TODO
-          }
-        }, 
-        "-",
-        {
-          text: "Add User",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_user();
-          }
-        },
-        {
-          text: "Delete User",
-          icon: "images/remove.png",
-          handler: function() {
-            self.delete_user();
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               {
+                 text: "Add Group",
+                 icon: "images/add.png",
+                 handler: function() {
+                   self.add_user_group();
+                 }
+               },
+               {
+                 text: "Update Group",
+                 icon: "images/update_user.png",
+                 handler: function() {
+                   // TODO
+                 }
+               },
+               {
+                 text: "Delete Group",
+                 icon: "images/remove.png",
+                 handler: function() {
+                   // TODO
+                 }
+               },
+               "-",
+               {
+                 text: "Add User",
+                 icon: "images/add.png",
+                 handler: function() {
+                   self.add_user();
+                 }
+               },
+               {
+                 text: "Delete User",
+                 icon: "images/remove.png",
+                 handler: function() {
+                   self.delete_user();
+                 }
+               },
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: {
             resizable: false
