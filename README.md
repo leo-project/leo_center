@@ -1,6 +1,9 @@
 LeoTamer
 =========
 
+**LeoTamer** is more powerful and user-friendly LeoFS's Web GUI. You can easily operate LeoFS.
+
+
 Install
 ========
 
