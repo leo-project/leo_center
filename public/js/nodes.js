@@ -443,7 +443,7 @@
                  handler: function() {
                    rebalance_ready = self.store.find("status", /attached|detached/) != -1;
                    if (rebalance_ready) {
-                     var msg = "Are you sure to send command 'rebalance'?";
+                     var msg = "Are you sure to send 'rebalance'?";
                      Ext.Msg.confirm("Confirm", msg, function(btn) {
                        if (btn == "yes") {
                          Ext.Ajax.request({
