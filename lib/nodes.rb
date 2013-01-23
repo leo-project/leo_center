@@ -107,6 +107,9 @@ class LeoTamer
     end
 
     post "/compaction" do
+      node = required_params(:node)
+      confirm_password
+      @@manager.compact(node)
     end
   end
 end
