@@ -180,16 +180,16 @@
       self.status_panel.setTitle(self.get_status_icon(node_stat.status) + "&nbsp;" + node_stat.node);
 
       if (node_stat.type === "Gateway") {
-        change_status_button.hide();
+        change_status_button.disable();
       }
       else {
         switch (node_stat.status) {
         case "stop":
         case "attached":
-          change_status_button.hide();
+          change_status_button.disable();
           break;
         default:
-          change_status_button.show();
+          change_status_button.enable();
         }
       }
 
@@ -287,6 +287,12 @@
         region: "east",
         width: 300,
         resizable: false,
+        tbar: [{
+          id: "change_status_button",
+          icon: "images/rebalance.png",
+          text: "Change Status",
+          handler: self.send_command
+        }],
         items: [{
           xtype: "grid",
           border: false,
@@ -307,13 +313,7 @@
               return false; // disable row selection
             }
           },
-          buttons: [{
-            id: "change_status_button",
-            margin: 10,
-            icon: "images/rebalance.png",
-            text: "Change Status",
-            handler: self.send_command
-          }]
+
         }]
       });
 

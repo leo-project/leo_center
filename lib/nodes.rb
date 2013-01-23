@@ -123,6 +123,7 @@ class LeoTamer
     end
 
     post "/rebalance" do
+      #TODO: confirm password
       @@manager.rebalance
     end
   end
