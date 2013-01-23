@@ -258,19 +258,22 @@
             xtype: "menu",
             showSeparator: false,
             items: [{
-              text: "Suspend",
+              text: "To Suspend",
+              icon: "images/warn.png",
               id: "change_status_button_suspend",
               handler: function(button) {
                 self.confirm_send_command("suspend");
               }
             }, {
-              text: "Resume",
+              text: "To Running",
+              icon: "images/running.png",
               id: "change_status_button_resume",
               handler: function(button) {
                 self.confirm_send_command("resume");
               }
             }, {
-              text: "Detach",
+              text: "To Stop",
+              icon: "images/downed.png",
               id: "change_status_button_detach",
               handler: function(button) {
                 self.confirm_send_command("detach");
@@ -425,7 +428,7 @@
             if (rebalance_ready) {
               var msg = "Are you sure to send 'rebalance'?";
               Ext.Msg.confirm("Confirm", msg, function(btn) {
-                if (btn == "yes") {
+                if (btn === "yes") {
                   Ext.Ajax.request({
                     url: "nodes/rebalance",
                     method: "POST",
