@@ -85,8 +85,8 @@
         sortParam: undefined,
         startParam: undefined,
         listeners: {
-          exception: function(self, response, operation) {
-            LeoTamer.Msg.alert("Error on: \'" + self.url + "\'", response.responseText);
+          exception: function(detail_store, response, operation) {
+            LeoTamer.Msg.alert("Error on: \'" + detail_store.url + "\'", response.responseText);
           }
         }
       }
@@ -157,7 +157,8 @@
       groupHeaderTpl: "{name} [{rows.length}]"
     }),
 
-    select_grouping: function(self, text, group) {
+    select_grouping: function(text, group) {
+      var self = this;
       var splitbutton = Ext.getCmp("nodes_grid_current_grouping");
       splitbutton.setText(text);
       self.store.group(group);
@@ -388,20 +389,20 @@
               text: "Group by type",
               icon: "images/table.png",
               handler: function(button) {
-                self.select_grouping(self, button.text, "type");
+                self.select_grouping(button.text, "type");
               }
             }, {
               text: "Group by status",
               icon: "images/table.png",
               handler: function(button) {
-                self.select_grouping(self, button.text, "status");
+                self.select_grouping(button.text, "status");
               }
             }]
           },
           listeners: {
             render: function() {
               // default grouping state
-              self.select_grouping(self, "Group by type", "type");
+              self.select_grouping("Group by type", "type");
             }
           }
         },
