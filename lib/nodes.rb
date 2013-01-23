@@ -105,5 +105,8 @@ class LeoTamer
       confirm_password
       @@manager.rebalance
     end
+
+    post "/compaction" do
+    end
   end
 end

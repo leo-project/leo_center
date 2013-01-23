@@ -264,6 +264,10 @@
               }
             }]
           }
+        }, {
+          text: "Compaction",
+          handler: function() {
+          }
         }],
         items: [{
           xtype: "grid",
