@@ -160,8 +160,7 @@
     },
 
     grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name} [{rows.length}]",
-      collapsible: false
+      groupHeaderTpl: "{name} [{rows.length}]"
     }),
 
     select_grouping: function(self, text, group) {
@@ -388,6 +387,39 @@
           }]
         },
         tbar: [{
+          xtype: "splitbutton",
+          id: "nodes_grid_current_grouping",
+          handler: function(splitbutton) {
+            // show menu when splitbutton itself is pressed
+            splitbutton.showMenu();
+          },
+          style: { "font-weight": "bold"},
+          menu:  {
+            xtype: "menu",
+            showSeparator: false,
+            items: [{
+              text: "Group by type",
+              icon: "images/table.png",
+              handler: function(button) {
+                self.select_grouping(self, button.text, "type");
+              }
+            }, {
+              text: "Group by status",
+              icon: "images/table.png",
+              handler: function(button) {
+                self.select_grouping(self, button.text, "status");
+              }
+            }]
+          },
+          listeners: {
+            render: function() {
+              // default grouping state
+              self.select_grouping(self, "Group by type", "type");
+            }
+          }
+        },
+        "-",
+        {
           xtype: "textfield",
           fieldLabel: "<img src='images/filter.png'> Filter:",
           labelWidth: 60,
@@ -399,73 +431,40 @@
             }
           }
         },
-               "-",
-               {
-                 xtype: "splitbutton",
-                 id: "nodes_grid_current_grouping",
-                 handler: function(splitbutton) {
-                   // show menu when splitbutton itself is pressed
-                   splitbutton.showMenu();
-                 },
-                 style: { "font-weight": "bold"},
-                 menu:  {
-                   xtype: "menu",
-                   showSeparator: false,
-                   items: [{
-                     text: "Group by type",
-                     icon: "images/table.png",
-                     handler: function(button) {
-                       self.select_grouping(self, button.text, "type");
-                     }
-                   }, {
-                     text: "Group by status",
-                     icon: "images/table.png",
-                     handler: function(button) {
-                       self.select_grouping(self, button.text, "status");
-                     }
-                   }]
-                 },
-                 listeners: {
-                   render: function() {
-                     // default grouping state
-                     self.select_grouping(self, "Group by type", "type");
-                   }
-                 }
-               },
-               "-",
-               {
-                 text: "Rebalance",
-                 id: "nodes_rebalance_button",
-                 icon: "images/rebalance.png",
-                 handler: function() {
-                   rebalance_ready = self.store.find("status", /attached|detached/) != -1;
-                   if (rebalance_ready) {
-                     var msg = "Are you sure to send 'rebalance'?";
-                     Ext.Msg.confirm("Confirm", msg, function(btn) {
-                       if (btn == "yes") {
-                         Ext.Ajax.request({
-                           url: "nodes/rebalance",
-                           method: "POST",
-                           success: function(response) {
-                             self.store.load();
-                           },
-                           failure: function(response) {
-                             LeoTamer.Msg.alert("Error!", response.responseText);
-                           }
-                         });
-                       }
-                     });
-                   }
-                 }
-               },
-               "->",
-               {
-                 xtype: "button",
-                 icon: "images/reload.png",
-                 handler: function() {
-                   self.store.load();
-                 }
-               }],
+        "-",
+        {
+          text: "Rebalance",
+          id: "nodes_rebalance_button",
+          icon: "images/rebalance.png",
+          handler: function() {
+            rebalance_ready = self.store.find("status", /attached|detached/) != -1;
+            if (rebalance_ready) {
+              var msg = "Are you sure to send 'rebalance'?";
+              Ext.Msg.confirm("Confirm", msg, function(btn) {
+                if (btn == "yes") {
+                  Ext.Ajax.request({
+                    url: "nodes/rebalance",
+                    method: "POST",
+                    success: function(response) {
+                      self.store.load();
+                    },
+                    failure: function(response) {
+                      LeoTamer.Msg.alert("Error!", response.responseText);
+                    }
+                  });
+                }
+              });
+            }
+          }
+        },
+        "->",
+        {
+          xtype: "button",
+          icon: "images/reload.png",
+          handler: function() {
+            self.store.load();
+          }
+        }],
         listeners: {
           render: function(grid) {
             grid.getStore().on("load", function() {
