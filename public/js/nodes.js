@@ -171,7 +171,8 @@
 
     commands: ["suspend", "resume", "detach"],
 
-    on_grid_select: function(self, record) {
+    on_grid_select: function(record) {
+      var self = this;
       var node_stat = record.data;
       var change_status_button = Ext.getCmp("change_status_button");
       var status = node_stat.status;
@@ -464,7 +465,7 @@
             self.selected_index = index; // save which row is selected before reload
           },
           select: function(grid, record, index) {
-            self.on_grid_select(self, record);
+            self.on_grid_select(record);
           }
         }
       });
