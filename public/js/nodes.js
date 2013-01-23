@@ -92,13 +92,15 @@
       }
     }),
 
-    do_send_command: function(node, command) {
+    do_send_command: function(user_id, password, node, command) {
       var self = this;
 
       Ext.Ajax.request({
         url: "nodes/execute",
         method: "POST",
         params: {
+          user_id: user_id,
+          password: password,
           node: node,
           command: command
         },
@@ -119,13 +121,8 @@
       });
 
       // confirm user's password before dangerous action
-      LeoTamer.confirm_password({
-        success: function(user_id, password) {
-          self.do_send_command(node, command);
-        },
-        failure: function(reason) {
-          LeoTamer.Msg.alert("Error!", reason);
-        }
+      LeoTamer.confirm_password(function(user_id, password) {
+        self.do_send_command(user_id, password, node, command);
       });
     },
 
@@ -313,6 +310,7 @@
           buttons: [{
             id: "change_status_button",
             margin: 10,
+            icon: "images/rebalance.png",
             text: "Change Status",
             handler: self.send_command
           }]

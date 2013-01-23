@@ -105,28 +105,24 @@
         return;
       }
 
-      var user_id = last_selected.data.user_id;
+      var user_id_to_delete = last_selected.data.user_id;
 
-      /*
-        var msg = "Are you sure to delete user: '" + user_id + "'?";
-        Ext.Msg.on("beforeshow",  function (win) {
-        win.defaultFocus = 2; // set default focus to "No" button
-        }); */
-
-      LeoTamer.confirm_password({
-        success: function() {
-          Ext.Ajax.request({
-            url: "users/delete_user",
-            method: "DELETE",
-            params: { user_id: user_id },
-            success: function(response) {
-              self.load();
-            },
-            failure: function(response) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
-            }
-          });
-        }
+      LeoTamer.confirm_password(function(user_id_of_admin, password) {
+        Ext.Ajax.request({
+          url: "users/delete_user",
+          method: "DELETE",
+          params: {
+            user_id_to_delete: user_id_to_delete,
+            user_id: user_id_of_admin,
+            password: password
+          },
+          success: function(response) {
+            self.load();
+          },
+          failure: function(response) {
+            LeoTamer.Msg.alert("Error!", response.responseText);
+          }
+        });
       });
     },
 

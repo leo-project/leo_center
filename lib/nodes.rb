@@ -111,6 +111,7 @@ class LeoTamer
     post "/execute" do
       node, command = required_params(:node, :command)
       command = command.to_sym
+      confirm_password
 
       case command
       when :resume, :suspend, :detach

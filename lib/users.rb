@@ -46,10 +46,11 @@ class LeoTamer
     end
 
     delete "/delete_user" do
-      user_id = required_params(:user_id)
+      confirm_password
+      user_id_to_delete = required_params(:user_id_to_delete)
       user_self = required_sessions(:user_id)
-      raise "You can't modify your own role" if user_id == user_self
-      @@manager.delete_user(user_id)
+      raise "You can't modify your own role" if user_id_to_delete == user_self
+      @@manager.delete_user(user_id_to_delete)
       200
     end
 
