@@ -171,19 +171,23 @@
       collapsible: false
     }),
 
+    commands: ["suspend", "resume", "detach"],
+
     on_grid_select: function(self, record) {
       var node_stat = record.data;
       var change_status_button = Ext.getCmp("change_status_button");
+      var status = node_stat.status;
 
       // using HTML 4.0 character entity references to avoid Ext.Panel#setTitle()'s cutting space
       // &nbsp; //=> non-breaking space
       self.status_panel.setTitle(self.get_status_icon(node_stat.status) + "&nbsp;" + node_stat.node);
 
+      // check change status's availability
       if (node_stat.type === "Gateway") {
         change_status_button.disable();
       }
       else {
-        switch (node_stat.status) {
+        switch (status) {
         case "stop":
         case "attached":
           change_status_button.disable();
@@ -193,7 +197,18 @@
         }
       }
 
-      if (node_stat.status === "stop") {
+      Ext.Array.each(self.commands, function(command) {
+        var command_button = Ext.getCmp("change_status_button_" + command);
+        // check each command's availability
+        if (self.available_commands_table[status][command]) {
+          command_button.enable();
+        }
+        else {
+          command_button.disable();
+        }
+      });
+
+      if (status === "stop") {
         // can't get detail information from stopped node
         self.detail_store.removeAll();
       }
@@ -227,71 +242,47 @@
     initComponent: function() {
       var self = this;
 
-      self.send_command = function() {
-        var node, command_combo, command_select_window, status;
-
-        node = self.grid.getSelectionModel().getSelection()[0].data;
-        status = node.status;
-
-        command_combo = Ext.create("Ext.form.ComboBox", {
-          padding: 10,
-          store: self.command_store,
-          labelWidth: 125,
-          fieldLabel: "Execute Command",
-          displayField: "command",
-          valueField: "command",
-          emptyText: "Select Command",
-          allowBlank: false,
-          editable: false
-        });
-
-        self.command_store.filter({
-          // filter to show only available commands on the state
-          filterFn: function(record) {
-            return self.available_commands_table[status][record.data.command] ? true : false;
-          }
-        });
-
-        command_select_window = Ext.create('Ext.window.Window', {
-          title: node.node,
-          items: command_combo,
-          buttons: [{
-            text: "Apply",
-            handler: function() {
-              var command = command_combo.getValue();
-              if (command) {
-                self.confirm_send_command(node.node, command);
-
-              }
-              else {
-                LeoTamer.Msg.alert("Error!", "Command not specified");
-              }
-              command_select_window.close();
-            }
-          }, {
-            text: "Cancel",
-            handler: function() {
-              command_select_window.close();
-            }
-          }],
-          listeners: {
-            close: function() {
-              self.command_store.clearFilter();
-            }
-          }
-        }).show();
-      };
-
       self.status_panel = Ext.create("Ext.Panel", {
         title: "Config/VM Status",
         region: "east",
         width: 300,
         resizable: false,
         tbar: [{
+          xtype: "splitbutton",
           id: "change_status_button",
           icon: "images/rebalance.png",
           text: "Change Status",
-          handler: self.send_command
+          handler: function(splitbutton) {
+            // show menu when splitbutton itself is pressed
+            splitbutton.showMenu();
+          },
+          style: { "font-weight": "bold"}, //XXX: use CSS!
+          menu:  {
+            xtype: "menu",
+            showSeparator: false,
+            items: [{
+              text: "Suspend",
+              id: "change_status_button_suspend",
+              handler: function(button) {
+                var node = self.grid.getSelectionModel().getSelection()[0].data.node;
+                self.confirm_send_command(node, "suspend");
+              }
+            }, {
+              text: "Resume",
+              id: "change_status_button_resume",
+              handler: function(button) {
+                var node = self.grid.getSelectionModel().getSelection()[0].data.node;
+                self.confirm_send_command(node, "resume");
+              }
+            }, {
+              text: "Detach",
+              id: "change_status_button_detach",
+              handler: function(button) {
+                var node = self.grid.getSelectionModel().getSelection()[0].data.node;
+                self.confirm_send_command(node, "detach");
+              }
+            }]
+          }
         }],
         items: [{
           xtype: "grid",
@@ -387,11 +378,12 @@
         tbar: [{
           xtype: "splitbutton",
           id: "nodes_grid_current_grouping",
+          width: 120,
           handler: function(splitbutton) {
             // show menu when splitbutton itself is pressed
             splitbutton.showMenu();
           },
-          style: { "font-weight": "bold"},
+          style: { "font-weight": "bold"}, //XXX: use CSS!
           menu:  {
             xtype: "menu",
             showSeparator: false,
