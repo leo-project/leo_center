@@ -49,34 +49,12 @@
     fields: ["name", "value", "group"]
   });
 
-  LeoTamer.confirm_password = function(callbacks) {
+  LeoTamer.confirm_password = function(callback) {
     Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
       if (btn === "ok") {
         var user_id = Ext.util.Cookies.get("user_id");
         var password = value;
-        Ext.Ajax.request({
-          url: "login",
-          method: "POST",
-          params: {
-            user_id: user_id,
-            password: password
-          },
-          success: function(response, opts) {
-            text = response.responseText;
-            result = Ext.JSON.decode(text);
-            if (result.success) {
-              // truely success
-              callbacks.success(user_id, password);
-            }
-            else {
-              // failure
-              callbacks.failure(result.errors.reason);
-            }
-          },
-          failure: function(response, opts) {
-            callbacks.failure(response.responseText);
-          }
-        });
+        callback(user_id, password);
       }
     });
   }
