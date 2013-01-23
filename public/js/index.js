@@ -48,16 +48,24 @@
     });
 
     get_credential = function() {
-      Ext.Ajax.request({
-        url: "user_credential",
-        method: "GET",
-        success: function(response) {
-          Ext.Msg.alert("Your Credential", response.responseText);
-        },
-        failure: function(response) {
-          LeoTamer.Msg.alert("Error!", response.responseText);
+      Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
+        if (btn === "ok" ) {
+          Ext.Ajax.request({
+            url: "user_credential",
+            method: "GET",
+            params: {
+              user_id: Ext.util.Cookies.get("user_id"),
+              password: value
+            },
+            success: function(response) {
+              Ext.Msg.alert("Your Credential", response.responseText);
+            },
+            failure: function(response) {
+              LeoTamer.Msg.alert("Error!", response.responseText);
+            }
+          });
         }
-      })
+      });
     };
 
     header = Ext.create("Ext.toolbar.Toolbar", {
@@ -71,29 +79,29 @@
         height: 24,
         src: "images/leofs-logo-w.png" //TODO: resize
       },
-              "->",
-              {
-                id: "user_menu",
-                text: Ext.util.Cookies.get("user_id"), // raw cookie from server
-                icon: "images/admin_user.png",
-                menu: {
-                  xtype: "menu",
-                  showSeparator: false,
-                  items: [{
-                    text: "Security Credentials",
-                    icon: "images/credential.png",
-                    handler: get_credential
-                  },
-                          "-",
-                          {
-                            text: "Sign Out",
-                            icon: "images/logout.png",
-                            handler: function() {
-                              window.location = "/logout"
-                            }
-                          }]
-                }
-              }]
+      "->",
+      {
+        id: "user_menu",
+        text: Ext.util.Cookies.get("user_id"), // raw cookie from server
+        icon: "images/admin_user.png",
+        menu: {
+          xtype: "menu",
+          showSeparator: false,
+          items: [{
+            text: "Security Credentials",
+            icon: "images/credential.png",
+            handler: get_credential
+          },
+          "-",
+          {
+            text: "Sign Out",
+            icon: "images/logout.png",
+            handler: function() {
+              window.location = "/logout"
+            }
+          }]
+        }
+      }]
     });
 
     return Ext.create("Ext.Viewport", {

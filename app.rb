@@ -148,6 +148,14 @@ class LeoTamer < Sinatra::Base
 
   get "/user_credential" do
     required_sessions(:access_key_id, :secret_access_key)
+    user_id, password = required_params(:user_id, :password)
+
+    begin
+      credential = @@manager.login(user_id, password)
+    rescue RuntimeError
+      halt 200, json_err_msg("Invalid User ID or Password.")
+    end
+
     <<-EOS
       AWS_ACCESS_KEY_ID: #{session[:access_key_id]}<br>
       AWS_SECRET_ACCESS_KEY: #{session[:secret_access_key]}
