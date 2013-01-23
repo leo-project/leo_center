@@ -60,6 +60,18 @@ class LeoTamer < Sinatra::Base
   register Sinatra::Namespace
   helpers TamerHelpers
 
+  helpers do
+    def confirm_password(manager)
+      user_id, password = required_params(:user_id, :password)
+      begin
+        credential = @@manager.login(user_id, password)
+      rescue RuntimeError
+        halt 200, json_err_msg("Invalid User ID or Password.")
+      end
+      return credential
+    end
+  end
+
   # error handlers don't get along with RSpec
   # disable it when environment is :test
   set :show_exceptions, environment == :test
@@ -118,15 +130,9 @@ class LeoTamer < Sinatra::Base
   end
 
   post "/login" do
-    user_id, password = required_params(:user_id, :password)
-
-    begin
-      credential = @@manager.login(user_id, password)
-    rescue RuntimeError
-      halt 200, json_err_msg("Invalid User ID or Password.")
-    end
-
-    admin = credential.role_id == Role::Admin # boola
+    credential = confirm_password
+    admin = credential.role_id == Role::Admin # bool
+    user_id = credential.id
     group = ["hoge", "fuga"].sample #XXX: FAKE
     session[:admin] = admin
     session[:user_id] = user_id
@@ -147,15 +153,7 @@ class LeoTamer < Sinatra::Base
   end
 
   get "/user_credential" do
-    required_sessions(:access_key_id, :secret_access_key)
-    user_id, password = required_params(:user_id, :password)
-
-    begin
-      credential = @@manager.login(user_id, password)
-    rescue RuntimeError
-      halt 200, json_err_msg("Invalid User ID or Password.")
-    end
-
+    confirm_password
     <<-EOS
       AWS_ACCESS_KEY_ID: #{session[:access_key_id]}<br>
       AWS_SECRET_ACCESS_KEY: #{session[:secret_access_key]}
