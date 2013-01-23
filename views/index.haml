@@ -17,11 +17,7 @@
     %script{:src => "js/admin.js", :type => "text/javascript"}
     %script{:src => "js/index.js", :type => "text/javascript"}
     :css
-      img.status {
-        vertical-align: middle;
-      }
-
-      tr img {
+      img.status, tr img {
         vertical-align: middle;
       }
 
@@ -33,15 +29,12 @@
         color: white;
       }
 
-      #nodes_grid_current_grouping-btnInnerEl {
-        font-weight: bold;
-      }
-
+      #nodes_grid_current_grouping-btnInnerEl,
       #nodes_rebalance_button-btnInnerEl {
         font-weight: bold;
       }
 
-      .x-grid-cell-inner {
+      .x-grid-cell-inner, .x-tab-inner, .x-panel-header-text {
         font-size: 13px;
       }
 

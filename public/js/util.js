@@ -51,20 +51,22 @@
 
   LeoTamer.confirm_password = function(callbacks) {
     Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
-      if (btn == "ok" ) {
+      if (btn === "ok") {
+        var user_id = Ext.util.Cookies.get("user_id");
+        var password = value;
         Ext.Ajax.request({
           url: "login",
           method: "POST",
           params: {
-            user_id: Ext.util.Cookies.get("user_id"),
-            password: value
+            user_id: user_id,
+            password: password
           },
           success: function(response, opts) {
             text = response.responseText;
             result = Ext.JSON.decode(text);
             if (result.success) {
               // truely success
-              callbacks.success(response, opts);
+              callbacks.success(user_id, password);
             }
             else {
               // failure

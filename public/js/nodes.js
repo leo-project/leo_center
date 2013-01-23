@@ -120,7 +120,7 @@
 
       // confirm user's password before dangerous action
       LeoTamer.confirm_password({
-        success: function(response) {
+        success: function(user_id, password) {
           self.do_send_command(node, command);
         },
         failure: function(reason) {
