@@ -68,9 +68,9 @@ class LeoTamer < Sinatra::Base
       rescue RuntimeError
         msg = "Invalid User ID or Password."
         if json
-          halt 401, msg
-        else
           halt 200, json_err_msg(msg)
+        else
+          halt 401, msg
         end
       end
       return credential

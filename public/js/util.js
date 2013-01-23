@@ -50,6 +50,10 @@
   });
 
   LeoTamer.confirm_password = function(callback) {
+    Ext.Msg.on("beforeshow",  function (win) {
+      win.defaultFocus = 3; // set default focus to "Cancel" button
+    });
+
     Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
       if (btn === "ok") {
         var user_id = Ext.util.Cookies.get("user_id");

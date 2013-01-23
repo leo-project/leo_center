@@ -92,8 +92,9 @@
       }
     }),
 
-    do_send_command: function(user_id, password, node, command) {
+    do_send_command: function(user_id, password, command) {
       var self = this;
+      var node = self.grid.getSelectionModel().getSelection()[0].data.node;
 
       Ext.Ajax.request({
         url: "nodes/execute",
@@ -113,16 +114,12 @@
       });
     },
 
-    confirm_send_command: function(node, command) {
+    confirm_send_command: function(command) {
       var self = this;
-
-      Ext.Msg.on("beforeshow",  function (win) {
-        win.defaultFocus = 2; // set default focus to "No" button
-      });
 
       // confirm user's password before dangerous action
       LeoTamer.confirm_password(function(user_id, password) {
-        self.do_send_command(user_id, password, node, command);
+        self.do_send_command(user_id, password, command);
       });
     },
 
@@ -264,22 +261,19 @@
               text: "Suspend",
               id: "change_status_button_suspend",
               handler: function(button) {
-                var node = self.grid.getSelectionModel().getSelection()[0].data.node;
-                self.confirm_send_command(node, "suspend");
+                self.confirm_send_command("suspend");
               }
             }, {
               text: "Resume",
               id: "change_status_button_resume",
               handler: function(button) {
-                var node = self.grid.getSelectionModel().getSelection()[0].data.node;
-                self.confirm_send_command(node, "resume");
+                self.confirm_send_command("resume");
               }
             }, {
               text: "Detach",
               id: "change_status_button_detach",
               handler: function(button) {
-                var node = self.grid.getSelectionModel().getSelection()[0].data.node;
-                self.confirm_send_command(node, "detach");
+                self.confirm_send_command("detach");
               }
             }]
           }
