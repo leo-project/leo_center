@@ -29,3 +29,7 @@
   height: 20px;
   padding: 5px;
 }
+
+.x-column-header-inner {
+  padding: 3px 6px 3px !important;
+}
