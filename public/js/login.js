@@ -86,7 +86,6 @@
       defaults: {
         padding: 5,
         labelWidth: 85,
-        labelStyle: "font-size: 18px",
         allowBlank: false,
         validateOnBlur: false,
         validateOnChange: false,
@@ -105,9 +104,7 @@
         inputType: "password",
         listeners: {
           specialkey: function(form, e) {
-            if (e.getKey() == e.ENTER) {
-              login_form_submit();
-            }
+            if (e.getKey() == e.ENTER) login_form_submit();
           }
         }
       }],
@@ -141,10 +138,7 @@
         login_form,
         {
           width: "100%",
-          bodyStyle: {
-            "text-align": "center",
-            padding: "10px",
-          },
+          id: "link_to_sign_up",
           html: "Have an account? <a href='#' style=\"text-decoration:none\">Sign Up</a>",
           listeners: {
             render: function(component) {
