@@ -273,18 +273,26 @@
           id: "compaction_button",
           handler: function() {
             LeoTamer.confirm_password(function(user_id, password) {
+              var node = self.grid.getSelectionModel().getSelection()[0].data.node;
+              var mask = new Ext.LoadMask(Ext.getBody());
+              mask.show();
               Ext.Ajax.request({
                 url: "nodes/compaction",
                 method: "POST",
+                timeout: 120,
                 params: {
                   user_id: user_id,
-                  password: password
+                  password: password,
+                  node: node
                 },
                 success: function(response) {
                   self.store.load();
                 },
                 failure: function(response) {
                   LeoTamer.Msg.alert("Error!", response.responseText);
+                },
+                callback: function() {
+                  mask.destroy();
                 }
               });
             });
