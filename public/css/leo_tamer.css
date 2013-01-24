@@ -1,0 +1,30 @@
+.x-grid-cell-inner img,
+.x-panel-header-text-container img,
+.x-form-item-label img {
+  vertical-align: middle;
+}
+
+#viewport_header-innerCt {
+  background-color: #5682AD;
+}
+
+#nodes_grid_current_grouping-btnInnerEl,
+#nodes_rebalance_button-btnInnerEl {
+  font-weight: bold;
+}
+
+.x-tab-bar-strip {
+  top: 34px !important;
+}
+
+.x-grid-cell-inner,
+.x-tab-inner,
+.x-panel-header-text,
+.x-column-header-text {
+  font-size: 13px;
+}
+
+#admin_grid .x-grid-row td {
+  height: 20px;
+  padding: 5px;
+}
