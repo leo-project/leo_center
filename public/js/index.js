@@ -81,7 +81,7 @@
         margin: 6,
         width: 75,
         height: 24,
-        src: "images/leofs-logo-w.png" //TODO: resize
+        src: "images/leofs-logo-w.png"
       },
       "->",
       {
