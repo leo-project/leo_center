@@ -422,24 +422,21 @@
           id: "nodes_rebalance_button",
           icon: "images/rebalance.png",
           handler: function() {
-            rebalance_ready = self.store.find("status", /attached|detached/) != -1;
-            if (rebalance_ready) {
-              var msg = "Are you sure to send 'rebalance'?";
-              Ext.Msg.confirm("Confirm", msg, function(btn) {
-                if (btn === "yes") {
-                  Ext.Ajax.request({
-                    url: "nodes/rebalance",
-                    method: "POST",
-                    success: function(response) {
-                      self.store.load();
-                    },
-                    failure: function(response) {
-                      LeoTamer.Msg.alert("Error!", response.responseText);
-                    }
-                  });
-                }
-              });
-            }
+            var msg = "Are you sure to send 'rebalance'?";
+            Ext.Msg.confirm("Confirm", msg, function(btn) {
+              if (btn === "yes") {
+                Ext.Ajax.request({
+                  url: "nodes/rebalance",
+                  method: "POST",
+                  success: function(response) {
+                    self.store.load();
+                  },
+                  failure: function(response) {
+                    LeoTamer.Msg.alert("Error!", response.responseText);
+                  }
+                });
+              }
+            });
           }
         },
         "->",
