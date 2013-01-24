@@ -86,13 +86,12 @@
 
       var user_id_to_delete = last_selected.data.user_id;
 
-      LeoTamer.confirm_password(function(user_id_of_admin, password) {
+      LeoTamer.confirm_password(function(password) {
         Ext.Ajax.request({
           url: "users/delete_user",
           method: "DELETE",
           params: {
             user_id_to_delete: user_id_to_delete,
-            user_id: user_id_of_admin,
             password: password
           },
           success: function(response) {

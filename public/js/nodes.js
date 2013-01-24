@@ -68,7 +68,7 @@
       }
     }),
 
-    do_send_command: function(user_id, password, command) {
+    do_send_command: function(password, command) {
       var self = this;
       var node = self.grid.getSelectionModel().getSelection()[0].data.node;
 
@@ -76,7 +76,6 @@
         url: "nodes/execute",
         method: "POST",
         params: {
-          user_id: user_id,
           password: password,
           node: node,
           command: command
@@ -92,8 +91,8 @@
       var self = this;
 
       // confirm user's password before dangerous action
-      LeoTamer.confirm_password(function(user_id, password) {
-        self.do_send_command(user_id, password, command);
+      LeoTamer.confirm_password(function(password) {
+        self.do_send_command(password, command);
       });
     },
 

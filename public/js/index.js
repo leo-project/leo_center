@@ -37,7 +37,6 @@
             url: "user_credential",
             method: "GET",
             params: {
-              user_id: Ext.util.Cookies.get("user_id"),
               password: value
             },
             success: function(response) {

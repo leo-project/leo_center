@@ -61,17 +61,13 @@ class LeoTamer < Sinatra::Base
   helpers TamerHelpers
 
   helpers do
-    def confirm_password(json=false)
-      user_id, password = required_params(:user_id, :password)
+    def confirm_password
+      user_id = required_sessions(:user_id)
+      password = required_params(:password)
       begin
         credential = @@manager.login(user_id, password)
       rescue RuntimeError
-        msg = "Invalid User ID or Password."
-        if json
-          halt 200, json_err_msg(msg)
-        else
-          halt 401, msg
-        end
+        halt 401, "Invalid User ID or Password."
       end
       return credential
     end
@@ -135,7 +131,12 @@ class LeoTamer < Sinatra::Base
   end
 
   post "/login" do
-    credential = confirm_password(true)
+    user_id, password = required_params(:user_id, :password)
+    begin
+      credential = @@manager.login(user_id, password)
+    rescue RuntimeError
+      halt 200, json_err_msg("Invalid User ID or Password.")
+    end
     admin = credential.role_id == Role::Admin # bool
     user_id = credential.id
     group = ["hoge", "fuga"].sample #XXX: FAKE
