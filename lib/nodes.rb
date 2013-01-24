@@ -102,6 +102,7 @@ class LeoTamer
     end
 
     post "/rebalance" do
+      confirm_password
       @@manager.rebalance
     end
   end

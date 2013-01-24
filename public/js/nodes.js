@@ -399,20 +399,18 @@
           id: "nodes_rebalance_button",
           icon: "images/rebalance.png",
           handler: function() {
-            var msg = "Are you sure to send 'rebalance'?";
-            Ext.Msg.confirm("Confirm", msg, function(btn) {
-              if (btn === "yes") {
-                Ext.Ajax.request({
-                  url: "nodes/rebalance",
-                  method: "POST",
-                  success: function(response) {
-                    self.store.load();
-                  },
-                  failure: function(response) {
-                    LeoTamer.Msg.alert("Error!", response.responseText);
-                  }
-                });
-              }
+            LeoTamer.confirm_password(function(password) {
+              Ext.Ajax.request({
+                url: "nodes/rebalance",
+                method: "POST",
+                params: { password: password },
+                success: function(response) {
+                  self.store.load();
+                },
+                failure: function(response) {
+                  LeoTamer.Msg.alert("Error!", response.responseText);
+                }
+              });
             });
           }
         },
