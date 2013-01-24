@@ -9,7 +9,8 @@
 }
 
 #nodes_grid_current_grouping-btnInnerEl,
-#nodes_rebalance_button-btnInnerEl {
+#nodes_rebalance_button-btnInnerEl,
+.bold_button {
   font-weight: bold;
 }
 

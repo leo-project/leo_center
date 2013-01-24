@@ -244,13 +244,11 @@
         tbar: [{
           xtype: "splitbutton",
           id: "change_status_button",
-          icon: "images/rebalance.png",
           text: "Change Status",
           handler: function(splitbutton) {
             // show menu when splitbutton itself is pressed
             splitbutton.showMenu();
           },
-          style: { "font-weight": "bold"}, //XXX: use CSS!
           menu:  {
             xtype: "menu",
             showSeparator: false,
@@ -372,16 +370,17 @@
         tbar: [{
           xtype: "splitbutton",
           id: "nodes_grid_current_grouping",
+          cls: "bold_button",
           icon: "images/table.png",
-          width: 120,
+          width: 140,
           handler: function(splitbutton) {
             // show menu when splitbutton itself is pressed
             splitbutton.showMenu();
           },
-          style: { "font-weight": "bold"}, //XXX: use CSS!
           menu:  {
             xtype: "menu",
             showSeparator: false,
+            defaults: { cls: "bold_button" },
             items: [{
               text: "Group by type",
               icon: "images/table.png",
