@@ -18,7 +18,7 @@
           name: "user_id",
           listeners: {
             render: function() {
-              this.focus(false, 200);
+              this.focus(false, 500); // deferred: 500ms
             }
           }
         }, {
