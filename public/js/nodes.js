@@ -45,11 +45,8 @@
       // it fires when "Node Status" tab is selected
       activate: function(self) {
         self.select_first_row();
-
         self.reloader = {
-          run: function() {
-            self.store.load();
-          },
+          run: self.store.load.bind(self.store),
           interval: self.reload_interval
         };
         Ext.TaskManager.start(self.reloader);
@@ -105,9 +102,7 @@
           node: node,
           command: command
         },
-        success: function(response) {
-          self.store.load();
-        },
+        success: self.store.load.bind(self.store),
         failure: function(response) {
           LeoTamer.Msg.alert("Error!", response.responseText);
         }
@@ -377,6 +372,7 @@
         tbar: [{
           xtype: "splitbutton",
           id: "nodes_grid_current_grouping",
+          icon: "images/table.png",
           width: 120,
           handler: function(splitbutton) {
             // show menu when splitbutton itself is pressed
@@ -450,9 +446,8 @@
         {
           xtype: "button",
           icon: "images/reload.png",
-          handler: function() {
-            self.store.load();
-          }
+          handler: self.store.load,
+          scope: self.store
         }],
         listeners: {
           render: function(grid) {

@@ -43,6 +43,10 @@
     tabs = Ext.create("Ext.TabPanel", {
       region: "center",
       activeTab: 0, // first tab
+      tabBar: {
+        defaults: { height: 30 },
+        height: 28
+      },
       defaults: { bodyPadding: 5 },
       items: [bucket_status, node_status, admin]
     });
