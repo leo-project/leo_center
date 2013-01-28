@@ -272,7 +272,7 @@
           text: "Compaction",
           id: "compaction_button",
           handler: function() {
-            LeoTamer.confirm_password(function(user_id, password) {
+            LeoTamer.confirm_password(function(password) {
               var node = self.grid.getSelectionModel().getSelection()[0].data.node;
               var mask = new Ext.LoadMask(Ext.getBody());
               mask.show();
@@ -281,7 +281,6 @@
                 method: "POST",
                 timeout: 120,
                 params: {
-                  user_id: user_id,
                   password: password,
                   node: node
                 },
