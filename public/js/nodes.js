@@ -227,6 +227,16 @@
       }
     },
 
+    status_sort_table: {
+      attached: 1,
+      running: 2,
+      suspend: 3,
+      restarted: 4,
+      detached: 5,
+      stop: 6,
+      downed: 6
+    },
+
     initComponent: function() {
       var self = this;
 
@@ -373,9 +383,24 @@
             width: 150
           }, {
             text: "Status",
-            dataIndex: 'status',
+            dataIndex: "status",
             renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
             sortable: true,
+            doSort: function(state) {
+              self.store.sort({
+                property: "status",
+                direction: state,
+                sorterFn: function(record1, record2) {
+                  var property = "status";
+                  var status1 = record1.get(property);
+                  var status2 = record2.get(property);
+                  if (status1 == status2) return 0;
+                  var v1 = self.status_sort_table[status1];
+                  var v2 = self.status_sort_table[status2];
+                  return v1 > v2 ? 1 : -1;
+                }
+              });
+            },
             width: 50
           }, {
             text: "Current Ring",
