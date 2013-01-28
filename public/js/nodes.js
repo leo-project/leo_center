@@ -68,9 +68,8 @@
       }
     }),
 
-    do_send_command: function(password, command) {
+    do_send_command: function(password, node, command) {
       var self = this;
-      var node = self.grid.getSelectionModel().getSelection()[0].data.node;
 
       Ext.Ajax.request({
         url: "nodes/execute",
@@ -89,11 +88,13 @@
 
     confirm_send_command: function(command) {
       var self = this;
+      var node = self.grid.getSelectionModel().getSelection()[0].data.node;
+      var msg = "Are you sure to send command '" + command + " " + node + "'?";
 
       // confirm user's password before dangerous action
       LeoTamer.confirm_password(function(password) {
-        self.do_send_command(password, command);
-      });
+        self.do_send_command(password, node, command);
+      }, msg);
     },
 
     get_status_icon: function(val) {
@@ -273,6 +274,7 @@
           id: "compaction_button",
           icon: "images/compaction.png",
           handler: function() {
+            var msg = "Are you sure to execute compaction?";
             LeoTamer.confirm_password(function(password) {
               var node = self.grid.getSelectionModel().getSelection()[0].data.node;
               var mask = new Ext.LoadMask(Ext.getBody());
@@ -295,7 +297,7 @@
                   mask.destroy();
                 }
               });
-            });
+            }, msg);
           }
         }],
         items: [{
@@ -454,7 +456,7 @@
                   LeoTamer.Msg.alert("Error!", response.responseText);
                 }
               });
-            });
+            }, "Are you sure to execute rebalance?");
           }
         },
         "->",
