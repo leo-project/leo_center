@@ -151,7 +151,7 @@
       var self = this;
       var node_stat = record.data;
       var change_status_button = Ext.getCmp("change_status_button");
-      var compaction_button = Ext.getCmp("compaction_button");
+      // var compaction_button = Ext.getCmp("compaction_button");
       var status = node_stat.status;
 
       // using HTML 4.0 character entity references to avoid Ext.Panel#setTitle()'s cutting space
@@ -161,7 +161,7 @@
       // check change status's availability
       if (node_stat.type === "Gateway") {
         change_status_button.disable();
-        compaction_button.disable();
+        // compaction_button.disable();
       }
       else {
         switch (status) {
@@ -169,11 +169,11 @@
         case "attached":
         case "detached":
           change_status_button.disable();
-          compaction_button.disable();
+          // compaction_button.disable();
           break;
         default:
           change_status_button.enable();
-          compaction_button.enable();
+          // compaction_button.enable();
         }
       }
 
@@ -279,7 +279,7 @@
               }
             }]
           }
-        }, {
+        }, /*{
           text: "Compaction",
           id: "compaction_button",
           icon: "images/compaction.png",
@@ -309,7 +309,7 @@
               });
             }, msg);
           }
-        }],
+        }*/],
         items: [{
           xtype: "grid",
           border: false,
