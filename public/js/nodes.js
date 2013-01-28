@@ -104,6 +104,8 @@
         break;
       case "stop":
       case "downed":
+        src = "images/fire.png";
+        break;
       case "detached":
         src = "images/downed.png";
         break;
@@ -162,6 +164,7 @@
         switch (status) {
         case "stop":
         case "attached":
+        case "detached":
           change_status_button.disable();
           break;
         default:
@@ -169,16 +172,18 @@
         }
       }
 
-      Ext.Array.each(self.commands, function(command) {
-        var command_button = Ext.getCmp("change_status_button_" + command);
-        // check each command's availability
-        if (self.available_commands_table[status][command]) {
-          command_button.enable();
-        }
-        else {
-          command_button.disable();
-        }
-      });
+      if (!change_status_button.isDisabled()) {
+        Ext.Array.each(self.commands, function(command) {
+          var command_button = Ext.getCmp("change_status_button_" + command);
+          // check each command's availability
+          if (self.available_commands_table[status][command]) {
+            command_button.enable();
+          }
+          else {
+            command_button.disable();
+          }
+        });
+      }
 
       if (status === "stop") {
         // can't get detail information from stopped node
@@ -202,6 +207,9 @@
       },
       suspend: {
         resume: true
+      },
+      detached: {
+        // no available commands
       },
       restarted: {
         resume: true
