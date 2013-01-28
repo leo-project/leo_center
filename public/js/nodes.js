@@ -317,8 +317,7 @@
             beforeselect: function() {
               return false; // disable row selection
             }
-          },
-
+          }
         }]
       });
 
