@@ -28,12 +28,10 @@
     fields: ["name", "value", "group"]
   });
 
-  LeoTamer.confirm_password = function(callback) {
-    Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
-      if (btn === "ok") {
-        var password = value;
-        callback(password);
-      }
+  LeoTamer.confirm_password = function(callback, msg) {
+    var msg = msg || "Please input your password";
+    Ext.Msg.prompt("Confirm", msg, function(btn, password) {
+      if (btn === "ok") callback(password);
     });
   }
 }).call(this);
