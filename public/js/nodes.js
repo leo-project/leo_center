@@ -271,6 +271,7 @@
         }, {
           text: "Compaction",
           id: "compaction_button",
+          icon: "images/compaction.png",
           handler: function() {
             LeoTamer.confirm_password(function(password) {
               var node = self.grid.getSelectionModel().getSelection()[0].data.node;
