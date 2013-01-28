@@ -61,8 +61,8 @@
         sortParam: undefined,
         startParam: undefined,
         listeners: {
-          exception: function(detail_store, response, operation) {
-            LeoTamer.Msg.alert("Error on: \'" + detail_store.url + "\'", response.responseText);
+          exception: function(proxy, response, operation) {
+            LeoTamer.Msg.alert("Error on: \'" + proxy.url + "\'", response.responseText);
           }
         }
       }
@@ -194,6 +194,9 @@
           params: {
             node: node_stat.node,
             type: node_stat.type
+          },
+          callback: function(records, operation, success) {
+            if (!success) self.detail_store.removeAll();
           }
         });
       }
