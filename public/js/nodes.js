@@ -150,15 +150,17 @@
       var self = this;
       var node_stat = record.data;
       var change_status_button = Ext.getCmp("change_status_button");
+      var compaction_button = Ext.getCmp("compaction_button");
       var status = node_stat.status;
 
       // using HTML 4.0 character entity references to avoid Ext.Panel#setTitle()'s cutting space
       // &nbsp; //=> non-breaking space
-      self.status_panel.setTitle(self.get_status_icon(node_stat.status) + "&nbsp;" + node_stat.node);
+      self.status_panel.setTitle(self.get_status_icon(status) + "&nbsp;" + node_stat.node);
 
       // check change status's availability
       if (node_stat.type === "Gateway") {
         change_status_button.disable();
+        compaction_button.disable();
       }
       else {
         switch (status) {
@@ -166,9 +168,11 @@
         case "attached":
         case "detached":
           change_status_button.disable();
+          compaction_button.disable();
           break;
         default:
           change_status_button.enable();
+          compaction_button.enable();
         }
       }
 
@@ -263,6 +267,35 @@
                 self.confirm_send_command("detach");
               }
             }]
+          }
+        }, {
+          text: "Compaction",
+          id: "compaction_button",
+          handler: function() {
+            LeoTamer.confirm_password(function(user_id, password) {
+              var node = self.grid.getSelectionModel().getSelection()[0].data.node;
+              var mask = new Ext.LoadMask(Ext.getBody());
+              mask.show();
+              Ext.Ajax.request({
+                url: "nodes/compaction",
+                method: "POST",
+                timeout: 120,
+                params: {
+                  user_id: user_id,
+                  password: password,
+                  node: node
+                },
+                success: function(response) {
+                  self.store.load();
+                },
+                failure: function(response) {
+                  LeoTamer.Msg.alert("Error!", response.responseText);
+                },
+                callback: function() {
+                  mask.destroy();
+                }
+              });
+            });
           }
         }],
         items: [{
