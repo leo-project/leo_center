@@ -65,22 +65,20 @@
               self.detail_grid.setTitle("");
             },
             specialkey: function(text_field, event) {
-              if (event.getKey() == event.ENTER) {
-                var path = text_field.getValue();
-                if (path !== "") {
-                  self.path = path;
-                  self.store.load({
-                    params: {
-                      path: path
-                    },
-                    callback: function() {
-                      var grid = self.grid;
-                      grid.getSelectionModel().select(0);
-                      grid.getView().focus(null, 500);
-                    }
-                  });
+              if (event.getKey() !== event.ENTER) return;
+              var path = text_field.getValue();
+              if (path !== "") return;
+              self.path = path;
+              self.store.load({
+                params: {
+                  path: path
+                },
+                callback: function() {
+                  var grid = self.grid;
+                  grid.getSelectionModel().select(0);
+                  grid.getView().focus(null, 500);
                 }
-              }
+              });
             }
           }
         },
@@ -106,12 +104,8 @@
               dataIndex: "delete",
               width: 8,
               renderer: function(value) {
-                if (value === 0) {
-                  return "";
-                }
-                else {
-                  return "<img src='images/trash.png'>";
-                }
+                if (value === 0) return "";
+                return "<img src='images/trash.png'>";
               }
             },
             { header: "Node", dataIndex: "node" },
