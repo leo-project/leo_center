@@ -72,14 +72,25 @@
         columns: {
           defaults: { resizable: false },
           items: [
+            { 
+              dataIndex: "delete",
+              width: 8,
+              renderer: function(value) {
+                if (value === 0) {
+                  return "";
+                }
+                else {
+                  return "<img src='images/trash.png'>";
+                }
+              }
+            },
             { header: "Node", dataIndex: "node" },
-            { header: "VNode ID", dataIndex: "vnode_id" },
+            // { header: "VNode ID", dataIndex: "vnode_id" },
             { header: "Size", dataIndex: "size", width: 30 },
-            { header: "Clock", dataIndex: "clock" },
-            { header: "Checksum", dataIndex: "checksum" },
+            // { header: "Clock", dataIndex: "clock" },
+            // { header: "Checksum", dataIndex: "checksum" },
             { header: "Timestamp", dataIndex: "timestamp" },
-            { header: "Delete", dataIndex: "delete", width: 30 },
-            { header: "Number of Chunks", dataIndex: "num_of_chunks", width: 30 }
+            // { header: "Number of Chunks", dataIndex: "num_of_chunks", width: 30 }
           ]
         }
       });

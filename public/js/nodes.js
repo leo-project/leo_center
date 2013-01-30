@@ -108,7 +108,7 @@
         src = "images/fire.png";
         break;
       case "detached":
-        src = "images/downed.png";
+        src = "images/unavailable.png";
         break;
       case "restarted":
       case "attached":
