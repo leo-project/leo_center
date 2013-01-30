@@ -67,6 +67,7 @@
               if (event.getKey() == event.ENTER) {
                 var path = text_field.getValue();
                 if (path !== "") {
+                  self.path = path;
                   self.store.load({
                     params: {
                       path: path
@@ -79,6 +80,20 @@
                 }
               }
             }
+          }
+        },
+        "->",
+        {
+          icon: "images/reload.png",
+          handler: function() {
+            self.store.load({
+              params: {
+                path: self.path
+              },
+              callback: function() {
+                self.grid.getSelectionModel().select(0);
+              }
+            });
           }
         }],
         columns: {
