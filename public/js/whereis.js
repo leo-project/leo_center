@@ -67,7 +67,7 @@
             specialkey: function(text_field, event) {
               if (event.getKey() !== event.ENTER) return;
               var path = text_field.getValue();
-              if (path !== "") return;
+              if (path === "") return;
               self.path = path;
               self.store.load({
                 params: {
