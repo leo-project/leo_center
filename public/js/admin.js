@@ -18,7 +18,7 @@
         { name: "Users" },
         { name: "Buckets" },
         { name: "Endpoints" },
-        { name: "Whereis" }
+        { name: "Assigned File" }
       ]
     }),
 
@@ -37,7 +37,7 @@
       case "Endpoints":
         img = "<img src='images/endpoint.png'> ";
         break;
-      case "Whereis":
+      case "Assigned File":
         img = "<img src='images/whereis.png'> ";
         break;
       default:

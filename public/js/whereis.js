@@ -7,7 +7,7 @@
   Ext.define("LeoTamer.Whereis", {
     extend: "Ext.panel.Panel",
     id: "whereis",
-    title: "Whereis",
+    title: "Assigned File",
     layout: "border",
     border: false,
 
@@ -38,6 +38,11 @@
       }
     }),
 
+    detail_store: Ext.create("Ext.data.ArrayStore", {
+      fields: ["name", "value"],
+      data: []
+    }),
+
     initComponent: function() {
       var self = this;
 
@@ -51,9 +56,12 @@
           id: "whereis_grid_tbar_path",
           fieldLabel: "<img src='images/filter.png'> Path:",
           labelWidth: 60,
+          width: 500,
           listeners: {
             change: function() {
-              self.store.loadData([]);
+              self.store.removeAll();
+              self.detail_store.removeAll();
+              self.detail_grid.setTitle("");
             },
             specialkey: function(text_field, event) {
               if (event.getKey() == event.ENTER) {
@@ -62,6 +70,9 @@
                   self.store.load({
                     params: {
                       path: path
+                    },
+                    callback: function() {
+                      self.grid.getSelectionModel().select(0);
                     }
                   });
                 }
@@ -92,11 +103,38 @@
             { header: "Timestamp", dataIndex: "timestamp" },
             // { header: "Number of Chunks", dataIndex: "num_of_chunks", width: 30 }
           ]
+        },
+        listeners: {
+          select: function(grid, record, index) {
+            self.detail_grid.setTitle(record.get("node"));
+            self.detail_store.loadData([
+              ["VNode ID", record.get("vnode_id")],
+              ["Clock", record.get("clock")],
+              ["Checksum", record.get("checksum")],
+              ["# of chunks", record.get("num_of_chunks")]
+            ]);
+          }
+        }
+      });
+
+      self.detail_grid = Ext.create("Ext.grid.Panel", {
+        region: "east",
+        title: "&nbsp;",
+        width: 300,
+        forceFit: true,
+        store: self.detail_store,
+        hideHeaders: true,
+        columns: {
+          defaults: { resizable: false },
+          items: [
+            { dataIndex: "name" },
+            { dataIndex: "value" }
+          ]
         }
       });
 
       Ext.apply(self, {
-        items: self.grid
+        items: [self.grid, self.detail_grid]
       });
 
       return self.callParent(arguments);
