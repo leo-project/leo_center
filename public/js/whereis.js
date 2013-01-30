@@ -109,12 +109,8 @@
               }
             },
             { header: "Node", dataIndex: "node" },
-            // { header: "VNode ID", dataIndex: "vnode_id" },
             { header: "Size", dataIndex: "size", width: 30 },
-            // { header: "Clock", dataIndex: "clock" },
-            // { header: "Checksum", dataIndex: "checksum" },
             { header: "Timestamp", dataIndex: "timestamp" },
-            // { header: "Number of Chunks", dataIndex: "num_of_chunks", width: 30 }
           ]
         },
         listeners: {
@@ -132,7 +128,7 @@
 
       self.detail_grid = Ext.create("Ext.grid.Panel", {
         region: "east",
-        title: "&nbsp;",
+        title: "&nbsp;", // force blank title
         width: 400,
         forceFit: true,
         store: self.detail_store,
