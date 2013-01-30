@@ -101,7 +101,7 @@
       var src;
       switch (val) {
       case "running":
-        src = "images/running.png";
+        src = "images/available.png";
         break;
       case "stop":
       case "downed":
