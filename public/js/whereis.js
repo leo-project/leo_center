@@ -73,6 +73,7 @@
                     },
                     callback: function() {
                       self.grid.getSelectionModel().select(0);
+                      // self.grid.getView().focusRow(0);
                     }
                   });
                 }
@@ -120,14 +121,14 @@
       self.detail_grid = Ext.create("Ext.grid.Panel", {
         region: "east",
         title: "&nbsp;",
-        width: 300,
+        width: 400,
         forceFit: true,
         store: self.detail_store,
         hideHeaders: true,
         columns: {
           defaults: { resizable: false },
           items: [
-            { dataIndex: "name" },
+            { dataIndex: "name", width: 60 },
             { dataIndex: "value" }
           ]
         }
