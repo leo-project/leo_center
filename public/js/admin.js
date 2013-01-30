@@ -9,6 +9,7 @@
     users: Ext.create("LeoTamer.Users"),
     buckets: Ext.create("LeoTamer.Buckets"),
     endpoints: Ext.create("LeoTamer.Endpoints"),
+    whereis: Ext.create("LeoTamer.Whereis"),
 
     admin_store: Ext.create("Ext.data.Store", {
       fields: ["name"],
@@ -16,7 +17,8 @@
         { name: "System Conf" },
         { name: "Users" },
         { name: "Buckets" },
-        { name: "Endpoints" }
+        { name: "Endpoints" },
+        { name: "Assigned File" }
       ]
     }),
 
@@ -34,6 +36,9 @@
         break;
       case "Endpoints":
         img = "<img src='images/endpoint.png'> ";
+        break;
+      case "Assigned File":
+        img = "<img src='images/whereis.png'> ";
         break;
       default:
         throw "no icon for " + value;
@@ -75,7 +80,8 @@
           self.system_conf,
           self.users,
           self.buckets,
-          self.endpoints
+          self.endpoints,
+          self.whereis
         ]
       });
 

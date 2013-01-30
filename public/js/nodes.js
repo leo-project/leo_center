@@ -101,14 +101,14 @@
       var src;
       switch (val) {
       case "running":
-        src = "images/running.png";
+        src = "images/available.png";
         break;
       case "stop":
       case "downed":
         src = "images/fire.png";
         break;
       case "detached":
-        src = "images/downed.png";
+        src = "images/unavailable.png";
         break;
       case "restarted":
       case "attached":
