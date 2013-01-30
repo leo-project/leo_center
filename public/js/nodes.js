@@ -17,6 +17,7 @@
       var grid = self.grid;
       grid.getStore().on("load", function() {
         grid.getSelectionModel().select(0);
+        grid.getView().focus(null, 500);
       }, null, { single: true });
     },
 

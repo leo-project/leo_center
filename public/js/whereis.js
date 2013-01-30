@@ -59,6 +59,7 @@
           width: 500,
           listeners: {
             change: function() {
+              delete self.path;
               self.store.removeAll();
               self.detail_store.removeAll();
               self.detail_grid.setTitle("");
@@ -73,8 +74,9 @@
                       path: path
                     },
                     callback: function() {
-                      self.grid.getSelectionModel().select(0);
-                      // self.grid.getView().focusRow(0);
+                      var grid = self.grid;
+                      grid.getSelectionModel().select(0);
+                      grid.getView().focus(null, 500);
                     }
                   });
                 }
@@ -86,6 +88,7 @@
         {
           icon: "images/reload.png",
           handler: function() {
+            if (!self.path) return;
             self.store.load({
               params: {
                 path: self.path
