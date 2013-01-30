@@ -38,7 +38,7 @@
         img = "<img src='images/endpoint.png'> ";
         break;
       case "Whereis":
-        img = "<img src='images/endpoint.png'> "; //TODO
+        img = "<img src='images/whereis.png'> ";
         break;
       default:
         throw "no icon for " + value;
