@@ -11,8 +11,13 @@
 #nodes_grid_current_grouping-btnInnerEl,
 #nodes_rebalance_button-btnInnerEl,
 #change_status_button-btnInnerEl,
-.bold_button {
+.bold_button { /* TODO */
   font-weight: bold;
+}
+
+#change_status_button-btnIconEl {
+  /* no semi-transparent effect when it is disabled */
+  opacity: 1.0 !important;
 }
 
 .x-tab-bar-strip {
