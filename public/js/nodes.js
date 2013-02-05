@@ -263,14 +263,14 @@
               }
             }, {
               text: "To Running",
-              icon: "images/running.png",
+              icon: "images/available.png",
               id: "change_status_button_resume",
               handler: function(button) {
                 self.confirm_send_command("resume");
               }
             }, {
-              text: "To Stop",
-              icon: "images/downed.png",
+              text: "To Detached",
+              icon: "images/unavailable.png",
               id: "change_status_button_detach",
               handler: function(button) {
                 self.confirm_send_command("detach");
