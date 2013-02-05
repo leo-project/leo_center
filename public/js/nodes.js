@@ -90,7 +90,7 @@
     confirm_send_command: function(command) {
       var self = this;
       var node = self.grid.getSelectionModel().getSelection()[0].data.node;
-      var msg = "Are you sure to send command '" + command + " " + node + "'?";
+      var msg = "Are you sure to send command <b>'" + command + " " + node + "'</b>?";
 
       // confirm user's password before dangerous action
       LeoTamer.confirm_password(function(password) {

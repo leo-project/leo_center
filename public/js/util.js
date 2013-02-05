@@ -29,7 +29,11 @@
   });
 
   LeoTamer.confirm_password = function(callback, msg) {
-    var msg = msg || "Please input your password";
+    var msg = msg || "";
+
+    if (msg !== "") msg += "<br><br>";
+    msg += "Please Input Your Passowrd:";
+
     Ext.Msg.prompt("Confirm", msg, function(btn, password) {
       if (btn === "ok") callback(password);
     });
