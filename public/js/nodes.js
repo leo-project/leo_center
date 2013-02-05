@@ -98,35 +98,33 @@
       }, msg);
     },
 
-    get_status_icon: function(val) {
-      var src;
-      switch (val) {
+    get_status_icon: function(status) {
+      switch (status) {
       case "running":
-        src = "images/available.png";
-        break;
+        return "images/available.png";
       case "stop":
       case "downed":
-        src = "images/fire.png";
-        break;
+        return "images/fire.png";
       case "detached":
-        src = "images/unavailable.png";
-        break;
+        return "images/unavailable.png";
       case "restarted":
       case "attached":
-        src = "images/add.png";
-        break;
+        return "images/add.png";
       case "suspend":
-        src = "images/warn.png";
-        break;
+        return "images/warn.png";
       default:
-        throw "invalid status specified: " + val;
+        throw "invalid status specified: " + status;
       }
-      return "<img class='status' src='" + src + "'> ";
+    },
+
+    get_status_img: function(status) {
+      var self = this;
+      return "<img class='status' src='" + self.get_status_icon(status) + "'> ";
     },
 
     status_renderer: function(val) {
       var self = this;
-      var img = self.get_status_icon(val);
+      var img = self.get_status_img(val);
       return img + val;
     },
 
@@ -155,16 +153,15 @@
       // var compaction_button = Ext.getCmp("compaction_button");
       var status = node_stat.status;
 
-      // using HTML 4.0 character entity references to avoid Ext.Panel#setTitle()'s cutting space
-      // &nbsp; //=> non-breaking space
-      self.status_panel.setTitle(self.get_status_icon(status) + "&nbsp;" + node_stat.node);
+      self.status_panel.setTitle(node_stat.node);
+      change_status_button.setIcon(self.get_status_icon(status));
 
       // check change status's availability
       if (node_stat.type === "Gateway") {
         change_status_button.disable();
         // compaction_button.disable();
       }
-      else {
+      else { // Storage
         switch (status) {
         case "stop":
         case "attached":
