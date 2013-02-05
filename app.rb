@@ -26,12 +26,19 @@ require "sinatra/namespace"
 require "leofs_manager_client"
 require_relative "lib/helpers"
 
+require 'logger'
+class LoggerEx < Logger
+  alias write <<
+end
+
 class LeoTamer < Sinatra::Base
   Version = "0.2.2"
   Config = TamerHelpers.load_config
   SessionKey = "leotamer_session"
 
   class Error < StandardError; end
+
+use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
 
   session_config = Config[:session]
   if session_config.has_key?(:local)
