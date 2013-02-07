@@ -25,7 +25,7 @@
       fields: ["role", "role_id"],
       data: [
         { role: "admin", role_id: 9 },
-        { role: "general", role_id: 1 }
+        { role: "general user", role_id: 1 }
       ]
     }),
 
@@ -171,7 +171,7 @@
       case "admin":
         return "<img src='images/admin_user.png'> " + Ext.String.capitalize(value);
       case "general":
-        return "<img src='images/user.png'> " + Ext.String.capitalize(value);
+        return "<img src='images/user.png'> " + Ext.String.capitalize(value) + " User";
       default:
         throw "invalid value: " + value;
       }

@@ -256,6 +256,7 @@
         tbar: [{
           xtype: "splitbutton",
           id: "change_status_button",
+          cls: "bold_button",
           text: "Change Status",
           handler: function(splitbutton) {
             // show menu when splitbutton itself is pressed
@@ -427,7 +428,7 @@
         tbar: [{
           xtype: "splitbutton",
           id: "nodes_grid_current_grouping",
-          cls: "bold_button",
+          cls: ["bold_button", "left_align_button"],
           icon: "images/table.png",
           width: 140,
           handler: function(splitbutton) {
@@ -437,16 +438,17 @@
           menu:  {
             xtype: "menu",
             showSeparator: false,
-            defaults: { cls: "bold_button" },
+            defaults: {
+              icon: "images/table.png",
+              cls: ["bold_menu_item", "left_align_menu_item"]
+            },
             items: [{
               text: "Group by type",
-              icon: "images/table.png",
               handler: function(button) {
                 self.select_grouping(button.text, "type");
               }
             }, {
               text: "Group by status",
-              icon: "images/table.png",
               handler: function(button) {
                 self.select_grouping(button.text, "status");
               }
@@ -476,6 +478,7 @@
         {
           text: "Rebalance",
           id: "nodes_rebalance_button",
+          cls: "bold_button",
           icon: "images/rebalance.png",
           handler: function() {
             LeoTamer.confirm_password(function(password) {

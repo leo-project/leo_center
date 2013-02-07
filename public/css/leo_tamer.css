@@ -8,11 +8,20 @@
   background-color: #5682AD;
 }
 
-#nodes_grid_current_grouping-btnInnerEl,
-#nodes_rebalance_button-btnInnerEl,
-#change_status_button-btnInnerEl,
-.bold_button { /* TODO */
+.bold_button .x-btn-center .x-btn-inner {
   font-weight: bold;
+}
+
+.left_align_button .x-btn-center .x-btn-inner {
+  text-align: left;
+}
+
+.bold_menu_item .x-menu-item-link .x-menu-item-text {
+  font-weight: bold;
+}
+
+.left_align_menu_item .x-menu-item-link .x-menu-item-text {
+  text-align: left;
 }
 
 #change_status_button-btnIconEl {
