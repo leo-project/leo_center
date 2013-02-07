@@ -36,6 +36,7 @@
           startParam: undefined,
           listeners: {
             exception: function(store, response, operation) {
+              if (response.status === 401) location.reload();
               LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
             }
           }

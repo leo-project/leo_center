@@ -63,6 +63,7 @@
         startParam: undefined,
         listeners: {
           exception: function(proxy, response, operation) {
+            if (response.status === 401) location.reload();
             LeoTamer.Msg.alert("Error on: \'" + proxy.url + "\'", response.responseText);
           }
         }
@@ -349,6 +350,7 @@
           groupParam: undefined,
           listeners: {
             exception: function(store, response, operation) {
+              if (response.status === 401) location.reload();
               LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
             }
           }
