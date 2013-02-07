@@ -90,12 +90,14 @@
 
     confirm_send_command: function(command) {
       var self = this;
-      var node = self.grid.getSelectionModel().getSelection()[0].data.node;
-      var msg = "Are you sure to send command <b>'" + command + " " + node + "'</b>?";
+      var node = self.grid.getSelectionModel().getSelection()[0].data; // selected node
+      var node_name = node.node;
+      var future_status = self.command_to_status[command];
+      var msg = 'Are you sure to change status from <b>"' + node.status + '" to "' + future_status + '"</b> ?';
 
       // confirm user's password before dangerous action
       LeoTamer.confirm_password(function(password) {
-        self.do_send_command(password, node, command);
+        self.do_send_command(password, node_name, command);
       }, msg);
     },
 
@@ -204,6 +206,13 @@
           }
         });
       }
+    },
+
+    // what status the command make nodes to be
+    command_to_status: {
+      suspend: "suspend",
+      resume:  "running",
+      detach:  "detached"
     },
 
     // it shows what commands are available on each state
