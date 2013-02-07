@@ -48,25 +48,16 @@
         forceFit: true,
         store: self.store,
         border: false,
-        tbar: [{
-          xtype: "textfield",
-          fieldLabel: "<img src='images/filter.png'> Filter:",
-          labelWidth: 60,
-          listeners: {
-            change: function(text_field, new_value) {
-              var store = self.store;
-              store.clearFilter();
-              store.filter("name", new RegExp(new_value));
+        tbar: [
+          "->",
+          {
+            xtype: "button",
+            icon: "images/reload.png",
+            handler: function() {
+              self.store.load();
             }
-          }},
-               "->",
-               {
-                 xtype: "button",
-                 icon: "images/reload.png",
-                 handler: function() {
-                   self.store.load();
-                 }
-               }],
+          }
+        ],
         columns: [{
           dataIndex: "name",
           text: "Name",

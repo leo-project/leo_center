@@ -106,26 +106,12 @@
         forceFit: true,
         store: self.store,
         tbar: [{
-          xtype: "textfield",
-          fieldLabel: "<img src='images/filter.png'> Filter:",
-          labelWidth: 60,
-          listeners: {
-            change: function(text_field, new_value) {
-              var store = self.store;
-              store.clearFilter();
-              store.filter("endpoint", new RegExp(new_value));
-            }
-          }
-        },
-        "-",
-        {
           text: "Add Endpoint",
           icon: "images/add.png",
           handler: function() {
             self.add_endpoint(self);
           }
-        },
-        {
+        }, {
           text: "Delete Endpoint",
           icon: "images/remove.png",
           handler: function() {
