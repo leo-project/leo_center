@@ -23,6 +23,7 @@ require "json"
 require "haml"
 require "sinatra/base"
 require "sinatra/namespace"
+gem "leofs_manager_client", "0.2.15"
 require "leofs_manager_client"
 require_relative "lib/helpers"
 
