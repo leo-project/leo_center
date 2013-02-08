@@ -3,6 +3,20 @@
     var sign_up, login_form, login;
 
     sign_up = function() {
+      var sign_up_form_submit = function() {
+        sign_up_form.submit({
+          method: "POST",
+          success: function() {
+            var form = login_form.getForm();
+            form.setValues(sign_up_form.getValues());
+            login_form_submit();
+          },
+          failure: function(form, action) {
+            LeoTamer.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
+          }
+        });
+      };
+
       var sign_up_form = Ext.create("Ext.form.Panel", {
         url: "sign_up",
         defaultType: "textfield",
@@ -37,24 +51,18 @@
           inputType: "password",
           validator: function() {
             return Ext.getCmp("sign_up_form_pass").validate();
+          },
+          listeners: {
+            specialkey: function(form, e) {
+              if (e.getKey() === e.ENTER) sign_up_form_submit();
+            }
           }
         }],
         buttons: [{
+          id: "sign_up_submit_button",
           text: "Sign Up",
           enableKeyEvents: true,
-          handler: function() {
-            sign_up_form.submit({
-              method: "POST",
-              success: function() {
-                var form = login_form.getForm();
-                form.setValues(sign_up_form.getValues());
-                login_form_submit();
-              },
-              failure: function(form, action) {
-                LeoTamer.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
-              }
-            });
-          }
+          handler: sign_up_form_submit
         }]
       });
 
@@ -104,7 +112,7 @@
         inputType: "password",
         listeners: {
           specialkey: function(form, e) {
-            if (e.getKey() == e.ENTER) login_form_submit();
+            if (e.getKey() === e.ENTER) login_form_submit();
           }
         }
       }],
