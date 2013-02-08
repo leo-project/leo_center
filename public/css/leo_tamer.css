@@ -1,0 +1,56 @@
+.x-grid-cell-inner img,
+.x-panel-header-text-container img,
+.x-form-item-label img {
+  vertical-align: middle;
+}
+
+#viewport_header-innerCt {
+  background-color: #5682AD;
+}
+
+.bold_button .x-btn-center .x-btn-inner {
+  font-weight: bold;
+}
+
+#nodes_grid_current_grouping .x-btn-center .x-btn-inner {
+  text-align: left;
+  padding: 0px 0px 0px 30px;
+}
+
+.bold_menu_item .x-menu-item-link .x-menu-item-text {
+  font-weight: bold;
+}
+
+.left_align_menu_item .x-menu-item-link .x-menu-item-text {
+  text-align: left;
+}
+
+#change_status_button-btnIconEl {
+  /* no semi-transparent effect when it is disabled */
+  opacity: 1.0 !important;
+}
+
+.x-tab-bar-strip {
+  top: 34px !important;
+}
+
+.x-grid-cell-inner,
+.x-tab-inner,
+.x-panel-header-text,
+.x-column-header-text {
+  font-size: 13px;
+}
+
+#admin_grid .x-grid-row td {
+  height: 20px;
+  padding: 5px;
+}
+
+.x-column-header-inner {
+  padding: 3px 6px 3px !important;
+}
+
+#user_menu-btnInnerEl {
+  color: white;
+  font-weight: bold;
+}

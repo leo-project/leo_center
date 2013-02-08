@@ -1,24 +1,3 @@
-// ======================================================================
-//
-//  Leo Tamer
-//
-//  Copyright (c) 2012 Rakuten, Inc.
-//
-//  This file is provided to you under the Apache License,
-//  Version 2.0 (the "License"); you may not use this file
-//  except in compliance with the License.  You may obtain
-//  a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing,
-//  software distributed under the License is distributed on an
-//  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-//  KIND, either express or implied.  See the License for the
-//  specific language governing permissions and limitations
-//  under the License.
-//
-// ======================================================================
 (function() {
   Ext.define("LeoTamer.Admin", {
     extend: "Ext.panel.Panel",
@@ -30,6 +9,7 @@
     users: Ext.create("LeoTamer.Users"),
     buckets: Ext.create("LeoTamer.Buckets"),
     endpoints: Ext.create("LeoTamer.Endpoints"),
+    whereis: Ext.create("LeoTamer.Whereis"),
 
     admin_store: Ext.create("Ext.data.Store", {
       fields: ["name"],
@@ -37,7 +17,8 @@
         { name: "System Conf" },
         { name: "Users" },
         { name: "Buckets" },
-        { name: "Endpoints" }
+        { name: "Endpoints" },
+        { name: "Assigned File" }
       ]
     }),
 
@@ -55,6 +36,9 @@
         break;
       case "Endpoints":
         img = "<img src='images/endpoint.png'> ";
+        break;
+      case "Assigned File":
+        img = "<img src='images/whereis.png'> ";
         break;
       default:
         throw "no icon for " + value;
@@ -96,7 +80,8 @@
           self.system_conf,
           self.users,
           self.buckets,
-          self.endpoints
+          self.endpoints,
+          self.whereis
         ]
       });
 

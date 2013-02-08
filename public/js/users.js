@@ -1,24 +1,3 @@
-// ======================================================================
-//
-//  Leo Tamer
-//
-//  Copyright (c) 2012 Rakuten, Inc.
-//
-//  This file is provided to you under the Apache License,
-//  Version 2.0 (the "License"); you may not use this file
-//  except in compliance with the License.  You may obtain
-//  a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing,
-//  software distributed under the License is distributed on an
-//  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-//  KIND, either express or implied.  See the License for the
-//  specific language governing permissions and limitations
-//  under the License.
-//
-// ======================================================================
 (function() {
   Ext.define('LeoTamer.model.Users', {
     extend: 'Ext.data.Model',
@@ -46,7 +25,7 @@
       fields: ["role", "role_id"],
       data: [
         { role: "admin", role_id: 9 },
-        { role: "general", role_id: 1 }
+        { role: "general user", role_id: 1 }
       ]
     }),
 
@@ -68,6 +47,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response) {
+            if (response.status === 401) location.reload();
             LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
@@ -105,28 +85,23 @@
         return;
       }
 
-      var user_id = last_selected.data.user_id;
+      var user_id_to_delete = last_selected.data.user_id;
 
-      /*
-        var msg = "Are you sure to delete user: '" + user_id + "'?";
-        Ext.Msg.on("beforeshow",  function (win) {
-        win.defaultFocus = 2; // set default focus to "No" button
-        }); */
-
-      LeoTamer.confirm_password({
-        success: function() {
-          Ext.Ajax.request({
-            url: "users/delete_user",
-            method: "DELETE",
-            params: { user_id: user_id },
-            success: function(response) {
-              self.load();
-            },
-            failure: function(response) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
-            }
-          });
-        }
+      LeoTamer.confirm_password(function(password) {
+        Ext.Ajax.request({
+          url: "users/delete_user",
+          method: "DELETE",
+          params: {
+            user_id_to_delete: user_id_to_delete,
+            password: password
+          },
+          success: function(response) {
+            self.load();
+          },
+          failure: function(response) {
+            LeoTamer.Msg.alert("Error!", response.responseText);
+          }
+        });
       });
     },
 
@@ -196,7 +171,7 @@
       case "admin":
         return "<img src='images/admin_user.png'> " + Ext.String.capitalize(value);
       case "general":
-        return "<img src='images/user.png'> " + Ext.String.capitalize(value);
+        return "<img src='images/user.png'> " + Ext.String.capitalize(value) + " User";
       default:
         throw "invalid value: " + value;
       }

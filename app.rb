@@ -23,15 +23,23 @@ require "json"
 require "haml"
 require "sinatra/base"
 require "sinatra/namespace"
+gem "leofs_manager_client", "0.2.15"
 require "leofs_manager_client"
 require_relative "lib/helpers"
 
+require 'logger'
+class LoggerEx < Logger
+  alias write <<
+end
+
 class LeoTamer < Sinatra::Base
-  Version = "0.2.2"
+  Version = "0.2.10"
   Config = TamerHelpers.load_config
   SessionKey = "leotamer_session"
 
   class Error < StandardError; end
+
+use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
 
   session_config = Config[:session]
   if session_config.has_key?(:local)
@@ -59,6 +67,19 @@ class LeoTamer < Sinatra::Base
 
   register Sinatra::Namespace
   helpers TamerHelpers
+
+  helpers do
+    def confirm_password
+      user_id = required_sessions(:user_id)
+      password = required_params(:password)
+      begin
+        credential = @@manager.login(user_id, password)
+      rescue RuntimeError
+        halt 401, "Invalid User ID or Password."
+      end
+      return credential
+    end
+  end
 
   # error handlers don't get along with RSpec
   # disable it when environment is :test
@@ -119,14 +140,13 @@ class LeoTamer < Sinatra::Base
 
   post "/login" do
     user_id, password = required_params(:user_id, :password)
-
     begin
       credential = @@manager.login(user_id, password)
     rescue RuntimeError
       halt 200, json_err_msg("Invalid User ID or Password.")
     end
-
-    admin = credential.role_id == Role::Admin # boola
+    admin = credential.role_id == Role::Admin # bool
+    user_id = credential.id
     group = ["hoge", "fuga"].sample #XXX: FAKE
     session[:admin] = admin
     session[:user_id] = user_id
@@ -147,7 +167,7 @@ class LeoTamer < Sinatra::Base
   end
 
   get "/user_credential" do
-    required_sessions(:access_key_id, :secret_access_key)
+    confirm_password
     <<-EOS
       AWS_ACCESS_KEY_ID: #{session[:access_key_id]}<br>
       AWS_SECRET_ACCESS_KEY: #{session[:secret_access_key]}
@@ -166,3 +186,4 @@ require_relative "lib/users"
 require_relative "lib/buckets"
 require_relative "lib/endpoints"
 require_relative "lib/system_conf"
+require_relative "lib/whereis"
