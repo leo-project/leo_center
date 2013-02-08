@@ -110,7 +110,26 @@
               }
             },
             { header: "Node", dataIndex: "node" },
-            { header: "Size", dataIndex: "size", width: 30 },
+            {
+              header: "Size",
+              dataIndex: "size",
+              width: 30,
+              renderer: function(size) {
+                var format_string = "0";
+                if (size < 1024) {
+                    return Ext.util.Format.number(size, format_string);
+                } else if (size < 1048576) {
+                    return Ext.util.Format.number(Math.round(((size * 100) / 1024)) / 100, format_string) + " KB";
+                } else if (size < 1073741824) {
+                    return Ext.util.Format.number(Math.round(((size * 100) / 1048576)) / 100, format_string) + " MB";
+                } else if (size < 1099511627776) {
+                    return Ext.util.Format.number(Math.round(((size * 100) / 1073741824)) / 100, format_string) + " GB";
+                } else {
+                    return Ext.util.Format.number(Math.round(((size * 100) / 1099511627776)) / 100, format_string) + " TB";
+                }
+              }
+            },
+            { header: "Actual Size", dataIndex: "size", width: 40 },
             { header: "Timestamp", dataIndex: "timestamp" },
           ]
         },
@@ -120,8 +139,8 @@
             self.detail_store.loadData([
               ["VNode ID", record.get("vnode_id")],
               ["Clock", record.get("clock")],
-              ["Checksum", record.get("checksum")],
-              ["# of chunks", record.get("num_of_chunks")]
+              ["Number of chunks", record.get("num_of_chunks")],
+              ["Checksum", record.get("checksum")]
             ]);
           }
         }
