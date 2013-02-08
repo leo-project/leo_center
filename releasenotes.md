@@ -1,3 +1,15 @@
+leo_tamer v0.2.10
+=================
+
+* New Feature
+    * Administration Tools
+        * Add "Assigned Files View"
+            * Able to confirm file assigned nodes
+* Improvements
+    * Fix incorrect any details
+    * Supported "ruckup"
+
+
 leo_tamer v0.2.8
 ================
 
