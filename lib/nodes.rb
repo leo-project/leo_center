@@ -93,7 +93,7 @@ class LeoTamer
           result.push({
             name: "Total of Objects",
             value: storage_stat.total_of_objects,
-            group: Nodes::LeoFSRelatedConfig::Group
+            group: "Storage related Items"
           })
         end
       end
