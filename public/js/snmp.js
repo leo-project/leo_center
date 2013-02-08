@@ -15,6 +15,16 @@
       pack: "start",
     },
 
+    listeners: {
+      activate: function(self) {
+        self.load();
+      }
+    },
+
+    load: function() {
+      this.store.load();
+    },
+
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Chart",
       proxy: {
@@ -35,8 +45,7 @@
             LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
-      },
-      autoLoad: true
+      }
     }),
 
     initComponent: function() {
