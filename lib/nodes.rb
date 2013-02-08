@@ -83,7 +83,7 @@ class LeoTamer
           group: Nodes::ErlangRelatedItems::Group
         }
       end)
-=begin
+
       if type == "Storage"
         begin
           storage_stat = @@manager.du(node)
@@ -97,7 +97,7 @@ class LeoTamer
           })
         end
       end
-=end
+
       { data: result }.to_json
     end
 
