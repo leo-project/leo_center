@@ -48,6 +48,7 @@
     detail_store: Ext.create("Ext.data.ArrayStore", {
       model: "LeoTamer.model.NameValue",
       groupField: "group",
+      groupDir: "DESC",
       proxy: {
         type: "ajax",
         url: "nodes/detail.json",

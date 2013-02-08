@@ -1,6 +1,4 @@
 class LeoTamer
-  module Nodes; end;
-
   namespace "/nodes" do
     before do
       halt 401 unless session[:admin]
@@ -39,36 +37,52 @@ class LeoTamer
       { data: data }.to_json
     end
 
-    # property: "text"
-    Nodes::Properties = {
-      version: "LeoFS Version",
-      vm_version: "VM Version",
-      log_dir: "Log Directory",
-      ring_cur: "Current Ring-hash",
-      ring_prev: "Previous Ring-hash",
-      total_mem_usage: "Total Memory Usage",
-      system_mem_usage: "System Memory Usage",
-      procs_mem_usage: "Procs Memory Usage",
-      ets_mem_usage: "ETS Memory Usage",
-      num_of_procs: "Number of Procs",
-      limit_of_procs: "Limit of Procs",
-      thread_pool_size: "Thread Pool Size"
-    }
+    module Nodes
+      module LeoFSRelatedConfig
+        Group = "LeoFS related Items"
+        Properties = {
+          version: "LeoFS Version",
+          vm_version: "VM Version",
+          log_dir: "Log Directory",
+          ring_cur: "Current Ring-hash",
+          ring_prev: "Previous Ring-hash"
+        }
+      end
 
-    Nodes::DetailGridDummyGrouping = "Config/VM Status"
+      module ErlangRelatedItems
+        Group = "Erlang related Items"
+        Properties = {
+          total_mem_usage: "Total Memory Usage",
+          system_mem_usage: "System Memory Usage",
+          procs_mem_usage: "Procs Memory Usage",
+          ets_mem_usage: "ETS Memory Usage",
+          num_of_procs: "Number of Procs",
+          limit_of_procs: "Limit of Procs",
+          thread_pool_size: "Thread Pool Size"
+        }
+      end
+    end
 
     get "/detail.json" do
       node, type = required_params(:node, :type)
 
       node_stat = @@manager.status(node).node_stat
 
-      result = Nodes::Properties.map do |property, text|
+      result = Nodes::LeoFSRelatedConfig::Properties.map do |property, text|
         { 
           name: text,
           value: node_stat.__send__(property),
-          group: Nodes::DetailGridDummyGrouping
+          group: Nodes::LeoFSRelatedConfig::Group
         }
       end
+
+      result.concat(Nodes::ErlangRelatedItems::Properties.map do |property, text|
+        { 
+          name: text,
+          value: node_stat.__send__(property),
+          group: Nodes::ErlangRelatedItems::Group
+        }
+      end)
 
       if type == "Storage"
         begin
@@ -79,7 +93,7 @@ class LeoTamer
           result.push({
             name: "Total of Objects",
             value: storage_stat.total_of_objects,
-            group: Nodes::DetailGridDummyGrouping
+            group: Nodes::LeoFSRelatedConfig::Group
           })
         end
       end

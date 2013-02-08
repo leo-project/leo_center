@@ -12,8 +12,9 @@
   font-weight: bold;
 }
 
-.left_align_button .x-btn-center .x-btn-inner {
+#nodes_grid_current_grouping .x-btn-center .x-btn-inner {
   text-align: left;
+  padding: 0px 0px 0px 30px;
 }
 
 .bold_menu_item .x-menu-item-link .x-menu-item-text {
