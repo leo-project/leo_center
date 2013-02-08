@@ -9,13 +9,10 @@
     id: "snmp",
     title: "SNMP",
     border: false,
-    width: "100%",
-    height: "100%",
 
     layout: {
       type: "hbox",
       pack: "start",
-      align: 'stretch'
     },
 
     store: Ext.create("Ext.data.Store", {
@@ -47,14 +44,9 @@
 
       self.chart_panel1 = Ext.create("Ext.Panel", {
         title: "Chart Penel1",
-        padding: 12,
-        height: 200,
-        flex: 2,
         layout: "fit",
         items: [{ 
           xtype: "chart",
-          width: 300,
-          height: 300,
           store: self.store,
           series: [{
             type: "area",
@@ -68,9 +60,6 @@
 
       self.chart_panel2 = Ext.create("Ext.Panel", {
         title: "Chart Penel1",
-        padding: 12,
-        height: 200,
-        flex: 2,
         layout: "fit",
         items: [{ 
           xtype: "chart",
@@ -86,6 +75,11 @@
       });
 
       Ext.apply(self, {
+        defaults: {
+          padding: 12,
+          height: 300,
+          flex: 2
+        },
         items: [
           self.chart_panel1,
           self.chart_panel2

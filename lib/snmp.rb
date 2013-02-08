@@ -7,7 +7,7 @@ class LeoTamer
     helpers do
       def gf2ext(service_name, section_name, graph)
         gf = GF::Client.new("localhost", 5125)
-        data = gf.export(service_name, section_name, graph)
+        data = gf.export(service_name, section_name, graph, t: "h")
         p data
         start = data[:start_timestamp]
         step = data[:step]
@@ -20,7 +20,8 @@ class LeoTamer
     end
 
     get "/chart.json" do
-      data = gf2ext("LeoFS", "Storage", "number_of_processes_1min_avg")
+      #data = gf2ext("LeoFS", "Storage", "number_of_processes_1min_avg")
+      data = gf2ext("test", "test", "test")
       p data
       {
         data: data
