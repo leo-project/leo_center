@@ -137,7 +137,7 @@
           select: function(grid, record, index) {
             self.detail_grid.setTitle(record.get("node"));
             self.detail_store.loadData([
-              ["VNode ID", record.get("vnode_id")],
+              ["Ring address", record.get("vnode_id")],
               ["Clock", record.get("clock")],
               ["Number of chunks", record.get("num_of_chunks")],
               ["Checksum", record.get("checksum")]
