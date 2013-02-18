@@ -1,7 +1,10 @@
 (function() {
   Ext.define("LeoTamer.model.Chart", {
     extend: "Ext.data.Model",
-    fields: ["x", "y"]
+    fields: [
+      { name: "x", type: "date", dateFormat: "timestamp" },
+      "y"
+    ]
   });
 
   Ext.define("LeoTamer.SNMP.Chart", {
@@ -45,6 +48,12 @@
             type: "Numeric",
             position: "left",
             fields: "y"
+          }, {
+            type: "Time",
+            position: "bottom",
+            step: [Ext.Date.HOUR, 1],
+            dateFormat: "h:m",
+            fields: "x"
           }],
           series: [{
             type: "area",
