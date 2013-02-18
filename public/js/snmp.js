@@ -4,6 +4,57 @@
     fields: ["x", "y"]
   });
 
+  Ext.define("LeoTamer.SNMP.Chart", {
+    extend: "Ext.panel.Panel",
+
+    initComponent: function() {
+      var self = this;
+
+      var store = Ext.create("Ext.data.Store", {
+        model: "LeoTamer.model.Chart",
+        proxy: {
+          type: "ajax",
+          url: self.url,
+          extraParams: self.params,
+          reader: {
+            type: "json",
+            root: "data"
+          },
+          // disable unused params
+          noCache: false,
+          limitParam: undefined,
+          pageParam: undefined,
+          sortParam: undefined,
+          startParam: undefined,
+          listeners: {
+            exception: function(store, response, operation) {
+              LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            }
+          }
+        },
+        autoLoad: true
+      });
+
+      Ext.apply(self, {
+        title: self.title,
+        layout: "fit",
+        items: [{ 
+          xtype: "chart",
+          store: store,
+          series: [{
+            type: "area",
+            highlight: false,
+            axis: "left",
+            xField: "x",
+            yField: "y",
+          }]
+        }]
+      });
+
+      return self.callParent(arguments);
+    }
+  });
+
   Ext.define("LeoTamer.SNMP", {
     extend: "Ext.panel.Panel",
     id: "snmp",
@@ -11,87 +62,24 @@
     border: false,
 
     layout: {
-      type: "hbox",
-      pack: "start",
+      type: "fit"
     },
-
-    listeners: {
-      activate: function(self) {
-        self.load();
-      }
-    },
-
-    load: function() {
-      this.store.load();
-    },
-
-    store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Chart",
-      proxy: {
-        type: "ajax",
-        url: "snmp/chart.json",
-        reader: {
-          type: "json",
-          root: "data"
-        },
-        // disable unused params
-        noCache: false,
-        limitParam: undefined,
-        pageParam: undefined,
-        sortParam: undefined,
-        startParam: undefined,
-        listeners: {
-          exception: function(store, response, operation) {
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-          }
-        }
-      }
-    }),
 
     initComponent: function() {
       var self = this;
 
-      self.chart_panel1 = Ext.create("Ext.Panel", {
-        title: "Chart Penel1",
-        layout: "fit",
-        items: [{ 
-          xtype: "chart",
-          store: self.store,
-          series: [{
-            type: "area",
-            highlight: false,
-            axis: "left",
-            xField: "x",
-            yField: "y",
-          }]
-        }]
+      self.chart_panel1 = Ext.create("LeoTamer.SNMP.Chart", {
+        title: "foo",
+        url: "snmp/chart.json"
       });
-
-      self.chart_panel2 = Ext.create("Ext.Panel", {
-        title: "Chart Penel1",
-        layout: "fit",
-        items: [{ 
-          xtype: "chart",
-          store: self.store,
-          series: [{
-            type: "area",
-            highlight: false,
-            axis: "left",
-            xField: "x",
-            yField: "y",
-          }]
-        }]
-      });
+      console.log(self.chart_panel1);
 
       Ext.apply(self, {
         defaults: {
-          padding: 12,
-          height: 300,
-          flex: 2
+          maxHeight: 300
         },
         items: [
           self.chart_panel1,
-          self.chart_panel2
         ]
       });
 

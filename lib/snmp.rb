@@ -21,7 +21,10 @@ class LeoTamer
 
     get "/chart.json" do
       #data = gf2ext("LeoFS", "Storage", "number_of_processes_1min_avg")
-      data = gf2ext("test", "test", "test")
+      #data = gf2ext("test", "test", "test")
+      data = Array.new (50) do |n|
+        { x: n, y: rand(100) }
+      end
       p data
       {
         data: data
