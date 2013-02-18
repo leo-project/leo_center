@@ -3,7 +3,9 @@
     extend: "Ext.data.Model",
     fields: [
       { name: "x", type: "date", dateFormat: "timestamp" },
-      "y"
+      "y",
+      "y1",
+      "y2"
     ]
   });
 
@@ -44,22 +46,33 @@
         items: [{ 
           xtype: "chart",
           store: store,
+          legend: true,
           axes: [{
             type: "Numeric",
+            grid: true,
             position: "left",
             fields: "y"
           }, {
             type: "Time",
+            grid: true,
             position: "bottom",
-            step: [Ext.Date.HOUR, 1],
-            dateFormat: "h:m",
+            step: [Ext.Date.MINUTE, 30],
+            minorTickSteps: 2, // every 10 minutes
+            dateFormat: "H:i",
             fields: "x"
           }],
           series: [{
             type: "area",
-            highlight: false,
             xField: "x",
-            yField: "y"
+            yField: ["y1", "y2", "y"],
+            title: [
+              "System memory usage",
+              "ETS memory usage",
+              "Processes memory usage"
+            ],
+            style: {
+              opacity: 0.6
+            }
           }]
         }]
       });
