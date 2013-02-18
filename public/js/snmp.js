@@ -44,11 +44,28 @@
           series: [{
             type: "area",
             highlight: false,
-            axis: "left",
             xField: "x",
             yField: "y",
           }]
         }]
+      });
+
+      return self.callParent(arguments);
+    }
+  });
+
+  Ext.define("LeoTamer.SNMP.Chart.ErlangVM", {
+    extend: "LeoTamer.SNMP.Chart",
+
+    initComponent: function() {
+      var self = this;
+      
+      Ext.apply(self, {
+        title: "Erlang VM Status of " + self.node,
+        url: "snmp/erlang_vm.json",
+        params: {
+          node: self.node
+        }
       });
 
       return self.callParent(arguments);
@@ -60,27 +77,35 @@
     id: "snmp",
     title: "SNMP",
     border: false,
-
-    layout: {
-      type: "fit"
-    },
+    autoScroll: true,
+    layout: "fit",
 
     initComponent: function() {
       var self = this;
+      var erlang_vm_charts;
+      var node_list;
 
-      self.chart_panel1 = Ext.create("LeoTamer.SNMP.Chart", {
-        title: "foo",
-        url: "snmp/chart.json"
+      Ext.Ajax.request({
+        url: "nodes/list.json",
+        async: false,
+        success: function(response) {
+          var json = response.responseText;
+          node_list = Ext.JSON.decode(json).data;
+        }
       });
-      console.log(self.chart_panel1);
+
+      erlang_vm_charts = Ext.Array.map(node_list, function(node) {
+        return Ext.create("LeoTamer.SNMP.Chart.ErlangVM", {
+          node: node.name
+        });
+      });
 
       Ext.apply(self, {
         defaults: {
-          maxHeight: 300
+          maxHeight: 300,
+          padding: 10
         },
-        items: [
-          self.chart_panel1,
-        ]
+        items: erlang_vm_charts
       });
 
       return self.callParent(arguments);
