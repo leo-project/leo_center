@@ -41,11 +41,16 @@
         items: [{ 
           xtype: "chart",
           store: store,
+          axes: [{
+            type: "Numeric",
+            position: "left",
+            fields: "y"
+          }],
           series: [{
             type: "area",
             highlight: false,
             xField: "x",
-            yField: "y",
+            yField: "y"
           }]
         }]
       });
