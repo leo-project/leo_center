@@ -68,7 +68,7 @@
             minorTickSteps: 2, // every 10 minutes
             dateFormat: "H:i",
             fromDate: Ext.Date.add(self.just_date(), Ext.Date.HOUR, -7), // 7 hours ago
-            toDate: self.just_date(),
+            // toDate: self.just_date(),
             fields: "x"
           }],
           series: [{

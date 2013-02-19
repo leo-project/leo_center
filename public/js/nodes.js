@@ -9,8 +9,11 @@
 
     title: "Node Status",
     id: "nodes_panel",
-    layout: "border",
     reload_interval: 30000,
+    layout: {
+      type: "hbox",
+      align: "stretch"
+    },
 
     select_first_row: function() {
       var self = this;
@@ -250,9 +253,8 @@
 
       self.status_panel = Ext.create("Ext.Panel", {
         title: "Config/VM Status",
-        region: "east",
         width: 300,
-        resizable: false,
+        autoScroll: true,
         tbar: [{
           xtype: "splitbutton",
           id: "change_status_button",
@@ -380,8 +382,8 @@
       });
 
       self.grid = Ext.create("Ext.grid.Panel", {
+        flex: 2,
         store: self.store,
-        region: "center",
         forceFit: true,
         features: [ self.grid_grouping ],
         columns: {
@@ -519,8 +521,34 @@
         }
       });
 
+      self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart.ErlangVM", {
+        flex: 1,
+        // TODO: margin of chart
+        node: "storage_0@127.0.0.1"
+      });
+
+      self.left_container = Ext.create("Ext.Container", {
+        flex: 2,
+        split: true,
+        collapsible: true,
+        height: "40%",
+        layout: {
+          type: "vbox",
+          pack: "start",
+          align: "stretch"
+        },
+        items: [
+          self.grid,
+          Ext.create("Ext.resizer.Splitter", { autoShow: true }),
+          self.erlang_vm_chart
+        ]
+      });
+
       Ext.apply(self, {
-        items: [self.grid, self.status_panel]
+        items: [
+          self.left_container,
+          self.status_panel
+        ]
       });
 
       return self.callParent(arguments);
