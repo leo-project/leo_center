@@ -1,14 +1,4 @@
 (function() {
-  Ext.define("LeoTamer.model.Chart", {
-    extend: "Ext.data.Model",
-    fields: [
-      { name: "x", type: "date", dateFormat: "timestamp" },
-      "y",
-      "y1",
-      "y2"
-    ]
-  });
-
   Ext.define("LeoTamer.SNMP.Chart", {
     extend: "Ext.panel.Panel",
 
@@ -16,7 +6,12 @@
       var self = this;
 
       var store = Ext.create("Ext.data.Store", {
-        model: "LeoTamer.model.Chart",
+        fields: [
+          { name: "x", type: "date", dateFormat: "U" },
+          "y",
+          "y1",
+          "y2"
+        ],
         proxy: {
           type: "ajax",
           url: self.url,
@@ -56,6 +51,7 @@
             type: "Time",
             grid: true,
             position: "bottom",
+            constrain: true,
             step: [Ext.Date.MINUTE, 30],
             minorTickSteps: 2, // every 10 minutes
             dateFormat: "H:i",

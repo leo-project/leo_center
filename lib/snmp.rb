@@ -19,17 +19,18 @@ class LeoTamer
 
       def cmp2ext(pattern)
         gf = GF::Client.new("localhost", 5125)
-        data = gf.export_complex("AREA:31:gauge:0:AREA:33:gauge:1:AREA:9:gauge:1", t: "h")
-        p data
+        data = gf.export_complex("AREA:31:gauge:0:AREA:33:gauge:1:AREA:9:gauge:1", t: "8h")
         start = data[:start_timestamp]
         step = data[:step]
         rows = data[:rows]
+        rows.select! {|row| row.any? } # remove [nil, nil, nil]
         ext = rows.map.with_index do |value, index|
+          p Time.at(start + step * index).localtime
           {
             x: start + step * index,
-            y: value[0] || 0,
-            y1: value[1] || 0,
-            y2: value[1] || 0
+            y: value[0],
+            y1: value[1],
+            y2: value[2]
           }
         end
         ext.unshift({
