@@ -55,6 +55,7 @@
             step: [Ext.Date.MINUTE, 30],
             minorTickSteps: 2, // every 10 minutes
             dateFormat: "H:i",
+            fromDate: Ext.Date.add(new Date(), Ext.Date.HOUR, -8), // 8 hours ago
             fields: "x"
           }],
           series: [{
@@ -126,7 +127,7 @@
       Ext.apply(self, {
         defaults: {
           maxHeight: 300,
-          padding: 10
+          margin: "5 20 5 5" // get along with vertical scroll bar
         },
         items: erlang_vm_charts
       });
