@@ -25,7 +25,6 @@ class LeoTamer
         rows = data[:rows]
         rows.select! {|row| row.any? } # remove [nil, nil, nil]
         ext = rows.map.with_index do |value, index|
-          p Time.at(start + step * index).localtime
           {
             x: start + step * index,
             y: value[0],

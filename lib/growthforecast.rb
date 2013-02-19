@@ -30,7 +30,6 @@ module GrowthForecast
         param_str = opt.map {|k, v| "#{k}=#{URI.encode(v)}" }.join("&")
         path.concat(param_str)
       end
-      p path
       return request(path)
     end
 

@@ -2,6 +2,18 @@
   Ext.define("LeoTamer.SNMP.Chart", {
     extend: "Ext.panel.Panel",
 
+    just_date: function() {
+      var date, just_date;
+      date = new Date();
+      just_date = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        date.getHours()
+      );
+      return just_date;
+    },
+
     initComponent: function() {
       var self = this;
 
@@ -55,7 +67,8 @@
             step: [Ext.Date.MINUTE, 30],
             minorTickSteps: 2, // every 10 minutes
             dateFormat: "H:i",
-            fromDate: Ext.Date.add(new Date(), Ext.Date.HOUR, -8), // 8 hours ago
+            fromDate: Ext.Date.add(self.just_date(), Ext.Date.HOUR, -7), // 7 hours ago
+            toDate: self.just_date(),
             fields: "x"
           }],
           series: [{
