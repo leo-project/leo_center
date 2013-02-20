@@ -12,11 +12,10 @@ module GrowthForecast
     attr_reader :host, :port
 
     def export(service_name, section_name, graph, opt=nil)
-      uri_encode!(service_name, section_name, graph)
       path = "xport/#{service_name}/#{section_name}/#{graph}"
       if opt && opt.is_a?(Hash)
         path.concat("?")
-        param_str = opt.map {|k, v| "#{k}=#{URI.encode(v)}" }.join("&")
+        param_str = opt.map {|k, v| "#{k}=#{v}" }.join("&")
         path.concat(param_str)
       end
       return request(path)
@@ -24,19 +23,13 @@ module GrowthForecast
     
     private
 
-    JSON_OPTS = {
-      symbolize_names: true
-    }
+    JSON_OPTS = { symbolize_names: true }.freeze
 
     def request(path)
-      json = OpenURI.open_uri(@base_uri + path).read
+      path = URI.encode(path)
+      uri = URI.join(@base_uri, path)
+      json = OpenURI.open_uri(uri).read
       return JSON.parse(json, JSON_OPTS)
-    end
-
-    def uri_encode!(*args)
-      args.each do |arg|
-        arg.replace(URI.encode(arg))
-      end
     end
   end
 end
