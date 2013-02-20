@@ -15,7 +15,7 @@
         date.getFullYear(),
         date.getMonth(),
         date.getDate(),
-        date.getHours()
+        date.getMinutes() > 30 ? date.getMinutes() + 1 : date.getHours()
       );
       return just_date;
     },
@@ -59,10 +59,12 @@
             type: "Time",
             grid: true,
             position: "bottom",
+            constrain: true,
             step: [Ext.Date.MINUTE, 30],
             minorTickSteps: 2, // every 10 minutes
             dateFormat: "H:i",
             fromDate: Ext.Date.add(self.just_date(), Ext.Date.HOUR, -7), // 7 hours ago
+            toDate: Ext.Date.add(self.just_date(), Ext.Date.MINUTE, 30),
             fields: "x"
           }],
           series: [{
@@ -416,6 +418,17 @@
         }]
       });
 
+      var set_rebalance_button_state = function() {
+        var rebalance_button = Ext.getCmp("nodes_rebalance_button");
+        var rebalance_ready = self.store.find("status", /attached|detached/) != -1;
+        if (rebalance_ready) {
+          rebalance_button.enable();
+        }
+        else {
+          rebalance_button.disable();
+        }
+      }
+
       self.store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Nodes",
         proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
@@ -423,14 +436,7 @@
         }),
         listeners: {
           load: function() {
-            var rebalance_button = Ext.getCmp("nodes_rebalance_button");
-            var rebalance_ready = self.store.find("status", /attached|detached/) != -1;
-            if (rebalance_ready) {
-              rebalance_button.enable();
-            }
-            else {
-              rebalance_button.disable();
-            }
+            set_rebalance_button_state();
           }
         }
       });
@@ -577,7 +583,6 @@
 
       self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart", {
         flex: 1,
-        // TODO: margin of chart
         node: "storage_0@127.0.0.1"
       });
 
