@@ -135,26 +135,9 @@
     detail_store: Ext.create("Ext.data.ArrayStore", {
       model: "LeoTamer.model.NameValue",
       groupField: "group",
-      proxy: {
-        type: "ajax",
-        url: "nodes/detail.json",
-        reader: {
-          type: "json",
-          root: "data"
-        },
-        // disabe unused params
-        noCache: false,
-        limitParam: undefined,
-        pageParam: undefined,
-        sortParam: undefined,
-        startParam: undefined,
-        listeners: {
-          exception: function(proxy, response, operation) {
-            if (response.status === 401) location.reload();
-            LeoTamer.Msg.alert("Error on: \'" + proxy.url + "\'", response.responseText);
-          }
-        }
-      }
+      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        url: "nodes/detail.json"
+      })
     }),
 
     do_send_command: function(password, node, command) {
@@ -437,27 +420,9 @@
 
       self.store = Ext.create("Ext.data.Store", {
         model: "LeoTamer.model.Nodes",
-        proxy: {
-          type: "ajax",
-          url: "nodes/status.json",
-          reader: {
-            type: "json",
-            root: "data"
-          },
-          // disable unused params
-          noCache: false,
-          limitParam: undefined,
-          pageParam: undefined,
-          sortParam: undefined,
-          startParam: undefined,
-          groupParam: undefined,
-          listeners: {
-            exception: function(store, response, operation) {
-              if (response.status === 401) location.reload();
-              LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-            }
-          }
-        },
+        proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+          url: "nodes/status.json"
+        }),
         listeners: {
           load: function() {
             var rebalance_button = Ext.getCmp("nodes_rebalance_button");

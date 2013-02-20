@@ -73,7 +73,9 @@
     },
 
     constructor: function() {
-      return this.callParent(arguments);
+      var self = this;
+      self.initConfig(self.config);
+      return self.callParent(arguments);
     }
   });
 }).call(this);
