@@ -7,6 +7,7 @@
   Ext.define("LeoTamer.SNMP.Chart", {
     extend: "Ext.panel.Panel",
 
+    // 2013-02-20 17:04:15 +0900 //=> 2013-02-20 17:00:00 +0900
     just_date: function() {
       var date, just_date;
       date = new Date();
@@ -24,6 +25,7 @@
 
       self.store = Ext.create("Ext.data.Store", {
         fields: [
+          // dateFormat "U" means unix time
           { name: "x", type: "date", dateFormat: "U" },
           "y",
           "y1",

@@ -1,8 +1,4 @@
 (function() {
-  Object.clone = function(source) {
-    return $.extend({}, source);
-  };
-
   Ext.define("LeoTamer.Msg", {
     statics: {
       // alert with ERROR icon
@@ -23,6 +19,7 @@
     }
   });
 
+  // model for { name: "hoge", value: "fuga" }
   Ext.define("LeoTamer.model.NameValue", {
     extend: "Ext.data.Model",
     fields: ["name", "value", "group"]
