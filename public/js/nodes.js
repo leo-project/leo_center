@@ -15,7 +15,7 @@
         date.getFullYear(),
         date.getMonth(),
         date.getDate(),
-        date.getMinutes() > 30 ? date.getMinutes() + 1 : date.getHours()
+        date.getMinutes() > 30 ? date.getHours() + 1 : date.getHours()
       );
       return just_date;
     },
@@ -64,7 +64,7 @@
             minorTickSteps: 2, // every 10 minutes
             dateFormat: "H:i",
             fromDate: Ext.Date.add(self.just_date(), Ext.Date.HOUR, -7), // 7 hours ago
-            toDate: Ext.Date.add(self.just_date(), Ext.Date.MINUTE, 30),
+            toDate: self.just_date(),
             fields: "x"
           }],
           series: [{
