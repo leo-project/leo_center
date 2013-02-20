@@ -50,4 +50,30 @@
         return Ext.util.Format.number(Math.round(((number * 100) / 1099511627776)) / 100, format) + "T";
     }
   };
+
+  Ext.define("LeoTamer.proxy.Ajax.noParams", {
+    extend: "Ext.data.proxy.Ajax",
+
+    config: {
+      reader: {
+        type: "json",
+        root: "data"
+      },
+      // disable unused params
+      noCache: false,
+      limitParam: undefined,
+      pageParam: undefined,
+      sortParam: undefined,
+      startParam: undefined,
+      listeners: {
+        exception: function(store, response, operation) {
+          LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+        }
+      }
+    },
+
+    constructor: function() {
+      return this.callParent(arguments);
+    }
+  });
 }).call(this);

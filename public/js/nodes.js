@@ -31,28 +31,12 @@
           "y1",
           "y2"
         ],
-        proxy: {
-          type: "ajax",
+        proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
           url: "snmp/chart.json",
           extraParams: {
             node: self.node
-          },
-          reader: {
-            type: "json",
-            root: "data"
-          },
-          // disable unused params
-          noCache: false,
-          limitParam: undefined,
-          pageParam: undefined,
-          sortParam: undefined,
-          startParam: undefined,
-          listeners: {
-            exception: function(store, response, operation) {
-              LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-            }
           }
-        },
+        }),
         autoLoad: true
       });
 
