@@ -36,8 +36,7 @@
           extraParams: {
             node: self.node
           }
-        }),
-        autoLoad: true
+        })
       });
 
       Ext.apply(self, {
@@ -60,7 +59,6 @@
             type: "Time",
             grid: true,
             position: "bottom",
-            constrain: true,
             step: [Ext.Date.MINUTE, 30],
             minorTickSteps: 2, // every 10 minutes
             dateFormat: "H:i",
