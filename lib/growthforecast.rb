@@ -21,18 +21,7 @@ module GrowthForecast
       end
       return request(path)
     end
-
-    def export_complex(pattern, opt=nil)
-      uri_encode!(pattern)
-      path = "xport/#{pattern}"
-      if opt && opt.is_a?(Hash)
-        path.concat("?")
-        param_str = opt.map {|k, v| "#{k}=#{URI.encode(v)}" }.join("&")
-        path.concat(param_str)
-      end
-      return request(path)
-    end
-
+    
     private
 
     JSON_OPTS = {
