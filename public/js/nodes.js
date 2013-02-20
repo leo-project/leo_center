@@ -46,8 +46,10 @@
         ],
         proxy: {
           type: "ajax",
-          url: self.url,
-          extraParams: self.params,
+          url: "snmp/erlang_vm.json",
+          extraParams: {
+            node: self.node
+          },
           reader: {
             type: "json",
             root: "data"
@@ -68,7 +70,7 @@
       });
 
       Ext.apply(self, {
-        title: self.title,
+        title: "Erlang VM Status of " + self.node,
         layout: "fit",
         items: [{ 
           xtype: "chart",
@@ -114,30 +116,13 @@
     }
   });
 
-  Ext.define("LeoTamer.SNMP.Chart.ErlangVM", {
-    extend: "LeoTamer.SNMP.Chart",
-
-    initComponent: function() {
-      var self = this;
-      
-      Ext.apply(self, {
-        title: "Erlang VM Status of " + self.node,
-        url: "snmp/erlang_vm.json",
-        params: {
-          node: self.node
-        }
-      });
-
-      return self.callParent(arguments);
-    }
-  });
-
   Ext.define("LeoTamer.Nodes", {
     extend: "Ext.panel.Panel",
 
     title: "Node Status",
     id: "nodes_panel",
     reload_interval: 30000,
+
     layout: {
       type: "hbox",
       align: "stretch"
@@ -649,7 +634,7 @@
         }
       });
 
-      self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart.ErlangVM", {
+      self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart", {
         flex: 1,
         // TODO: margin of chart
         node: "storage_0@127.0.0.1"
