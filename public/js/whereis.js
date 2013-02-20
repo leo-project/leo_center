@@ -17,26 +17,9 @@
 
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Whereis",
-      proxy: {
-        type: "ajax",
-        url: "whereis/list.json",
-        reader: {
-          type: "json",
-          root: "data"
-        },
-        // disable unused params
-        noCache: false,
-        limitParam: undefined,
-        pageParam: undefined,
-        sortParam: undefined,
-        startParam: undefined,
-        listeners: {
-          exception: function(store, response, operation) {
-            if (response.status === 401) location.reload();
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-          }
-        }
-      }
+      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        url: "whereis/list.json"
+      })
     }),
 
     detail_store: Ext.create("Ext.data.ArrayStore", {

@@ -31,27 +31,10 @@
 
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Users",
-      groupField: 'role',
-      proxy: {
-        type: 'ajax',
-        url: 'users/list.json',
-        reader: {
-          type: 'json',
-          root: 'data'
-        },
-        // disable unused params
-        noCache: false,
-        limitParam: undefined,
-        pageParam: undefined,
-        sortParam: undefined,
-        startParam: undefined,
-        listeners: {
-          exception: function(store, response) {
-            if (response.status === 401) location.reload();
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-          }
-        }
-      }
+      groupField: "role",
+      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        url: "users/list.json"
+      })
     }),
 
     add_user: function() {

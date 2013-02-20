@@ -23,26 +23,9 @@
 
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Endpoints",
-      proxy: {
-        type: "ajax",
-        url: "endpoints/list.json",
-        reader: {
-          type: "json",
-          root: "data"
-        },
-        // disable unused params
-        noCache: false,
-        limitParam: undefined,
-        pageParam: undefined,
-        sortParam: undefined,
-        startParam: undefined,
-        listeners: {
-          exception: function(store, response, operation) {
-            if (response.status === 401) location.reload();
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-          }
-        }
-      }
+      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        url: "endpoints/list.json"
+      })
     }),
 
     add_endpoint: function(self) {

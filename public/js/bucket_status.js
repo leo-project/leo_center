@@ -12,6 +12,7 @@
     border: false,
 
     listeners: {
+      // fires when tab open
       activate: function(self) {
         self.load();
       }
