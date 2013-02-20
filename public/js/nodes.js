@@ -63,7 +63,7 @@
             minorTickSteps: 2, // every 10 minutes
             dateFormat: "H:i",
             fromDate: Ext.Date.add(self.just_date(), Ext.Date.HOUR, -7), // 7 hours ago
-            toDate: self.just_date(),
+            toDate: Ext.Date.add(self.just_date(), Ext.Date.MINUTE, 30),
             fields: "time"
           }],
           series: [{
@@ -492,7 +492,90 @@
         }]
       };
 
+      var grid_grouping_button = Ext.create("Ext.SplitButton", {
+        id: "nodes_grid_current_grouping",
+        cls: ["bold_button", "left_align_button"],
+        icon: "images/table.png",
+        width: 140,
+        handler: function(splitbutton) {
+          // show menu when splitbutton itself is pressed
+          splitbutton.showMenu();
+        },
+        menu:  {
+          xtype: "menu",
+          showSeparator: false,
+          defaults: {
+            icon: "images/table.png",
+            cls: ["bold_menu_item", "left_align_menu_item"]
+          },
+          items: [{
+            text: "Group by type",
+            handler: function(button) {
+              self.select_grouping(button.text, "type");
+            }
+          }, {
+            text: "Group by status",
+            handler: function(button) {
+              self.select_grouping(button.text, "status");
+            }
+          }]
+        },
+        listeners: {
+          render: function() {
+            // default grouping state
+            self.select_grouping("Group by type", "type");
+          }
+        }
+      });
+
+      var nodes_rebalance_button = Ext.create("Ext.Button", {
+        text: "Rebalance",
+        id: "nodes_rebalance_button",
+        cls: "bold_button",
+        icon: "images/rebalance.png",
+        handler: function() {
+          LeoTamer.confirm_password(function(password) {
+            Ext.Ajax.request({
+              url: "nodes/rebalance",
+              method: "POST",
+              params: { password: password },
+              success: function(response) {
+                self.store.load();
+              },
+              failure: function(response) {
+                LeoTamer.Msg.alert("Error!", response.responseText);
+              }
+            });
+          }, "Are you sure to execute rebalance?");
+        }
+      });
+
       var grid_tbar = Ext.create("Ext.Toolbar", {
+        items: [
+          grid_grouping_button,
+          "-",
+          {
+            xtype: "textfield",
+            fieldLabel: "<img src='images/filter.png'> Filter:",
+            labelWidth: 60,
+            listeners: {
+              change: function(text_field, new_value) {
+                var store = self.store;
+                store.clearFilter();
+                store.filter("node", new RegExp(new_value));
+              }
+            }
+          },
+          "-",
+          nodes_rebalance_button,
+          "->",
+          {
+            xtype: "button",
+            icon: "images/reload.png",
+            handler: self.store.load,
+            scope: self.store
+          }
+        ]
       });
 
       self.grid = Ext.create("Ext.grid.Panel", {
@@ -501,84 +584,7 @@
         forceFit: true,
         features: [ self.grid_grouping ],
         columns: grid_columns,
-        tbar: [{
-          xtype: "splitbutton",
-          id: "nodes_grid_current_grouping",
-          cls: ["bold_button", "left_align_button"],
-          icon: "images/table.png",
-          width: 140,
-          handler: function(splitbutton) {
-            // show menu when splitbutton itself is pressed
-            splitbutton.showMenu();
-          },
-          menu:  {
-            xtype: "menu",
-            showSeparator: false,
-            defaults: {
-              icon: "images/table.png",
-              cls: ["bold_menu_item", "left_align_menu_item"]
-            },
-            items: [{
-              text: "Group by type",
-              handler: function(button) {
-                self.select_grouping(button.text, "type");
-              }
-            }, {
-              text: "Group by status",
-              handler: function(button) {
-                self.select_grouping(button.text, "status");
-              }
-            }]
-          },
-          listeners: {
-            render: function() {
-              // default grouping state
-              self.select_grouping("Group by type", "type");
-            }
-          }
-        },
-        "-",
-        {
-          xtype: "textfield",
-          fieldLabel: "<img src='images/filter.png'> Filter:",
-          labelWidth: 60,
-          listeners: {
-            change: function(text_field, new_value) {
-              var store = self.store;
-              store.clearFilter();
-              store.filter("node", new RegExp(new_value));
-            }
-          }
-        },
-        "-",
-        {
-          text: "Rebalance",
-          id: "nodes_rebalance_button",
-          cls: "bold_button",
-          icon: "images/rebalance.png",
-          handler: function() {
-            LeoTamer.confirm_password(function(password) {
-              Ext.Ajax.request({
-                url: "nodes/rebalance",
-                method: "POST",
-                params: { password: password },
-                success: function(response) {
-                  self.store.load();
-                },
-                failure: function(response) {
-                  LeoTamer.Msg.alert("Error!", response.responseText);
-                }
-              });
-            }, "Are you sure to execute rebalance?");
-          }
-        },
-        "->",
-        {
-          xtype: "button",
-          icon: "images/reload.png",
-          handler: self.store.load,
-          scope: self.store
-        }],
+        tbar: grid_tbar,
         listeners: {
           render: function(grid) {
             grid.getStore().on("load", function() {
