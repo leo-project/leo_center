@@ -54,3 +54,7 @@
   color: white;
   font-weight: bold;
 }
+
+#nodes_panel-body {
+  background: #dfe8f6;
+}
