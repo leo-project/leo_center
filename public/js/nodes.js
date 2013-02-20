@@ -448,52 +448,59 @@
         }
       });
 
+      var status_sort = function(state) {
+        self.store.sort({
+          property: "status",
+          direction: state,
+          sorterFn: function(record1, record2) {
+            var property = "status";
+            var status1 = record1.get(property);
+            var status2 = record2.get(property);
+            if (status1 == status2) return 0;
+            var v1 = self.status_sort_table[status1];
+            var v2 = self.status_sort_table[status2];
+            return v1 > v2 ? 1 : -1;
+          }
+        });
+      };
+
+      var grid_columns = {
+        defaults: { resizable: false },
+        items: [{
+          text: "Node",
+          dataIndex: 'node',
+          sortable: true,
+          width: 150
+        }, {
+          text: "Status",
+          dataIndex: "status",
+          renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
+          sortable: true,
+          doSort: status_sort,
+          width: 50
+        }, {
+          text: "Current Ring",
+          dataIndex: 'ring_hash_current',
+          width: 50
+        }, {
+          text: "Prev Ring",
+          dataIndex: 'ring_hash_previous',
+          width: 50
+        }, {
+          text: "Joined At",
+          dataIndex: "joined_at"
+        }]
+      };
+
+      var grid_tbar = Ext.create("Ext.Toolbar", {
+      });
+
       self.grid = Ext.create("Ext.grid.Panel", {
         flex: 2,
         store: self.store,
         forceFit: true,
         features: [ self.grid_grouping ],
-        columns: {
-          defaults: { resizable: false },
-          items: [{
-            text: "Node",
-            dataIndex: 'node',
-            sortable: true,
-            width: 150
-          }, {
-            text: "Status",
-            dataIndex: "status",
-            renderer: Ext.Function.bind(self.status_renderer, self), // modify fn scope
-            sortable: true,
-            doSort: function(state) {
-              self.store.sort({
-                property: "status",
-                direction: state,
-                sorterFn: function(record1, record2) {
-                  var property = "status";
-                  var status1 = record1.get(property);
-                  var status2 = record2.get(property);
-                  if (status1 == status2) return 0;
-                  var v1 = self.status_sort_table[status1];
-                  var v2 = self.status_sort_table[status2];
-                  return v1 > v2 ? 1 : -1;
-                }
-              });
-            },
-            width: 50
-          }, {
-            text: "Current Ring",
-            dataIndex: 'ring_hash_current',
-            width: 50
-          }, {
-            text: "Prev Ring",
-            dataIndex: 'ring_hash_previous',
-            width: 50
-          }, {
-            text: "Joined At",
-            dataIndex: "joined_at"
-          }]
-        },
+        columns: grid_columns,
         tbar: [{
           xtype: "splitbutton",
           id: "nodes_grid_current_grouping",
