@@ -10,7 +10,6 @@
     buckets: Ext.create("LeoTamer.Buckets"),
     endpoints: Ext.create("LeoTamer.Endpoints"),
     whereis: Ext.create("LeoTamer.Whereis"),
-    snmp: Ext.create("LeoTamer.SNMP"),
 
     admin_store: Ext.create("Ext.data.Store", {
       fields: ["name"],
@@ -19,8 +18,7 @@
         { name: "Users" },
         { name: "Buckets" },
         { name: "Endpoints" },
-        { name: "Assigned File" },
-        { name: "SNMP" }
+        { name: "Assigned File" }
       ]
     }),
 
@@ -40,9 +38,6 @@
         img = "<img src='images/endpoint.png'> ";
         break;
       case "Assigned File":
-        img = "<img src='images/whereis.png'> ";
-        break;
-      case "SNMP":
         img = "<img src='images/whereis.png'> ";
         break;
       default:
@@ -86,8 +81,7 @@
           self.users,
           self.buckets,
           self.endpoints,
-          self.whereis,
-          self.snmp
+          self.whereis
         ]
       });
 
