@@ -19,14 +19,14 @@ class LeoTamer
         merged_data = rows.shift.zip(*rows)
         ext_data = merged_data.map.with_index do |value, index|
           { 
-            x: start + step * index,
-            y: value[0],
-            y1: value[1],
-            y2: value[2]
+            time: start + step * index,
+            ets: value[0],
+            procs: value[1],
+            sys: value[2]
           }
         end
         ext_data.unshift({
-          x: ext_data.first[:x].pred, y: 0, y1: 0, y2: 0
+          time: ext_data.first[:time].pred, ets: 0, procs: 0, sys: 0
         })
         return ext_data
       end

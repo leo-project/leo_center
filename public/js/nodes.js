@@ -25,11 +25,10 @@
 
       self.store = Ext.create("Ext.data.Store", {
         fields: [
-          // dateFormat "U" means unix time
-          { name: "x", type: "date", dateFormat: "U" },
-          "y",
-          "y1",
-          "y2"
+          { name: "time", type: "date", dateFormat: "U" }, // dateFormat "U" means unix time
+          "ets",
+          "procs",
+          "sys"
         ],
         proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
           url: "snmp/chart.json",
@@ -51,7 +50,7 @@
             type: "Numeric",
             grid: true,
             position: "left",
-            fields: "y",
+            fields: ["ets", "procs", "sys"],
             label: {
               renderer: Ext.util.Format.SI
             }
@@ -65,16 +64,16 @@
             dateFormat: "H:i",
             fromDate: Ext.Date.add(self.just_date(), Ext.Date.HOUR, -7), // 7 hours ago
             toDate: self.just_date(),
-            fields: "x"
+            fields: "time"
           }],
           series: [{
             type: "area",
-            xField: "x",
-            yField: ["y1", "y2", "y"],
+            xField: "time",
+            yField: ["ets", "procs", "sys"],
             title: [
-              "System memory usage",
               "ETS memory usage",
-              "Processes memory usage"
+              "Processes memory usage",
+              "System memory usage"
             ],
             style: {
               opacity: 0.6
@@ -325,76 +324,84 @@
     initComponent: function() {
       var self = this;
 
+      var change_status_button = Ext.create("Ext.SplitButton", {
+        id: "change_status_button",
+        cls: "bold_button",
+        text: "Change Status",
+        handler: function(splitbutton) {
+          // show menu when splitbutton itself is pressed
+          splitbutton.showMenu();
+        },
+        menu:  {
+          xtype: "menu",
+          showSeparator: false,
+          items: [{
+            text: "To Suspend",
+            icon: "images/warn.png",
+            id: "change_status_button_suspend",
+            handler: function(button) {
+              self.confirm_send_command("suspend");
+            }
+          }, {
+            text: "To Running",
+            icon: "images/available.png",
+            id: "change_status_button_resume",
+            handler: function(button) {
+              self.confirm_send_command("resume");
+            }
+          }, {
+            text: "To Detached",
+            icon: "images/unavailable.png",
+            id: "change_status_button_detach",
+            handler: function(button) {
+              self.confirm_send_command("detach");
+            }
+          }]
+        }
+      });
+
+      /*
+      var compaction_button = Ext.create("Ext.Button", {
+        text: "Compaction",
+        id: "compaction_button",
+        icon: "images/compaction.png",
+        handler: function() {
+          var msg = "Are you sure to execute compaction?";
+          LeoTamer.confirm_password(function(password) {
+            var node = self.grid.getSelectionModel().getSelection()[0].data.node;
+            var mask = new Ext.LoadMask(Ext.getBody());
+            mask.show();
+            Ext.Ajax.request({
+              url: "nodes/compaction",
+              method: "POST",
+              timeout: 120,
+              params: {
+                password: password,
+                node: node
+              },
+              success: function(response) {
+                self.store.load();
+              },
+              failure: function(response) {
+                LeoTamer.Msg.alert("Error!", response.responseText);
+              },
+              callback: function() {
+                mask.destroy();
+              }
+            });
+          }, msg);
+        }
+      });
+      */
+
       self.status_panel = Ext.create("Ext.Panel", {
         title: "Config/VM Status",
         width: 300,
         autoScroll: true,
-        tbar: [{
-          xtype: "splitbutton",
-          id: "change_status_button",
-          cls: "bold_button",
-          text: "Change Status",
-          handler: function(splitbutton) {
-            // show menu when splitbutton itself is pressed
-            splitbutton.showMenu();
-          },
-          menu:  {
-            xtype: "menu",
-            showSeparator: false,
-            items: [{
-              text: "To Suspend",
-              icon: "images/warn.png",
-              id: "change_status_button_suspend",
-              handler: function(button) {
-                self.confirm_send_command("suspend");
-              }
-            }, {
-              text: "To Running",
-              icon: "images/available.png",
-              id: "change_status_button_resume",
-              handler: function(button) {
-                self.confirm_send_command("resume");
-              }
-            }, {
-              text: "To Detached",
-              icon: "images/unavailable.png",
-              id: "change_status_button_detach",
-              handler: function(button) {
-                self.confirm_send_command("detach");
-              }
-            }]
-          }
-        }, /*{
-          text: "Compaction",
-          id: "compaction_button",
-          icon: "images/compaction.png",
-          handler: function() {
-            var msg = "Are you sure to execute compaction?";
-            LeoTamer.confirm_password(function(password) {
-              var node = self.grid.getSelectionModel().getSelection()[0].data.node;
-              var mask = new Ext.LoadMask(Ext.getBody());
-              mask.show();
-              Ext.Ajax.request({
-                url: "nodes/compaction",
-                method: "POST",
-                timeout: 120,
-                params: {
-                  password: password,
-                  node: node
-                },
-                success: function(response) {
-                  self.store.load();
-                },
-                failure: function(response) {
-                  LeoTamer.Msg.alert("Error!", response.responseText);
-                },
-                callback: function() {
-                  mask.destroy();
-                }
-              });
-            }, msg);
-          }
-        }*/],
+        tbar: [
+          change_status_button,
+          // compaction_button
+        ],
         items: [{
           xtype: "grid",
           border: false,
@@ -588,9 +595,6 @@
 
       self.left_container = Ext.create("Ext.Container", {
         flex: 2,
-        split: true,
-        collapsible: true,
-        height: "40%",
         layout: {
           type: "vbox",
           pack: "start",
