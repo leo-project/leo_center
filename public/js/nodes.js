@@ -22,7 +22,7 @@
     initComponent: function() {
       var self = this;
 
-      var store = Ext.create("Ext.data.Store", {
+      self.store = Ext.create("Ext.data.Store", {
         fields: [
           { name: "x", type: "date", dateFormat: "U" },
           "y",
@@ -31,7 +31,7 @@
         ],
         proxy: {
           type: "ajax",
-          url: "snmp/erlang_vm.json",
+          url: "snmp/chart.json",
           extraParams: {
             node: self.node
           },
@@ -60,7 +60,7 @@
         items: [{ 
           xtype: "chart",
           margin: 12,
-          store: store,
+          store: self.store,
           legend: true,
           axes: [{
             type: "Numeric",
@@ -307,6 +307,13 @@
           }
         });
       }
+
+      self.erlang_vm_chart.setTitle("Erlang VM Status of " + node_stat.node);
+      self.erlang_vm_chart.store.load({
+        params: {
+          node: node_stat.node
+        }
+      });
     },
 
     // what status the command make nodes to be
