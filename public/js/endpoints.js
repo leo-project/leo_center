@@ -111,7 +111,12 @@
         columns: {
           defaults: { resizable: false },
           items: [
-            { header: "Endpoint", dataIndex: "endpoint", width: 30 },
+            {
+              header: "Endpoint",
+              dataIndex: "endpoint",
+              width: 30,
+              renderer: Ext.util.Format.htmlEncode
+            },
             { header: "Created at", dataIndex: "created_at" }
           ]
         }
