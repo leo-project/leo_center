@@ -1,7 +1,10 @@
 (function() {
   Ext.define('LeoTamer.model.Users', {
     extend: 'Ext.data.Model',
-    fields: ["user_id", "role", "access_key_id", "created_at"]
+    fields: [
+      "user_id", "role", "access_key_id",
+      { name: "created_at", type: "date", dateFormat: "U" }
+    ]
   });
 
   Ext.define("LeoTamer.Users", {
@@ -237,7 +240,11 @@
               dataIndex: "access_key_id",
               width: 30
             },
-            { header: "Created at", dataIndex: "created_at" }
+            { 
+              header: "Created at",
+              dataIndex: "created_at",
+              renderer: Ext.util.Format.dateRenderer("c")
+            }
           ]
         }
       });

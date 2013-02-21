@@ -1,7 +1,10 @@
 (function() {
   Ext.define('LeoTamer.model.Buckets', {
     extend: 'Ext.data.Model',
-    fields: ["name", "owner", "created_at"]
+    fields: [
+      "name", "owner",
+      { name: "created_at", type: "date", dateFormat: "U" }
+    ]
   });
 
   Ext.define("LeoTamer.Buckets", {
@@ -108,14 +111,16 @@
           defaults: {
             resizable: false
           },
-          items: [
-            {
-              header: "Bucket",
-              dataIndex: "name",
-              width: 30
-            },
-            { header: "Created at", dataIndex: "created_at" }
-          ]
+          items: [{
+            header: "Bucket",
+            dataIndex: "name",
+            renderer: Ext.util.Format.htmlEncode,
+            width: 30
+          }, { 
+            header: "Created at",
+            dataIndex: "created_at",
+            renderer: Ext.util.Format.dateRenderer("c")
+          }]
         }
       });
 

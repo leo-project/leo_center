@@ -1,7 +1,10 @@
 (function() {
   Ext.define('LeoTamer.model.BucketStatus', {
     extend: 'Ext.data.Model',
-    fields: ["name", "owner", "created_at"]
+    fields: [
+      "name", "owner", 
+      { name: "created_at", type: "date", dateFormat: "U" }
+    ]
   });
 
   Ext.define("LeoTamer.BucketStatus", {

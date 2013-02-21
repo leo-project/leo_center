@@ -14,7 +14,7 @@ class LeoTamer
             size: whereis.size,
             clock: whereis.clock,
             checksum: whereis.checksum,
-            timestamp: whereis.timestamp,
+            timestamp: Integer(whereis.timestamp),
             delete: whereis.delete,
             num_of_chunks: whereis.num_of_chunks
           }

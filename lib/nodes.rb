@@ -30,7 +30,7 @@ class LeoTamer
           status: node.state,
           ring_hash_current: node.ring_cur,
           ring_hash_previous: node.ring_prev,
-          joined_at: node.joined_at
+          joined_at: Integer(node.joined_at)
         }
       end
 

@@ -1,7 +1,10 @@
 (function() {
   Ext.define("LeoTamer.model.Nodes", {
     extend: "Ext.data.Model",
-    fields: ["type", "node", "status", "ring_hash_current", "ring_hash_previous", "joined_at"]
+    fields: [
+      "type", "node", "status", "ring_hash_current", "ring_hash_previous",
+      { name: "joined_at", type: "date", dateFormat: "U" }
+    ]
   });
 
   Ext.define("LeoTamer.SNMP.Chart", {
@@ -488,7 +491,8 @@
           width: 50
         }, {
           text: "Joined At",
-          dataIndex: "joined_at"
+          dataIndex: "joined_at",
+          renderer: Ext.util.Format.dateRenderer("c")
         }]
       };
 

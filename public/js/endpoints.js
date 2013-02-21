@@ -1,7 +1,10 @@
 (function() {
   Ext.define("LeoTamer.model.Endpoints", {
     extend: "Ext.data.Model",
-    fields: ["endpoint", "created_at"]
+    fields: [
+      "endpoint",
+      { name: "created_at", type: "date", dateFormat: "U" }
+    ]
   });
 
   Ext.define("LeoTamer.Endpoints", {
@@ -110,15 +113,16 @@
         }],
         columns: {
           defaults: { resizable: false },
-          items: [
-            {
-              header: "Endpoint",
-              dataIndex: "endpoint",
-              width: 30,
-              renderer: Ext.util.Format.htmlEncode
-            },
-            { header: "Created at", dataIndex: "created_at" }
-          ]
+          items: [{
+            header: "Endpoint",
+            dataIndex: "endpoint",
+            width: 30,
+            renderer: Ext.util.Format.htmlEncode
+          }, {
+            header: "Created at",
+            dataIndex: "created_at",
+            renderer: Ext.util.Format.dateRenderer("c")
+          }]
         }
       });
 

@@ -1,7 +1,11 @@
 (function() {
   Ext.define("LeoTamer.model.Whereis", {
     extend: "Ext.data.Model",
-    fields: ["node", "vnode_id", "size", "clock", "checksum", "timestamp", "delete", "num_of_chunks"]
+    fields: [
+      "node", "vnode_id", "size", "clock", "checksum", 
+      { name: "timestamp", type: "date", dateFormat: "U" },
+      "delete", "num_of_chunks"
+    ]
   });
 
   Ext.define("LeoTamer.Whereis", {
@@ -113,7 +117,11 @@
               }
             },
             { header: "Actual Size", dataIndex: "size", width: 40 },
-            { header: "Timestamp", dataIndex: "timestamp" },
+            { 
+              header: "Timestamp",
+              dataIndex: "timestamp",
+              renderer: Ext.util.Format.dateRenderer("c")
+            }
           ]
         },
         listeners: {
