@@ -117,7 +117,7 @@
             header: "Endpoint",
             dataIndex: "endpoint",
             width: 30,
-            renderer: Ext.util.Format.htmlEncode
+            renderer: Ext.htmlEncode,
           }, {
             header: "Created at",
             dataIndex: "created_at",

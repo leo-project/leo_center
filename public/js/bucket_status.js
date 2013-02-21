@@ -115,9 +115,14 @@
             {
               header: "Bucket",
               dataIndex: "name",
+              renderer: Ext.htmlEncode,
               width: 30
             },
-            { header: "Created at", dataIndex: "created_at" }
+            { 
+              header: "Created at",
+              dataIndex: "created_at",
+              renderer: Ext.util.Format.dateRenderer("c")
+            }
           ]
         }
       });

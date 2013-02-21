@@ -189,36 +189,36 @@
             }
           }
         },
-               "-",
-               /*
-                 {
-                 text: "Add User",
-                 icon: "images/add.png",
-                 handler: function() {
-                 self.add_user();
-                 }
-                 },
-               */
-               {
-                 text: "Delete User",
-                 icon: "images/remove.png",
-                 handler: function() {
-                   self.delete_user();
-                 }
-               }, {
-                 text: "Update Role",
-                 icon: "images/update_user.png",
-                 handler: function() {
-                   self.update_user();
-                 }
-               },
-               "->",
-               {
-                 icon: "images/reload.png",
-                 handler: function() {
-                   self.load();
-                 }
-               }],
+        "-",
+        /*
+          {
+          text: "Add User",
+          icon: "images/add.png",
+          handler: function() {
+          self.add_user();
+          }
+          },
+        */
+        {
+          text: "Delete User",
+          icon: "images/remove.png",
+          handler: function() {
+            self.delete_user();
+          }
+        }, {
+          text: "Update Role",
+          icon: "images/update_user.png",
+          handler: function() {
+            self.update_user();
+          }
+        },
+        "->",
+        {
+          icon: "images/reload.png",
+          handler: function() {
+            self.load();
+          }
+        }],
         columns: {
           defaults: {
             resizable: false
@@ -233,6 +233,7 @@
             {
               header: "User ID",
               dataIndex: "user_id",
+              renderer: Ext.htmlEncode,
               width: 40
             },
             {
