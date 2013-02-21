@@ -103,7 +103,7 @@ use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
       debug "params: #{params}"
       unless session[:user_id]
         case request.path
-        when "/login", "/sign_up"
+        when "/login", "/logout", "/sign_up"
           # don't redirect
         when "/"
           redirect "/login"

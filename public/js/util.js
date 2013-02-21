@@ -67,7 +67,14 @@
       startParam: undefined,
       listeners: {
         exception: function(store, response, operation) {
-          LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+          console.log(response.status);
+          if (response.status === 401) location = "/";
+          if (response.responseText === "") {
+            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", "An Error Occurred");
+          }
+          else {
+            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+          }
         }
       }
     },

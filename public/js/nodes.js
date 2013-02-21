@@ -471,7 +471,8 @@
         defaults: { resizable: false },
         items: [{
           text: "Node",
-          dataIndex: 'node',
+          dataIndex: "node",
+          renderer: Ext.htmlEncode,
           sortable: true,
           width: 150
         }, {
