@@ -43,7 +43,14 @@
               Ext.Msg.alert("Your Credential", response.responseText);
             },
             failure: function(response) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
+              var response_text = response.responseText;
+              if (response_text === "Invalid User ID or Password.") {
+                // "Invalid User ID or Password." is confusing
+                LeoTamer.Msg.alert("Error!", "Invalid Password");
+              }
+              else {
+                LeoTamer.Msg.alert("Error!", response_text);
+              }
             }
           });
         }
