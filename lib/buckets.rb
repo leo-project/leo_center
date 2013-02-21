@@ -14,7 +14,7 @@ class LeoTamer
         {
           name: bucket.name,
           owner: bucket.owner,
-          created_at: bucket.created_at
+          created_at: Integer(bucket.created_at)
         }
       end
 

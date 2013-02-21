@@ -11,7 +11,7 @@ class LeoTamer
           user_id: user.user_id,
           role: user.role.to_s,
           access_key_id: user.access_key_id,
-          created_at: user.created_at
+          created_at: Integer(user.created_at)
         }
       end
 

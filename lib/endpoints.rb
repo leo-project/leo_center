@@ -7,7 +7,7 @@ class LeoTamer
     get "/list.json" do
       data = @@manager.get_endpoints.map do |endpoint|
         { endpoint: endpoint.endpoint,
-          created_at: endpoint.created_at }
+          created_at: Integer(endpoint.created_at) }
       end
 
       { data: data }.to_json

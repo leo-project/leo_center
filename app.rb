@@ -103,7 +103,7 @@ use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
       debug "params: #{params}"
       unless session[:user_id]
         case request.path
-        when "/login", "/sign_up"
+        when "/login", "/logout", "/sign_up"
           # don't redirect
         when "/"
           redirect "/login"
@@ -187,3 +187,5 @@ require_relative "lib/buckets"
 require_relative "lib/endpoints"
 require_relative "lib/system_conf"
 require_relative "lib/whereis"
+require_relative "lib/growthforecast"
+require_relative "lib/snmp"

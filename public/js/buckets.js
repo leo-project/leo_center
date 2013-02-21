@@ -1,7 +1,10 @@
 (function() {
   Ext.define('LeoTamer.model.Buckets', {
     extend: 'Ext.data.Model',
-    fields: ["name", "owner", "created_at"]
+    fields: [
+      "name", "owner",
+      { name: "created_at", type: "date", dateFormat: "U" }
+    ]
   });
 
   Ext.define("LeoTamer.Buckets", {
@@ -63,26 +66,9 @@
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Buckets",
       groupField: "owner",
-      proxy: {
-        type: 'ajax',
-        url: 'buckets/list.json',
-        reader: {
-          type: 'json',
-          root: 'data'
-        },
-        // disable unused params
-        noCache: false,
-        limitParam: undefined,
-        pageParam: undefined,
-        sortParam: undefined,
-        startParam: undefined,
-        listeners: {
-          exception: function(store, response, operation) {
-            if (response.status === 401) location.reload();
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-          }
-        }
-      }
+      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        url: "buckets/list.json"
+      })
     }),
 
     initComponent: function() {
@@ -106,33 +92,35 @@
             }
           }
         },
-               "-",
-               {
-                 text: "Add Bucket",
-                 icon: "images/add.png",
-                 handler: function() {
-                   self.add_bucket(self);
-                 }
-               },
-               "->",
-               {
-                 icon: "images/reload.png",
-                 handler: function() {
-                   self.load();
-                 }
-               }],
+        "-",
+        {
+          text: "Add Bucket",
+          icon: "images/add.png",
+          handler: function() {
+            self.add_bucket(self);
+          }
+        },
+        "->",
+        {
+          icon: "images/reload.png",
+          handler: function() {
+            self.load();
+          }
+        }],
         columns: {
           defaults: {
             resizable: false
           },
-          items: [
-            {
-              header: "Bucket",
-              dataIndex: "name",
-              width: 30
-            },
-            { header: "Created at", dataIndex: "created_at" }
-          ]
+          items: [{
+            header: "Bucket",
+            dataIndex: "name",
+            renderer: Ext.util.Format.htmlEncode,
+            width: 30
+          }, { 
+            header: "Created at",
+            dataIndex: "created_at",
+            renderer: Ext.util.Format.dateRenderer("c")
+          }]
         }
       });
 

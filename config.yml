@@ -11,3 +11,7 @@
   :local:
     :secret: ""
     :expire_after: 300
+:snmp:
+  - ETS memory usage (1-min Averages)
+  - Processes memory usage (1-min Averages)
+  - System memory usage (1-min Averages)

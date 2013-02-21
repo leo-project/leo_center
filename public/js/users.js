@@ -1,7 +1,10 @@
 (function() {
   Ext.define('LeoTamer.model.Users', {
     extend: 'Ext.data.Model',
-    fields: ["user_id", "role", "access_key_id", "created_at"]
+    fields: [
+      "user_id", "role", "access_key_id",
+      { name: "created_at", type: "date", dateFormat: "U" }
+    ]
   });
 
   Ext.define("LeoTamer.Users", {
@@ -31,27 +34,10 @@
 
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Users",
-      groupField: 'role',
-      proxy: {
-        type: 'ajax',
-        url: 'users/list.json',
-        reader: {
-          type: 'json',
-          root: 'data'
-        },
-        // disable unused params
-        noCache: false,
-        limitParam: undefined,
-        pageParam: undefined,
-        sortParam: undefined,
-        startParam: undefined,
-        listeners: {
-          exception: function(store, response) {
-            if (response.status === 401) location.reload();
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-          }
-        }
-      }
+      groupField: "role",
+      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        url: "users/list.json"
+      })
     }),
 
     add_user: function() {
@@ -203,36 +189,36 @@
             }
           }
         },
-               "-",
-               /*
-                 {
-                 text: "Add User",
-                 icon: "images/add.png",
-                 handler: function() {
-                 self.add_user();
-                 }
-                 },
-               */
-               {
-                 text: "Delete User",
-                 icon: "images/remove.png",
-                 handler: function() {
-                   self.delete_user();
-                 }
-               }, {
-                 text: "Update Role",
-                 icon: "images/update_user.png",
-                 handler: function() {
-                   self.update_user();
-                 }
-               },
-               "->",
-               {
-                 icon: "images/reload.png",
-                 handler: function() {
-                   self.load();
-                 }
-               }],
+        "-",
+        /*
+          {
+          text: "Add User",
+          icon: "images/add.png",
+          handler: function() {
+          self.add_user();
+          }
+          },
+        */
+        {
+          text: "Delete User",
+          icon: "images/remove.png",
+          handler: function() {
+            self.delete_user();
+          }
+        }, {
+          text: "Update Role",
+          icon: "images/update_user.png",
+          handler: function() {
+            self.update_user();
+          }
+        },
+        "->",
+        {
+          icon: "images/reload.png",
+          handler: function() {
+            self.load();
+          }
+        }],
         columns: {
           defaults: {
             resizable: false
@@ -247,6 +233,7 @@
             {
               header: "User ID",
               dataIndex: "user_id",
+              renderer: Ext.htmlEncode,
               width: 40
             },
             {
@@ -254,7 +241,11 @@
               dataIndex: "access_key_id",
               width: 30
             },
-            { header: "Created at", dataIndex: "created_at" }
+            { 
+              header: "Created at",
+              dataIndex: "created_at",
+              renderer: Ext.util.Format.dateRenderer("c")
+            }
           ]
         }
       });
