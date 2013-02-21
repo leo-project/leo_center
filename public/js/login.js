@@ -81,7 +81,7 @@
         },
         failure: function(form, action) {
           LeoTamer.Msg.alert("Login Faild!", action.result.errors.reason);
-          login_form.getForm().reset();
+          login_form.getForm().findField("password").reset();
         }
       });
     };
@@ -99,8 +99,9 @@
         validateOnChange: false,
       },
       items:[{
-        fieldLabel:'User ID',
-        name: 'user_id',
+        fieldLabel: "User ID",
+        id: "user_id",
+        name: "user_id",
         listeners: {
           render: function() {
             this.focus(false, 200);
@@ -108,6 +109,7 @@
         }
       },{
         fieldLabel: "Password",
+        id: "password",
         name: "password",
         inputType: "password",
         listeners: {
