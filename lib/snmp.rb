@@ -5,10 +5,10 @@ class LeoTamer
     end
 
     helpers do
-      def get_snmp_data(node)
+      def get_snmp_data(node, period)
         gf = GF::Client.new("localhost", 5125)
         gf_data = Config[:snmp].map do |graph|
-          gf.export("LeoFS", node, URI.decode(graph), t: "8h")
+          gf.export("LeoFS", node, URI.decode(graph), t: period)
         end
         first = gf_data.first
         start = first[:start_timestamp]
@@ -33,9 +33,9 @@ class LeoTamer
     end
 
     get "/chart.json" do
-      node = required_params(:node)
+      node, period = required_params(:node, :period)
       {
-        data: get_snmp_data(node)
+        data: get_snmp_data(node, period)
       }.to_json
     end
   end

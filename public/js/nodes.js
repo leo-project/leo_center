@@ -38,51 +38,92 @@
           extraParams: {
             node: self.node
           }
-        })
+        }),
+        listeners: {
+          beforeload: function(store, operation) {
+            operation.params = {
+              node: self.node,
+              period: self.chart.period
+            }
+          }
+        }
+      });
+
+      self.chart = Ext.create("Ext.chart.Chart", {
+        margin: 12,
+        store: self.store,
+        legend: true,
+        period: "8h", // default period
+        axes: [{
+          type: "Numeric",
+          grid: true,
+          position: "left",
+          fields: ["ets", "procs", "sys"],
+          label: {
+            renderer: Ext.util.Format.SI
+          }
+        }, {
+          type: "Time",
+          grid: true,
+          position: "bottom",
+          //constrain: true,
+          step: [Ext.Date.MINUTE, 30],
+          dateFormat: "H:i",
+          //fromDate: Ext.Date.add(self.just_date(), Ext.Date.HOUR, -7), // 7 hours ago
+          //toDate: Ext.Date.add(self.just_date(), Ext.Date.MINUTE, 30),
+          fields: "time"
+        }],
+        series: [{
+          type: "area",
+          xField: "time",
+          yField: ["ets", "procs", "sys"],
+          title: [
+            "ETS memory usage",
+            "Processes memory usage",
+            "System memory usage"
+          ],
+          style: {
+            opacity: 0.6
+          }
+        }]
       });
 
       Ext.apply(self, {
         title: "Erlang VM Status of " + self.node,
         layout: "fit",
-        items: [{ 
-          xtype: "chart",
-          margin: 12,
-          store: self.store,
-          legend: true,
-          axes: [{
-            type: "Numeric",
-            grid: true,
-            position: "left",
-            fields: ["ets", "procs", "sys"],
-            label: {
-              renderer: Ext.util.Format.SI
-            }
-          }, {
-            type: "Time",
-            grid: true,
-            position: "bottom",
-            constrain: true,
-            step: [Ext.Date.MINUTE, 30],
-            minorTickSteps: 2, // every 10 minutes
-            dateFormat: "H:i",
-            fromDate: Ext.Date.add(self.just_date(), Ext.Date.HOUR, -7), // 7 hours ago
-            toDate: Ext.Date.add(self.just_date(), Ext.Date.MINUTE, 30),
-            fields: "time"
-          }],
-          series: [{
-            type: "area",
-            xField: "time",
-            yField: ["ets", "procs", "sys"],
-            title: [
-              "ETS memory usage",
-              "Processes memory usage",
-              "System memory usage"
-            ],
-            style: {
-              opacity: 0.6
-            }
-          }]
-        }]
+        /*
+        tbar: [{
+          text: "8 Hours",
+          pressed: true,
+          toggleGroup: "chart_period",
+          handler: function() {
+            self.chart.period = "8h";
+            var time_axis = self.chart.axes.get("bottom");
+            time_axis.step = [Ext.Date.MINUTE, 30];
+            self.store.load();
+          }
+        }, {
+          text: "Day",
+          toggleGroup: "chart_period",
+          handler: function() {
+            self.chart.period = "d";
+            var time_axis = self.chart.axes.get("bottom");
+            time_axis.step = [Ext.Date.HOUR, 1];
+            self.store.load();
+          }
+        }, {
+          text: "Week",
+          toggleGroup: "chart_period",
+          handler: function() {
+            self.chart.period = "w";
+            var time_axis = self.chart.axes.get("bottom");
+            time_axis.step = [Ext.Date.DAY, 1];
+            time_axis.dateFormat = "hoge";
+            self.store.load();
+          }
+        }],
+        */
+        items: self.chart
       });
 
       return self.callParent(arguments);
@@ -224,6 +265,7 @@
     on_grid_select: function(record) {
       var self = this;
       var node_stat = record.data;
+      var node = node_stat.node;
       var change_status_button = Ext.getCmp("change_status_button");
       // var compaction_button = Ext.getCmp("compaction_button");
       var status = node_stat.status;
@@ -270,7 +312,7 @@
       else {
         self.detail_store.load({
           params: {
-            node: node_stat.node,
+            node: node,
             type: node_stat.type
           },
           callback: function(records, operation, success) {
@@ -279,12 +321,9 @@
         });
       }
 
-      self.erlang_vm_chart.setTitle("Erlang VM Status of " + node_stat.node);
-      self.erlang_vm_chart.store.load({
-        params: {
-          node: node_stat.node
-        }
-      });
+      self.erlang_vm_chart.setTitle("Erlang VM Status of " + node);
+      self.erlang_vm_chart.node = node;
+      self.erlang_vm_chart.store.load();
     },
 
     // what status the command make nodes to be
@@ -607,7 +646,7 @@
       });
 
       self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart", {
-        flex: 1,
+        height: 300,
         node: "storage_0@127.0.0.1"
       });
 
