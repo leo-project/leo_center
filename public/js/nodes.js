@@ -727,8 +727,8 @@
         },
         items: [
           self.grid,
-          Ext.create("Ext.resizer.Splitter", { autoShow: true }),
-          self.erlang_vm_chart
+          // Ext.create("Ext.resizer.Splitter", { autoShow: true }),
+          // self.erlang_vm_chart
         ]
       });
 
