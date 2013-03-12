@@ -267,7 +267,7 @@
       var node_stat = record.data;
       var node = node_stat.node;
       var change_status_button = Ext.getCmp("change_status_button");
-      // var compaction_button = Ext.getCmp("compaction_button");
+      var compaction_button = Ext.getCmp("compaction_button");
       var status = node_stat.status;
 
       self.status_panel.setTitle(node_stat.node);
@@ -276,7 +276,7 @@
       // check change status's availability
       if (node_stat.type === "Gateway") {
         change_status_button.disable();
-        // compaction_button.disable();
+        compaction_button.disable();
       }
       else { // Storage
         switch (status) {
@@ -284,11 +284,11 @@
         case "attached":
         case "detached":
           change_status_button.disable();
-          // compaction_button.disable();
+          compaction_button.disable();
           break;
         default:
           change_status_button.enable();
-          // compaction_button.enable();
+          compaction_button.enable();
         }
       }
 
@@ -362,6 +362,14 @@
       stop: 6,
       downed: 6
     },
+   
+    // compaction status and available compaction command
+    // status: command
+    available_compact_command: {
+      idle: "Start",
+      running: "Suspend",
+      suspend: "Resume"
+    },
 
     initComponent: function() {
       var self = this;
@@ -402,39 +410,97 @@
         }
       });
 
-      /*
+      var show_compaction_window = function() {
+        var node = self.grid.getSelectionModel().getSelection()[0].data.node;
+        var pending_targets = self.detail_store.getById("num_of_pending_targets").get("value");
+        var status = self.detail_store.getById("status").get("value");
+        var command = self.available_compact_command[status];
+
+        var form = Ext.create("Ext.form.Panel", {
+          frame: true,
+          defaults: {
+            padding: 5,
+          },
+          items: [{
+            xtype: "displayfield",
+            value: "Current Status: " + status
+          }, {
+            xtype: "displayfield",
+            value: "Command: " + command
+          }],
+          buttons: [{
+            text: command,
+            handler: function(button) {
+              LeoTamer.confirm_password(function(password) {
+                var form = button.up("form").getForm();
+                form.submit({
+                  url: "/nodes/compact_" + command.toLowerCase(),
+                  params: { node: node },
+                  success: function() { 
+                    self.store.load();
+                    button.up("window").close();
+                  },
+                  failure: function(form, action) {
+                    var response = action.response;
+                    LeoTamer.Msg.alert("Error!", response.responseText);
+                  }
+                });
+              });
+            }
+          }, {
+            text: "Cancel",
+            handler: function(button) {
+              var compaction_window = button.up("window");
+              compaction_window.close();
+            }
+          }]
+        });
+      
+        if (command === "Start") {
+          options = {
+            xtype: "fieldset",
+            title: "Options",
+            defaults: {
+              padding: 5,
+              labelWidth: 160,
+              width: 220,
+              labelAlign: "right",
+            },
+            items: [{
+              xtype: "numberfield",
+              id: "compaction_num_of_targets",
+              fieldLabel: "Num of Targets",
+              name: "num_of_targets",
+              value: pending_targets,
+              maxValue: pending_targets,
+              minValue: 1
+            }, {
+              xtype: "numberfield",
+              fieldLabel: "Num of Compaction Procs",
+              name: "num_of_compact_proc",
+              value: 1,
+              maxValue: 16,
+              minValue: 1
+            }]
+          }
+          form.add(options);
+        }
+
+        Ext.create("Ext.Window", {
+          title: "Compaction: " + node,
+          border: false,
+          items: form
+        }).show();
+      };
+
       var compaction_button = Ext.create("Ext.Button", {
         text: "Compaction",
         id: "compaction_button",
         icon: "images/compaction.png",
         handler: function() {
-          var msg = "Are you sure to execute compaction?";
-          LeoTamer.confirm_password(function(password) {
-            var node = self.grid.getSelectionModel().getSelection()[0].data.node;
-            var mask = new Ext.LoadMask(Ext.getBody());
-            mask.show();
-            Ext.Ajax.request({
-              url: "nodes/compaction",
-              method: "POST",
-              timeout: 120,
-              params: {
-                password: password,
-                node: node
-              },
-              success: function(response) {
-                self.store.load();
-              },
-              failure: function(response) {
-                LeoTamer.Msg.alert("Error!", response.responseText);
-              },
-              callback: function() {
-                mask.destroy();
-              }
-            });
-          }, msg);
+          show_compaction_window();
         }
       });
-      */
 
       self.status_panel = Ext.create("Ext.Panel", {
         title: "Config/VM Status",
@@ -442,7 +508,7 @@
         autoScroll: true,
         tbar: [
           change_status_button,
-          // compaction_button
+          compaction_button
         ],
         items: [{
           xtype: "grid",

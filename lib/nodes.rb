@@ -39,7 +39,7 @@ class LeoTamer
 
     module Nodes
       module LeoFSRelatedConfig
-        Group = "LeoFS related Items"
+        Group = "1. LeoFS related Items"
         Properties = {
           version: "LeoFS Version",
           vm_version: "VM Version",
@@ -50,15 +50,27 @@ class LeoTamer
       end
 
       module ErlangRelatedItems
-        Group = "Erlang related Items"
+        Group = "2. Erlang related Items"
         Properties = {
           total_mem_usage: "Total Memory Usage",
           system_mem_usage: "System Memory Usage",
           procs_mem_usage: "Procs Memory Usage",
           ets_mem_usage: "ETS Memory Usage",
-          num_of_procs: "Number of Procs",
+          num_of_procs: "# of Procs",
           limit_of_procs: "Limit of Procs",
           thread_pool_size: "Thread Pool Size"
+        }
+      end
+      
+      module CompactStatus
+        Group = "4. Compaction Status"
+        Properties = {
+          status: "Current Status",
+          last_compaction_start: "Last Compaction Start",
+          total_targets: "Total Targets",
+          num_of_pending_targets: "# of Pending Targets",
+          num_of_ongoing_targets: "# of Ongoing Targets",
+          num_of_out_of_targets: "# of Out of Targets"
         }
       end
     end
@@ -86,14 +98,24 @@ class LeoTamer
 
       if type == "Storage"
         begin
+          compact_status = @@manager.compact_status(node)
           storage_stat = @@manager.du(node)
         rescue => ex
           warn ex.message
         else
+          result.concat(Nodes::CompactStatus::Properties.map do |property, text|
+            { 
+              name: text,
+              value: compact_status.__send__(property),
+              id: property,
+              group: Nodes::CompactStatus::Group
+            }
+          end)
+
           result.push({
             name: "Total of Objects",
             value: storage_stat.total_of_objects,
-            group: "Storage related Items"
+            group: "3. Storage related Items"
           })
         end
       end
@@ -120,10 +142,27 @@ class LeoTamer
       @@manager.rebalance
     end
 
+=begin
     post "/compaction" do
       node = required_params(:node)
       confirm_password
       @@manager.compact(node)
+    end
+=end
+
+    post "/compact_start" do
+      node, num_of_targets, num_of_compact_proc = required_params(:node, :num_of_targets, :num_of_compact_proc)
+      @@manager.compact_start(node, num_of_targets, num_of_compact_proc)
+    end
+
+    post "/compact_suspend" do
+      node = required_params(:node)
+      @@manager.compact_suspend(node)
+    end
+
+    post "/compact_resume" do
+      node = required_params(:node)
+      @@manager.compact_resume(node)
     end
   end
 end
