@@ -156,7 +156,7 @@
       activate: function(self) {
         self.select_first_row();
         self.reloader = {
-          run: self.store.load.bind(self.store),
+          run: function() { self.store.load(); },
           interval: self.reload_interval
         };
         Ext.TaskManager.start(self.reloader);
