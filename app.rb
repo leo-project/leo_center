@@ -23,11 +23,11 @@ require "json"
 require "haml"
 require "sinatra/base"
 require "sinatra/namespace"
+require "logger"
 gem "leofs_manager_client", "0.4.0"
 require "leofs_manager_client"
 require_relative "lib/helpers"
 
-require 'logger'
 class LoggerEx < Logger
   alias write <<
 end
@@ -39,7 +39,7 @@ class LeoTamer < Sinatra::Base
 
   class Error < StandardError; end
 
-use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
+  use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
 
   session_config = Config[:session]
   if session_config.has_key?(:local)

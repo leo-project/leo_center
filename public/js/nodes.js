@@ -418,6 +418,7 @@
 
         var form = Ext.create("Ext.form.Panel", {
           frame: true,
+          minWidth: 300,
           defaults: {
             padding: 5,
           },
@@ -495,6 +496,7 @@
 
       var compaction_button = Ext.create("Ext.Button", {
         text: "Compaction",
+        cls: "bold_button",
         id: "compaction_button",
         icon: "images/compaction.png",
         handler: function() {
