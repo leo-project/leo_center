@@ -7,19 +7,17 @@
   */
 
   Ext.onReady(function() {
-    var node_status, bucket_status, admin, tabs, viewport;
-    var header, get_credential;
-
-    bucket_status = Ext.create("LeoTamer.BucketStatus");
-    user_group = Ext.create("LeoTamer.UserGroup");
+    var bucket_status = Ext.create("LeoTamer.BucketStatus");
+    var user_group = Ext.create("LeoTamer.UserGroup");
+    var user_id = Ext.util.Cookies.get("user_id");
 
     // items for only administrator
     if (Ext.util.Cookies.get("admin") === "true") {
-      node_status = Ext.create("LeoTamer.Nodes");
-      admin = Ext.create("LeoTamer.Admin");
+      var node_status = Ext.create("LeoTamer.Nodes");
+      var admin = Ext.create("LeoTamer.Admin");
     }
 
-    tabs = Ext.create("Ext.TabPanel", {
+    var tabs = Ext.create("Ext.TabPanel", {
       region: "center",
       activeTab: 0, // first tab
       tabBar: {
@@ -30,7 +28,7 @@
       items: [bucket_status, node_status, admin]
     });
 
-    get_credential = function() {
+    var get_credential = function() {
       Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
         if (btn === "ok" ) {
           Ext.Ajax.request({
@@ -57,7 +55,7 @@
       });
     };
 
-    header = Ext.create("Ext.toolbar.Toolbar", {
+    var header = Ext.create("Ext.toolbar.Toolbar", {
       id: "viewport_header",
       region: "north",
       border: false,
@@ -71,7 +69,7 @@
       "->",
       {
         id: "user_menu",
-        text: Ext.util.Cookies.get("user_id"), // raw cookie from server
+        text: user_id, // raw cookie from server
         icon: "images/admin_user.png",
         menu: {
           xtype: "menu",

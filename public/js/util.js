@@ -68,7 +68,11 @@
       listeners: {
         exception: function(store, response, operation) {
           console.log(response.status);
-          if (response.status === 401) location = "/";
+          if (response.status === 401) { // session timeout
+            Ext.util.Cookies.clear("user_id");
+            Ext.util.Cookies.clear("admin");
+            location = "/";
+          }
           if (response.responseText === "") {
             LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", "An Error Occurred");
           }
