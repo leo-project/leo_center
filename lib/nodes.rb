@@ -42,7 +42,6 @@ class LeoTamer
         Group = "1. LeoFS related Items"
         Properties = {
           version: "LeoFS Version",
-          vm_version: "VM Version",
           log_dir: "Log Directory",
           ring_cur: "Current Ring-hash",
           ring_prev: "Previous Ring-hash"
@@ -52,6 +51,7 @@ class LeoTamer
       module ErlangRelatedItems
         Group = "2. Erlang related Items"
         Properties = {
+          vm_version: "VM Version",
           total_mem_usage: "Total Memory Usage",
           system_mem_usage: "System Memory Usage",
           procs_mem_usage: "Procs Memory Usage",
@@ -69,7 +69,7 @@ class LeoTamer
           total_num_of_objects: "Total # of Objects",
           active_size_of_objects: "Active Size of Objects",
           total_size_of_objects: "Total Size of Objects",
-          ratio_of_active_size: "Ratio of Active Size",
+          #ratio_of_active_size: "Ratio of Active Size",
           #last_compaction_start: "Last Compaction Start", #XXX: CompactStatus has same property
           #last_compaction_end: "Last Compaction End"
         }
@@ -133,6 +133,13 @@ class LeoTamer
               group: Nodes::StorageStatus::Group
             }
           end)
+
+          result.push({
+            name: "Ratio of Active Size",
+            value: "#{storage_stat.ratio_of_active_size}%",
+            id: "ratio_of_active_size",
+            group: Nodes::StorageStatus::Group
+          })
         end
       end
 
