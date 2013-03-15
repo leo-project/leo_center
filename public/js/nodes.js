@@ -431,6 +431,7 @@
           }],
           buttons: [{
             text: command,
+            formBind: true, // if validation fails disable the button
             handler: function(button) {
               LeoTamer.confirm_password(function(password) {
                 var form = button.up("form").getForm();
@@ -472,6 +473,7 @@
               id: "compaction_num_of_targets",
               fieldLabel: "Num of Targets",
               name: "num_of_targets",
+              allowBlank: false,
               value: pending_targets,
               maxValue: pending_targets,
               minValue: 1
@@ -479,6 +481,7 @@
               xtype: "numberfield",
               fieldLabel: "Num of Compaction Procs",
               name: "num_of_compact_proc",
+              allowBlank: false,
               value: 1,
               maxValue: 16,
               minValue: 1
