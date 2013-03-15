@@ -62,6 +62,19 @@ class LeoTamer
         }
       end
       
+      module StorageStatus
+        Group = "3. Storage related Items"
+        Properties = {
+          active_num_of_objects: "Active # of Objects",
+          total_num_of_objects: "Total # of Objects",
+          active_size_of_objects: "Active Size of Objects",
+          total_size_of_objects: "Total Size of Objects",
+          #ratio_of_active_size: "Ratio of Active Size",
+          #last_compaction_start: "Last Compaction Start", #XXX: CompactStatus has same property
+          #last_compaction_end: "Last Compaction End"
+        }
+      end
+      
       module CompactStatus
         Group = "4. Compaction Status"
         Properties = {
@@ -112,11 +125,14 @@ class LeoTamer
             }
           end)
 
-          result.push({
-            name: "Total of Objects",
-            value: storage_stat.total_of_objects,
-            group: "3. Storage related Items"
-          })
+          result.concat(Nodes::StorageStatus::Properties.map do |property, text|
+            { 
+              name: text,
+              value: storage_stat.__send__(property),
+              id: property,
+              group: Nodes::StorageStatus::Group
+            }
+          end)
         end
       end
 
