@@ -69,7 +69,7 @@ class LeoTamer
           total_num_of_objects: "Total # of Objects",
           active_size_of_objects: "Active Size of Objects",
           total_size_of_objects: "Total Size of Objects",
-          #ratio_of_active_size: "Ratio of Active Size",
+          ratio_of_active_size: "Ratio of Active Size",
           #last_compaction_start: "Last Compaction Start", #XXX: CompactStatus has same property
           #last_compaction_end: "Last Compaction End"
         }
