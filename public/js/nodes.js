@@ -441,6 +441,7 @@
                   var field_errors = field.getErrors();
                   if (field_errors.length === 0) return;
                   errors[label] = field_errors[0];
+                  field.setRawValue(""); // clear the field
                 });
 
                 var error_text = "";
