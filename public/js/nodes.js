@@ -431,10 +431,30 @@
           }],
           buttons: [{
             text: command,
-            formBind: true, // if validation fails disable the button
             handler: function(button) {
+              var form = button.up("form").getForm();
+              var errors = {};
+
+              if (!form.isValid()) {
+                form.getFields().each(function(field) {
+                  console.log(field.fieldLabel);
+                  console.log(field.getErrors());
+                  var label  = field.fieldLabel;
+                  var field_errors = field.getErrors();
+                  if (field_errors.length === 0) return;
+                  errors[label] = field_errors[0];
+                });
+
+                var error_text = "";
+                Ext.Object.each(errors, function(key, value) {
+                  error_text += key + ": " + value;
+                });
+
+                LeoTamer.Msg.alert("Error!", error_text);
+                return;
+              }
+
               LeoTamer.confirm_password(function(password) {
-                var form = button.up("form").getForm();
                 form.submit({
                   url: "/nodes/compact_" + command.toLowerCase(),
                   params: { node: node },
