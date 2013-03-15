@@ -29,29 +29,25 @@
     });
 
     var get_credential = function() {
-      Ext.Msg.prompt("Confirm", "Please input your password", function(btn, value) {
-        if (btn === "ok" ) {
-          Ext.Ajax.request({
-            url: "user_credential",
-            method: "GET",
-            params: {
-              password: value
-            },
-            success: function(response) {
-              Ext.Msg.alert("Your Credential", response.responseText);
-            },
-            failure: function(response) {
-              var response_text = response.responseText;
-              if (response_text === "Invalid User ID or Password.") {
-                // "Invalid User ID or Password." is confusing
-                LeoTamer.Msg.alert("Error!", "Invalid Password");
-              }
-              else {
-                LeoTamer.Msg.alert("Error!", response_text);
-              }
+      LeoTamer.confirm_password(function(password) {
+        Ext.Ajax.request({
+          url: "user_credential",
+          method: "GET",
+          params: { password: password },
+          success: function(response) {
+            Ext.Msg.alert("Your Credential", response.responseText);
+          },
+          failure: function(response) {
+            var response_text = response.responseText;
+            if (response_text === "Invalid User ID or Password.") {
+              // "Invalid User ID or Password." is confusing
+              LeoTamer.Msg.alert("Error!", "Invalid Password");
             }
-          });
-        }
+            else {
+              LeoTamer.Msg.alert("Error!", response_text);
+            }
+          }
+        });
       });
     };
 

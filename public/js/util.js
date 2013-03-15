@@ -31,9 +31,10 @@
     if (msg !== "") msg += "<br><br>";
     msg += "Please Input Your Passowrd:";
 
-    Ext.Msg.prompt("Confirm", msg, function(btn, password) {
+    var msg_box = Ext.Msg.prompt("Confirm", msg, function(btn, password) {
       if (btn === "ok") callback(password);
     });
+    msg_box.textField.inputEl.dom.type = "password";
   }
 
   Ext.util.Format.SI = function(number, format) {
