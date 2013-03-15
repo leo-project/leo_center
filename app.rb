@@ -24,7 +24,6 @@ require "haml"
 require "sinatra/base"
 require "sinatra/namespace"
 require "logger"
-gem "leofs_manager_client", "0.4.0"
 require "leofs_manager_client"
 require_relative "lib/helpers"
 

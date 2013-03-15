@@ -1,4 +1,4 @@
-source :rubygems
+source "https://rubygems.org"
 
 # RSpec
 gem "rspec"
@@ -9,4 +9,4 @@ gem "sinatra"
 gem "sinatra-contrib"
 gem "redis-rack"
 gem "haml"
-gem "leofs_manager_client", "0.2.15"
+gem "leofs_manager_client", "0.4.1"
