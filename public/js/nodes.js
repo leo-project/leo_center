@@ -437,8 +437,6 @@
 
               if (!form.isValid()) {
                 form.getFields().each(function(field) {
-                  console.log(field.fieldLabel);
-                  console.log(field.getErrors());
                   var label  = field.fieldLabel;
                   var field_errors = field.getErrors();
                   if (field_errors.length === 0) return;
