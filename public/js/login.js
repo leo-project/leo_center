@@ -1,8 +1,10 @@
 (function() {
   Ext.onReady(function() {
-    var sign_up, login_form, login;
+    // Clear Cookies
+    Ext.util.Cookies.clear("user_id");
+    Ext.util.Cookies.clear("admin");
 
-    sign_up = function() {
+    var sign_up = function() {
       var sign_up_form_submit = function() {
         sign_up_form.submit({
           method: "POST",
@@ -73,7 +75,7 @@
       }).show();
     };
 
-    login_form_submit = function() {
+    var login_form_submit = function() {
       login_form.getForm().submit({
         method: "POST",
         success: function() {
@@ -86,7 +88,7 @@
       });
     };
 
-    login_form = Ext.create("Ext.form.Panel", {
+    var login_form = Ext.create("Ext.form.Panel", {
       url: "login",
       border: false,
       defaultType: "textfield",
@@ -124,7 +126,7 @@
       }]
     });
 
-    login = Ext.create("Ext.window.Window", {
+    var login = Ext.create("Ext.window.Window", {
       title: "login",
       id: "login",
       layout: {

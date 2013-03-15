@@ -31,9 +31,10 @@
     if (msg !== "") msg += "<br><br>";
     msg += "Please Input Your Passowrd:";
 
-    Ext.Msg.prompt("Confirm", msg, function(btn, password) {
+    var msg_box = Ext.Msg.prompt("Confirm", msg, function(btn, password) {
       if (btn === "ok") callback(password);
     });
+    msg_box.textField.inputEl.dom.type = "password";
   }
 
   Ext.util.Format.SI = function(number, format) {
@@ -68,7 +69,11 @@
       listeners: {
         exception: function(store, response, operation) {
           console.log(response.status);
-          if (response.status === 401) location = "/";
+          if (response.status === 401) { // session timeout
+            Ext.util.Cookies.clear("user_id");
+            Ext.util.Cookies.clear("admin");
+            location = "/";
+          }
           if (response.responseText === "") {
             LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", "An Error Occurred");
           }
