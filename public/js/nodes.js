@@ -321,9 +321,11 @@
         });
       }
 
+      /*
       self.erlang_vm_chart.setTitle("Erlang VM Status of " + node);
       self.erlang_vm_chart.node = node;
       self.erlang_vm_chart.store.load();
+      */
     },
 
     // what status the command make nodes to be
@@ -735,10 +737,12 @@
         }
       });
 
+      /*
       self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart", {
         height: 300,
         node: "storage_0@127.0.0.1"
       });
+      */
 
       self.left_container = Ext.create("Ext.Container", {
         flex: 2,
