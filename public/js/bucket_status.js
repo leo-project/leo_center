@@ -1,7 +1,10 @@
 (function() {
   Ext.define('LeoTamer.model.BucketStatus', {
     extend: 'Ext.data.Model',
-    fields: ["name", "owner", "created_at"]
+    fields: [
+      "name", "owner", 
+      { name: "created_at", type: "date", dateFormat: "U" }
+    ]
   });
 
   Ext.define("LeoTamer.BucketStatus", {
@@ -12,6 +15,7 @@
     border: false,
 
     listeners: {
+      // fires when tab open
       activate: function(self) {
         self.load();
       }
@@ -63,26 +67,9 @@
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.BucketStatus",
       groupField: "owner",
-      proxy: {
-        type: 'ajax',
-        url: 'bucket_status/list.json',
-        reader: {
-          type: 'json',
-          root: 'data'
-        },
-        // disable unused params
-        noCache: false,
-        limitParam: undefined,
-        pageParam: undefined,
-        sortParam: undefined,
-        startParam: undefined,
-        listeners: {
-          exception: function(store, response, operation) {
-            if (response.status === 401) location.reload();
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-          }
-        }
-      }
+      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        url: "bucket_status/list.json"
+      })
     }),
 
     initComponent: function() {
@@ -105,21 +92,21 @@
             }
           }
         },
-               "-",
-               {
-                 text: "Add Bucket",
-                 icon: "images/add.png",
-                 handler: function() {
-                   self.add_bucket(self);
-                 }
-               },
-               "->",
-               {
-                 icon: "images/reload.png",
-                 handler: function() {
-                   self.load();
-                 }
-               }],
+        "-",
+        {
+          text: "Add Bucket",
+          icon: "images/add.png",
+          handler: function() {
+            self.add_bucket(self);
+          }
+        },
+        "->",
+        {
+          icon: "images/reload.png",
+          handler: function() {
+            self.load();
+          }
+        }],
         columns: {
           defaults: {
             resizable: false
@@ -128,9 +115,14 @@
             {
               header: "Bucket",
               dataIndex: "name",
+              renderer: Ext.htmlEncode,
               width: 30
             },
-            { header: "Created at", dataIndex: "created_at" }
+            { 
+              header: "Created at",
+              dataIndex: "created_at",
+              renderer: Ext.util.Format.dateRenderer("c")
+            }
           ]
         }
       });

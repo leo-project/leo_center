@@ -21,25 +21,26 @@
 # ======================================================================
 require "json"
 require "haml"
+gem "sinatra", "~> 1.3.6"
 require "sinatra/base"
 require "sinatra/namespace"
-gem "leofs_manager_client", "0.2.15"
+require "logger"
+gem "leofs_manager_client", "~> 0.4.2"
 require "leofs_manager_client"
 require_relative "lib/helpers"
 
-require 'logger'
 class LoggerEx < Logger
   alias write <<
 end
 
 class LeoTamer < Sinatra::Base
-  Version = "0.2.10"
+  Version = "0.4.0"
   Config = TamerHelpers.load_config
   SessionKey = "leotamer_session"
 
   class Error < StandardError; end
 
-use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
+  use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
 
   session_config = Config[:session]
   if session_config.has_key?(:local)
@@ -103,7 +104,7 @@ use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
       debug "params: #{params}"
       unless session[:user_id]
         case request.path
-        when "/login", "/sign_up"
+        when "/login", "/logout", "/sign_up"
           # don't redirect
         when "/"
           redirect "/login"
@@ -187,3 +188,5 @@ require_relative "lib/buckets"
 require_relative "lib/endpoints"
 require_relative "lib/system_conf"
 require_relative "lib/whereis"
+require_relative "lib/growthforecast"
+require_relative "lib/snmp"

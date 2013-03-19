@@ -1,8 +1,10 @@
 (function() {
   Ext.onReady(function() {
-    var sign_up, login_form, login;
+    // Clear Cookies
+    Ext.util.Cookies.clear("user_id");
+    Ext.util.Cookies.clear("admin");
 
-    sign_up = function() {
+    var sign_up = function() {
       var sign_up_form_submit = function() {
         sign_up_form.submit({
           method: "POST",
@@ -73,7 +75,7 @@
       }).show();
     };
 
-    login_form_submit = function() {
+    var login_form_submit = function() {
       login_form.getForm().submit({
         method: "POST",
         success: function() {
@@ -81,12 +83,12 @@
         },
         failure: function(form, action) {
           LeoTamer.Msg.alert("Login Faild!", action.result.errors.reason);
-          login_form.getForm().reset();
+          login_form.getForm().findField("password").reset();
         }
       });
     };
 
-    login_form = Ext.create("Ext.form.Panel", {
+    var login_form = Ext.create("Ext.form.Panel", {
       url: "login",
       border: false,
       defaultType: "textfield",
@@ -99,8 +101,9 @@
         validateOnChange: false,
       },
       items:[{
-        fieldLabel:'User ID',
-        name: 'user_id',
+        fieldLabel: "User ID",
+        id: "user_id",
+        name: "user_id",
         listeners: {
           render: function() {
             this.focus(false, 200);
@@ -108,6 +111,7 @@
         }
       },{
         fieldLabel: "Password",
+        id: "password",
         name: "password",
         inputType: "password",
         listeners: {
@@ -122,7 +126,7 @@
       }]
     });
 
-    login = Ext.create("Ext.window.Window", {
+    var login = Ext.create("Ext.window.Window", {
       title: "login",
       id: "login",
       layout: {

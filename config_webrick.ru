@@ -22,9 +22,5 @@
 # version: 0.2.10
 # ======================================================================
 
-require "./app"
-#LeoTamer.run!(:port => (ARGV[0] || 80))
-#LeoTamer.run!(:Port => (ARGV[0] || 8000))
-
-## require File.expand_path("app", File.dirname(__FILE__)) # for unicorn
-run LeoTamer
+require_relative "app"
+LeoTamer.run!(:port => (ARGV[0] || 80))

@@ -21,26 +21,9 @@
 
       self.store = Ext.create("Ext.data.ArrayStore", {
         model: "LeoTamer.model.NameValue",
-        proxy: {
-          type: "ajax",
-          url: "system_conf/list.json",
-          reader: {
-            type: "json",
-            root: "data"
-          },
-          // disable unused params
-          noCache: false,
-          limitParam: undefined,
-          pageParam: undefined,
-          sortParam: undefined,
-          startParam: undefined,
-          listeners: {
-            exception: function(store, response, operation) {
-              if (response.status === 401) location.reload();
-              LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-            }
-          }
-        }
+        proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+          url: "system_conf/list.json"
+        })
       }),
 
       self.grid = Ext.create("Ext.grid.Panel", {

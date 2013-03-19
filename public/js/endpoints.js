@@ -1,7 +1,10 @@
 (function() {
   Ext.define("LeoTamer.model.Endpoints", {
     extend: "Ext.data.Model",
-    fields: ["endpoint", "created_at"]
+    fields: [
+      "endpoint",
+      { name: "created_at", type: "date", dateFormat: "U" }
+    ]
   });
 
   Ext.define("LeoTamer.Endpoints", {
@@ -23,26 +26,9 @@
 
     store: Ext.create("Ext.data.Store", {
       model: "LeoTamer.model.Endpoints",
-      proxy: {
-        type: "ajax",
-        url: "endpoints/list.json",
-        reader: {
-          type: "json",
-          root: "data"
-        },
-        // disable unused params
-        noCache: false,
-        limitParam: undefined,
-        pageParam: undefined,
-        sortParam: undefined,
-        startParam: undefined,
-        listeners: {
-          exception: function(store, response, operation) {
-            if (response.status === 401) location.reload();
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
-          }
-        }
-      }
+      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        url: "endpoints/list.json"
+      })
     }),
 
     add_endpoint: function(self) {
@@ -127,10 +113,16 @@
         }],
         columns: {
           defaults: { resizable: false },
-          items: [
-            { header: "Endpoint", dataIndex: "endpoint", width: 30 },
-            { header: "Created at", dataIndex: "created_at" }
-          ]
+          items: [{
+            header: "Endpoint",
+            dataIndex: "endpoint",
+            width: 30,
+            renderer: Ext.htmlEncode,
+          }, {
+            header: "Created at",
+            dataIndex: "created_at",
+            renderer: Ext.util.Format.dateRenderer("c")
+          }]
         }
       });
 
