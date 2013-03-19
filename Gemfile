@@ -1,12 +1,14 @@
 source "https://rubygems.org"
 
-# RSpec
-gem "rspec"
-gem "rack-test"
+group :test do
+  # RSpec
+  gem "rspec"
+  gem "rack-test"
+end
 
 # LeoTamer
-gem "sinatra"
+gem "sinatra", "~> 1.3.5"
 gem "sinatra-contrib"
 gem "redis-rack"
 gem "haml"
-gem "leofs_manager_client", "0.4.1"
+gem "leofs_manager_client", "~> 0.4.2"

@@ -21,9 +21,11 @@
 # ======================================================================
 require "json"
 require "haml"
+gem "sinatra", "~> 1.3.6"
 require "sinatra/base"
 require "sinatra/namespace"
 require "logger"
+gem "leofs_manager_client", "~> 0.4.2"
 require "leofs_manager_client"
 require_relative "lib/helpers"
 
