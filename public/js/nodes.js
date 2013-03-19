@@ -530,7 +530,7 @@
 
       self.status_panel = Ext.create("Ext.Panel", {
         title: "Config/VM Status",
-        width: 300,
+        width: 360,
         autoScroll: true,
         tbar: [
           change_status_button,
@@ -761,7 +761,6 @@
       Ext.apply(self, {
         items: [
           self.left_container,
-          Ext.create("Ext.resizer.Splitter", { autoShow: true }),
           self.status_panel
         ]
       });
