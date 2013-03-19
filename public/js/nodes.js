@@ -761,6 +761,7 @@
       Ext.apply(self, {
         items: [
           self.left_container,
+          Ext.create("Ext.resizer.Splitter", { autoShow: true }),
           self.status_panel
         ]
       });
