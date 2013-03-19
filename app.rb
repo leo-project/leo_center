@@ -34,7 +34,7 @@ class LoggerEx < Logger
 end
 
 class LeoTamer < Sinatra::Base
-  Version = "0.2.10"
+  Version = "0.4.0"
   Config = TamerHelpers.load_config
   SessionKey = "leotamer_session"
 
