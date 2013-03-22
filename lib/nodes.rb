@@ -79,7 +79,7 @@ class LeoTamer
         Group = "4. Compaction Status"
         Properties = {
           status: "Current Status",
-          last_compaction_start: "Last Compaction Start",
+          #last_compaction_start: "Last Compaction Start",
           total_targets: "Total Targets",
           num_of_pending_targets: "# of Pending Targets",
           num_of_ongoing_targets: "# of Ongoing Targets",
@@ -124,6 +124,13 @@ class LeoTamer
               group: Nodes::CompactStatus::Group
             }
           end)
+
+          result.push({
+            name: "Last Compaction Start",
+            value: compact_status.last_compaction_start.to_i,
+            id: "last_compaction_start",
+            group: Nodes::StorageStatus::Group
+          })
 
           result.concat(Nodes::StorageStatus::Properties.map do |property, text|
             { 
