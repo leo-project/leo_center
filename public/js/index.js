@@ -39,7 +39,11 @@
           },
           failure: function(response) {
             var response_text = response.responseText;
-            if (response_text === "Invalid User ID or Password.") {
+
+            if (response.status === 401) {
+              location = "/";
+            }
+            else if (response_text === "Invalid User ID or Password.") {
               // "Invalid User ID or Password." is confusing
               LeoTamer.Msg.alert("Error!", "Invalid Password");
             }
