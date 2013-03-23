@@ -92,7 +92,7 @@
               dataIndex: "delete",
               width: 8,
               renderer: function(value) {
-                if (value === 0) return "";
+                if (value === false) return "";
                 return "<img src='images/trash.png'>";
               }
             },
