@@ -41,7 +41,9 @@
             var response_text = response.responseText;
 
             if (response.status === 401) {
-              location = "/";
+              LeoTamer.Msg.alert("Session Timeout", "Your session is expired.", function() {
+                location = "/";
+              });
             }
             else if (response_text === "Invalid User ID or Password.") {
               // "Invalid User ID or Password." is confusing
