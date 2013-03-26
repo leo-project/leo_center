@@ -530,7 +530,7 @@
 
       self.status_panel = Ext.create("Ext.Panel", {
         title: "Config/VM Status",
-        width: 360,
+        width: 380,
         autoScroll: true,
         tbar: [
           change_status_button,
@@ -549,7 +549,16 @@
             text: "Name"
           }, {
             dataIndex: "value",
-            text: "Value"
+            text: "Value",
+            renderer: function(value, _, record) {
+              // fomat last_compaction_start date
+              if (record.internalId === "last_compaction_start") {
+                if (value === 0) return "";
+                var date = Ext.Date.parse(value, "U"); // parse UNIX time to Date
+                return Ext.Date.format(date, "c"); // ISO 8601 format
+              }
+              return value;
+            }
           }],
           listeners: {
             beforeselect: function() {
