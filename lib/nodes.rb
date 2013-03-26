@@ -172,14 +172,6 @@ class LeoTamer
       @@manager.rebalance
     end
 
-=begin
-    post "/compaction" do
-      node = required_params(:node)
-      confirm_password
-      @@manager.compact(node)
-    end
-=end
-
     post "/compact_start" do
       node, num_of_targets, num_of_compact_proc = required_params(:node, :num_of_targets, :num_of_compact_proc)
       @@manager.compact_start(node, num_of_targets, num_of_compact_proc)
