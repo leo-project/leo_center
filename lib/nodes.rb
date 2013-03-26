@@ -174,7 +174,7 @@ class LeoTamer
 
     post "/compact_start" do
       node, num_of_targets, num_of_compact_proc = required_params(:node, :num_of_targets, :num_of_compact_proc)
-      @@manager.compact_start(node, num_of_targets, num_of_compact_proc)
+      @@manager.compact_start(node, Integer(num_of_targets), Integer(num_of_compact_proc))
     end
 
     post "/compact_suspend" do
