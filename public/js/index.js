@@ -9,7 +9,7 @@
   Ext.onReady(function() {
     var bucket_status = Ext.create("LeoTamer.BucketStatus");
     var user_group = Ext.create("LeoTamer.UserGroup");
-    var user_id = Ext.util.Cookies.get("user_id");
+    var user_id = Ext.String.htmlEncode(Ext.util.Cookies.get("user_id"));
 
     // items for only administrator
     if (Ext.util.Cookies.get("admin") === "true") {
