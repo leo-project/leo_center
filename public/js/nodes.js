@@ -552,7 +552,8 @@
             text: "Value",
             renderer: function(value, _, record) {
               // fomat last_compaction_start date
-              if (record.internalId === "last_compaction_start" && value !== 0) {
+              if (record.internalId === "last_compaction_start") {
+                if (value === 0) return "";
                 var date = Ext.Date.parse(value, "U"); // parse UNIX time to Date
                 return Ext.Date.format(date, "c"); // ISO 8601 format
               }
