@@ -155,11 +155,11 @@ class LeoTamer
 
     post "/execute" do
       node, command = required_params(:node, :command)
-      command = command.to_sym
+      command = command
       confirm_password
 
       case command
-      when :resume, :suspend, :detach
+      when "resume", "suspend", "detach"
         @@manager.__send__(command, node)
       else
         raise "invalid operation command: #{command}"
