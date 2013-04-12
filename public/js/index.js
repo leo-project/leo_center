@@ -32,7 +32,7 @@
       LeoTamer.confirm_password(function(password) {
         Ext.Ajax.request({
           url: "user_credential",
-          method: "GET",
+          method: "POST",
           params: { password: password },
           success: function(response) {
             Ext.Msg.alert("Your Credential", response.responseText);
