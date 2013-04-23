@@ -190,3 +190,4 @@ require_relative "lib/system_conf"
 require_relative "lib/whereis"
 require_relative "lib/growthforecast"
 require_relative "lib/snmp"
+TamerHelpers.load_plugins

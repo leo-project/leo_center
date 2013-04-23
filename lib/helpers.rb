@@ -51,4 +51,12 @@ module TamerHelpers
     config_file = "#{source_dir}/../config.yml"
     YAML.load(File.read(config_file))
   end
+
+  def load_plugins
+    config = load_config
+    return unless config[:plugins]
+    config[:plugins].each do |plugin|
+      require_relative "plugins/#{plugin}"
+    end
+  end
 end
