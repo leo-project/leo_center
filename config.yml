@@ -15,3 +15,5 @@
   - ETS memory usage (1-min Averages)
   - Processes memory usage (1-min Averages)
   - System memory usage (1-min Averages)
+:plugins:
+#  - "disable_sign_up.rb"
