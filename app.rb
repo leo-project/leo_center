@@ -36,7 +36,7 @@ end
 class LeoTamer < Sinatra::Base
   Version = "0.4.1"
   Config = TamerHelpers.load_config
-  SessionKey = "leotamer_session"
+  SessionKey = "leofs_console_session"
 
   class Error < StandardError; end
 

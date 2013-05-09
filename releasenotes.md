@@ -1,17 +1,33 @@
-leo_tamer v0.2.10
-=================
+leofs_console v0.4.1
+====================
+
+* Improvements/Fixed bugs
+    * Fix incorrect any details
+
+
+leofs_console v0.4.0
+=====================
+
+* Improvements/Fixed bugs
+    * Add configuration items for Gateway and Storage
+    * Support "compaction"
+    * Fix incorrect any details
+
+
+leofs_console v0.2.10
+=====================
 
 * New Feature
     * Administration Tools
         * Add "Assigned Files View"
             * Able to confirm file assigned nodes
-* Improvements
+* Improvements/Fixed bugs
     * Fix incorrect any details
     * Supported "ruckup"
 
 
-leo_tamer v0.2.8
-================
+leofs_console v0.2.8
+====================
 
 * New Feature
     * Node Status View
@@ -25,15 +41,15 @@ leo_tamer v0.2.8
     * Update theme - switch to LeoFS's color
     * Fix incorrect any details
 
-leo_tamer v0.2.6
-================
+leofs_console v0.2.6
+====================
 
 * New Feature
     * User's bucket View
-* Improvements
+* Improvements/Fixed bugs
     * Fix incorrect any details
 
-leo_tamer v0.2.4
-================
+leofs_console v0.2.4
+====================
 
 * Initial import
