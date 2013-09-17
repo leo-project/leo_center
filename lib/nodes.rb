@@ -1,3 +1,24 @@
+#======================================================================
+#
+# LeoFS
+#
+# Copyright (c) 2012-2013 Rakuten, Inc.
+#
+# This file is provided to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file
+# except in compliance with the License.  You may obtain
+# a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+#======================================================================
 class LeoTamer
   namespace "/nodes" do
     before do
@@ -41,9 +62,9 @@ class LeoTamer
       module LeoFSRelatedConfig
         Group = "1. LeoFS related Items"
         Properties = {
-          version: "LeoFS Version",
-          log_dir: "Log Directory",
-          ring_cur: "Current Ring-hash",
+          version:   "App Version",
+          log_dir:   "Log Directory",
+          ring_cur:  "Current Ring-hash",
           ring_prev: "Previous Ring-hash"
         }
       end
@@ -51,39 +72,35 @@ class LeoTamer
       module ErlangRelatedItems
         Group = "2. Erlang related Items"
         Properties = {
-          vm_version: "VM Version",
-          total_mem_usage: "Total Memory Usage",
+          vm_version:       "VM Version",
+          total_mem_usage:  "Total Memory Usage",
           system_mem_usage: "System Memory Usage",
-          procs_mem_usage: "Procs Memory Usage",
-          ets_mem_usage: "ETS Memory Usage",
-          num_of_procs: "# of Procs",
-          limit_of_procs: "Limit of Procs",
+          procs_mem_usage:  "Procs Memory Usage",
+          ets_mem_usage:    "ETS Memory Usage",
+          num_of_procs:     "# of Procs",
+          limit_of_procs:   "Limit of Procs",
           thread_pool_size: "Thread Pool Size"
         }
       end
-      
+
       module StorageStatus
         Group = "3. Storage related Items"
         Properties = {
-          active_num_of_objects: "Active # of Objects",
-          total_num_of_objects: "Total # of Objects",
+          active_num_of_objects:  "Active # of Objects",
+          total_num_of_objects:   "Total # of Objects",
           active_size_of_objects: "Active Size of Objects",
-          total_size_of_objects: "Total Size of Objects",
-          #ratio_of_active_size: "Ratio of Active Size",
-          #last_compaction_start: "Last Compaction Start", #XXX: CompactStatus has same property
-          #last_compaction_end: "Last Compaction End"
+          total_size_of_objects:  "Total Size of Objects"
         }
       end
-      
+
       module CompactStatus
         Group = "4. Compaction Status"
         Properties = {
           status: "Current Status",
-          #last_compaction_start: "Last Compaction Start",
-          total_targets: "Total Targets",
+          total_targets:          "Total Targets",
           num_of_pending_targets: "# of Pending Targets",
           num_of_ongoing_targets: "# of Ongoing Targets",
-          num_of_out_of_targets: "# of Out of Targets"
+          num_of_out_of_targets:  "# of Out of Targets"
         }
       end
     end
@@ -94,7 +111,7 @@ class LeoTamer
       node_stat = @@manager.status(node).node_stat
 
       result = Nodes::LeoFSRelatedConfig::Properties.map do |property, text|
-        { 
+        {
           name: text,
           value: node_stat.__send__(property),
           group: Nodes::LeoFSRelatedConfig::Group
@@ -102,7 +119,7 @@ class LeoTamer
       end
 
       result.concat(Nodes::ErlangRelatedItems::Properties.map do |property, text|
-        { 
+        {
           name: text,
           value: node_stat.__send__(property),
           group: Nodes::ErlangRelatedItems::Group
@@ -117,7 +134,7 @@ class LeoTamer
           warn ex.message
         else
           result.concat(Nodes::CompactStatus::Properties.map do |property, text|
-            { 
+            {
               name: text,
               value: compact_status.__send__(property),
               id: property,
@@ -133,7 +150,7 @@ class LeoTamer
           })
 
           result.concat(Nodes::StorageStatus::Properties.map do |property, text|
-            { 
+            {
               name: text,
               value: storage_stat.__send__(property),
               id: property,

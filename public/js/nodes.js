@@ -1,3 +1,24 @@
+//======================================================================
+//
+// LeoFS
+//
+// Copyright (c) 2012-2013 Rakuten, Inc.
+//
+// This file is provided to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file
+// except in compliance with the License.  You may obtain
+// a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+//
+//======================================================================
 (function() {
   Ext.define("LeoTamer.model.Nodes", {
     extend: "Ext.data.Model",
@@ -92,36 +113,36 @@
         title: "Erlang VM Status of " + self.node,
         layout: "fit",
         /*
-        tbar: [{
+          tbar: [{
           text: "8 Hours",
           pressed: true,
           toggleGroup: "chart_period",
           handler: function() {
-            self.chart.period = "8h";
-            var time_axis = self.chart.axes.get("bottom");
-            time_axis.step = [Ext.Date.MINUTE, 30];
-            self.store.load();
+          self.chart.period = "8h";
+          var time_axis = self.chart.axes.get("bottom");
+          time_axis.step = [Ext.Date.MINUTE, 30];
+          self.store.load();
           }
-        }, {
+          }, {
           text: "Day",
           toggleGroup: "chart_period",
           handler: function() {
-            self.chart.period = "d";
-            var time_axis = self.chart.axes.get("bottom");
-            time_axis.step = [Ext.Date.HOUR, 1];
-            self.store.load();
+          self.chart.period = "d";
+          var time_axis = self.chart.axes.get("bottom");
+          time_axis.step = [Ext.Date.HOUR, 1];
+          self.store.load();
           }
-        }, {
+          }, {
           text: "Week",
           toggleGroup: "chart_period",
           handler: function() {
-            self.chart.period = "w";
-            var time_axis = self.chart.axes.get("bottom");
-            time_axis.step = [Ext.Date.DAY, 1];
-            time_axis.dateFormat = "hoge";
-            self.store.load();
+          self.chart.period = "w";
+          var time_axis = self.chart.axes.get("bottom");
+          time_axis.step = [Ext.Date.DAY, 1];
+          time_axis.dateFormat = "hoge";
+          self.store.load();
           }
-        }],
+          }],
         */
         items: self.chart
       });
@@ -322,9 +343,9 @@
       }
 
       /*
-      self.erlang_vm_chart.setTitle("Erlang VM Status of " + node);
-      self.erlang_vm_chart.node = node;
-      self.erlang_vm_chart.store.load();
+        self.erlang_vm_chart.setTitle("Erlang VM Status of " + node);
+        self.erlang_vm_chart.node = node;
+        self.erlang_vm_chart.store.load();
       */
     },
 
@@ -364,7 +385,7 @@
       stop: 6,
       downed: 6
     },
-   
+
     // compaction status and available compaction command
     // status: command
     available_compact_command: {
@@ -459,7 +480,7 @@
                 form.submit({
                   url: "/nodes/compact_" + command.toLowerCase(),
                   params: { node: node },
-                  success: function() { 
+                  success: function() {
                     self.store.load();
                     button.up("window").close();
                   },
@@ -478,7 +499,7 @@
             }
           }]
         });
-      
+
         if (command === "Start") {
           options = {
             xtype: "fieldset",
@@ -747,10 +768,10 @@
       });
 
       /*
-      self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart", {
+        self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart", {
         height: 300,
         node: "storage_0@127.0.0.1"
-      });
+        });
       */
 
       self.left_container = Ext.create("Ext.Container", {
