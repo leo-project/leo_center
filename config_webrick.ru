@@ -22,5 +22,6 @@
 # version: 0.2.10
 # ======================================================================
 
-require_relative "app"
+#require_relative "app"
+require "./app"
 LeoTamer.run!(:port => (ARGV[0] || 80))
