@@ -1,17 +1,42 @@
-leo_tamer v0.2.10
-=================
+v0.4.2 (Sep 18, 2013)
+=====================
+
+* Improvements
+    * Rename to "leo-center" and refactor toward LeoFS v1.0
+* Fixed bugs
+    * Cannot launch the application
+
+
+ v0.4.1 (Mar 23, 2013)
+======================
+
+* Improvements/Fixed bugs
+    * Fix incorrect any details
+
+
+ v0.4.0 (Mar 19, 2013)
+======================
+
+* Improvements/Fixed bugs
+    * Add configuration items for Gateway and Storage
+    * Support "compaction"
+    * Fix incorrect any details
+
+
+ v0.2.10 (Feb 8, 2013)
+======================
 
 * New Feature
     * Administration Tools
         * Add "Assigned Files View"
             * Able to confirm file assigned nodes
-* Improvements
+* Improvements/Fixed bugs
     * Fix incorrect any details
     * Supported "ruckup"
 
 
-leo_tamer v0.2.8
-================
+ v0.2.8 (Jan 22, 2013)
+======================
 
 * New Feature
     * Node Status View
@@ -25,15 +50,15 @@ leo_tamer v0.2.8
     * Update theme - switch to LeoFS's color
     * Fix incorrect any details
 
-leo_tamer v0.2.6
-================
+ v0.2.6 (Jan 9, 2013)
+=====================
 
 * New Feature
     * User's bucket View
-* Improvements
+* Improvements/Fixed bugs
     * Fix incorrect any details
 
-leo_tamer v0.2.4
-================
+ v0.2.4 (Dec 26, 2013)
+======================
 
 * Initial import

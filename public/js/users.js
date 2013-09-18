@@ -1,5 +1,26 @@
+//======================================================================
+//
+// LeoFS
+//
+// Copyright (c) 2012-2013 Rakuten, Inc.
+//
+// This file is provided to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file
+// except in compliance with the License.  You may obtain
+// a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+//
+//======================================================================
 (function() {
-  Ext.define('LeoTamer.model.Users', {
+  Ext.define('LeoCenter.model.Users', {
     extend: 'Ext.data.Model',
     fields: [
       "user_id", "role", "access_key_id",
@@ -7,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoTamer.Users", {
+  Ext.define("LeoCenter.Users", {
     extend: "Ext.panel.Panel",
     id: "users",
     title: "Users",
@@ -33,9 +54,9 @@
     }),
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Users",
+      model: "LeoCenter.model.Users",
       groupField: "role",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "users/list.json"
       })
     }),
@@ -54,7 +75,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
+              LeoCenter.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -67,13 +88,13 @@
       var last_selected = self.grid.getSelectionModel().getLastSelected();
 
       if (!last_selected) {
-        LeoTamer.Msg.alert("Error!", "Please select a user.");
+        LeoCenter.Msg.alert("Error!", "Please select a user.");
         return;
       }
 
       var user_id_to_delete = last_selected.data.user_id;
 
-      LeoTamer.confirm_password(function(password) {
+      LeoCenter.confirm_password(function(password) {
         Ext.Ajax.request({
           url: "users/delete_user",
           method: "DELETE",
@@ -85,7 +106,7 @@
             self.load();
           },
           failure: function(response) {
-            LeoTamer.Msg.alert("Error!", response.responseText);
+            LeoCenter.Msg.alert("Error!", response.responseText);
           }
         });
       });
@@ -104,7 +125,7 @@
           self.load();
         },
         failure: function(response, opts) {
-          LeoTamer.Msg.alert("Error!", response.responseText);
+          LeoCenter.Msg.alert("Error!", response.responseText);
         }
       });
     },
@@ -113,7 +134,7 @@
       var self = this;
       var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
-        LeoTamer.Msg.alert("Error!", "Please select a user.");
+        LeoCenter.Msg.alert("Error!", "Please select a user.");
       }
       else {
         var user_id = last_selected.data.user_id;
@@ -186,39 +207,37 @@
               var store = self.store;
               store.clearFilter();
               store.filter("user_id", new RegExp(new_value));
-            }
-          }
-        },
-        "-",
-        /*
-          {
-          text: "Add User",
-          icon: "images/add.png",
-          handler: function() {
-          self.add_user();
-          }
-          },
-        */
-        {
-          text: "Delete User",
-          icon: "images/remove.png",
-          handler: function() {
-            self.delete_user();
-          }
-        }, {
-          text: "Update Role",
-          icon: "images/update_user.png",
-          handler: function() {
-            self.update_user();
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+            }}},
+               "-",
+               /*
+                 {
+                 text: "Add User",
+                 icon: "images/add.png",
+                 handler: function() {
+                 self.add_user();
+                 }
+                 },
+               */
+               {
+                 text: "Delete User",
+                 icon: "images/remove.png",
+                 handler: function() {
+                   self.delete_user();
+                 }},
+               {
+                 text: "Update Role",
+                 icon: "images/update_user.png",
+                 handler: function() {
+                   self.update_user();
+                 }},
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }}
+              ],
+
         columns: {
           defaults: {
             resizable: false
@@ -241,7 +260,7 @@
               dataIndex: "access_key_id",
               width: 30
             },
-            { 
+            {
               header: "Created at",
               dataIndex: "created_at",
               renderer: Ext.util.Format.dateRenderer("c")

@@ -1,5 +1,26 @@
+//======================================================================
+//
+// LeoFS
+//
+// Copyright (c) 2012-2013 Rakuten, Inc.
+//
+// This file is provided to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file
+// except in compliance with the License.  You may obtain
+// a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+//
+//======================================================================
 (function() {
-  Ext.define("LeoTamer.model.Nodes", {
+  Ext.define("LeoCenter.model.Nodes", {
     extend: "Ext.data.Model",
     fields: [
       "type", "node", "status", "ring_hash_current", "ring_hash_previous",
@@ -7,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoTamer.SNMP.Chart", {
+  Ext.define("LeoCenter.SNMP.Chart", {
     extend: "Ext.panel.Panel",
 
     // 2013-02-20 17:04:15 +0900 //=> 2013-02-20 17:00:00 +0900
@@ -33,7 +54,7 @@
           "procs",
           "sys"
         ],
-        proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
           url: "snmp/chart.json",
           extraParams: {
             node: self.node
@@ -92,36 +113,36 @@
         title: "Erlang VM Status of " + self.node,
         layout: "fit",
         /*
-        tbar: [{
+          tbar: [{
           text: "8 Hours",
           pressed: true,
           toggleGroup: "chart_period",
           handler: function() {
-            self.chart.period = "8h";
-            var time_axis = self.chart.axes.get("bottom");
-            time_axis.step = [Ext.Date.MINUTE, 30];
-            self.store.load();
+          self.chart.period = "8h";
+          var time_axis = self.chart.axes.get("bottom");
+          time_axis.step = [Ext.Date.MINUTE, 30];
+          self.store.load();
           }
-        }, {
+          }, {
           text: "Day",
           toggleGroup: "chart_period",
           handler: function() {
-            self.chart.period = "d";
-            var time_axis = self.chart.axes.get("bottom");
-            time_axis.step = [Ext.Date.HOUR, 1];
-            self.store.load();
+          self.chart.period = "d";
+          var time_axis = self.chart.axes.get("bottom");
+          time_axis.step = [Ext.Date.HOUR, 1];
+          self.store.load();
           }
-        }, {
+          }, {
           text: "Week",
           toggleGroup: "chart_period",
           handler: function() {
-            self.chart.period = "w";
-            var time_axis = self.chart.axes.get("bottom");
-            time_axis.step = [Ext.Date.DAY, 1];
-            time_axis.dateFormat = "hoge";
-            self.store.load();
+          self.chart.period = "w";
+          var time_axis = self.chart.axes.get("bottom");
+          time_axis.step = [Ext.Date.DAY, 1];
+          time_axis.dateFormat = "hoge";
+          self.store.load();
           }
-        }],
+          }],
         */
         items: self.chart
       });
@@ -130,7 +151,7 @@
     }
   });
 
-  Ext.define("LeoTamer.Nodes", {
+  Ext.define("LeoCenter.Nodes", {
     extend: "Ext.panel.Panel",
 
     title: "Node Status",
@@ -176,9 +197,9 @@
     }),
 
     detail_store: Ext.create("Ext.data.ArrayStore", {
-      model: "LeoTamer.model.NameValue",
+      model: "LeoCenter.model.NameValue",
       groupField: "group",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "nodes/detail.json"
       })
     }),
@@ -196,7 +217,7 @@
         },
         success: self.store.load.bind(self.store),
         failure: function(response) {
-          LeoTamer.Msg.alert("Error!", response.responseText);
+          LeoCenter.Msg.alert("Error!", response.responseText);
         }
       });
     },
@@ -209,7 +230,7 @@
       var msg = 'Are you sure to change status from <b>"' + node.status + '" to "' + future_status + '"</b> ?';
 
       // confirm user's password before dangerous action
-      LeoTamer.confirm_password(function(password) {
+      LeoCenter.confirm_password(function(password) {
         self.do_send_command(password, node_name, command);
       }, msg);
     },
@@ -322,9 +343,9 @@
       }
 
       /*
-      self.erlang_vm_chart.setTitle("Erlang VM Status of " + node);
-      self.erlang_vm_chart.node = node;
-      self.erlang_vm_chart.store.load();
+        self.erlang_vm_chart.setTitle("Erlang VM Status of " + node);
+        self.erlang_vm_chart.node = node;
+        self.erlang_vm_chart.store.load();
       */
     },
 
@@ -364,7 +385,7 @@
       stop: 6,
       downed: 6
     },
-   
+
     // compaction status and available compaction command
     // status: command
     available_compact_command: {
@@ -451,21 +472,21 @@
                   error_text += key + ": " + value;
                 });
 
-                LeoTamer.Msg.alert("Error!", error_text);
+                LeoCenter.Msg.alert("Error!", error_text);
                 return;
               }
 
-              LeoTamer.confirm_password(function(password) {
+              LeoCenter.confirm_password(function(password) {
                 form.submit({
                   url: "/nodes/compact_" + command.toLowerCase(),
                   params: { node: node },
-                  success: function() { 
+                  success: function() {
                     self.store.load();
                     button.up("window").close();
                   },
                   failure: function(form, action) {
                     var response = action.response;
-                    LeoTamer.Msg.alert("Error!", response.responseText);
+                    LeoCenter.Msg.alert("Error!", response.responseText);
                   }
                 });
               });
@@ -478,7 +499,7 @@
             }
           }]
         });
-      
+
         if (command === "Start") {
           options = {
             xtype: "fieldset",
@@ -530,7 +551,7 @@
 
       self.status_panel = Ext.create("Ext.Panel", {
         title: "Config/VM Status",
-        width: 360,
+        width: 380,
         autoScroll: true,
         tbar: [
           change_status_button,
@@ -549,7 +570,16 @@
             text: "Name"
           }, {
             dataIndex: "value",
-            text: "Value"
+            text: "Value",
+            renderer: function(value, _, record) {
+              // fomat last_compaction_start date
+              if (record.internalId === "last_compaction_start") {
+                if (value === 0) return "";
+                var date = Ext.Date.parse(value, "U"); // parse UNIX time to Date
+                return Ext.Date.format(date, "c"); // ISO 8601 format
+              }
+              return value;
+            }
           }],
           listeners: {
             beforeselect: function() {
@@ -571,8 +601,8 @@
       }
 
       self.store = Ext.create("Ext.data.Store", {
-        model: "LeoTamer.model.Nodes",
-        proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        model: "LeoCenter.model.Nodes",
+        proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
           url: "nodes/status.json"
         }),
         listeners: {
@@ -670,7 +700,7 @@
         cls: "bold_button",
         icon: "images/rebalance.png",
         handler: function() {
-          LeoTamer.confirm_password(function(password) {
+          LeoCenter.confirm_password(function(password) {
             Ext.Ajax.request({
               url: "nodes/rebalance",
               method: "POST",
@@ -679,7 +709,7 @@
                 self.store.load();
               },
               failure: function(response) {
-                LeoTamer.Msg.alert("Error!", response.responseText);
+                LeoCenter.Msg.alert("Error!", response.responseText);
               }
             });
           }, "Are you sure to execute rebalance?");
@@ -738,10 +768,10 @@
       });
 
       /*
-      self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart", {
+        self.erlang_vm_chart = Ext.create("LeoCenter.SNMP.Chart", {
         height: 300,
         node: "storage_0@127.0.0.1"
-      });
+        });
       */
 
       self.left_container = Ext.create("Ext.Container", {

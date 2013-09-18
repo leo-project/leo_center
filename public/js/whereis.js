@@ -1,14 +1,35 @@
+//======================================================================
+//
+// LeoFS
+//
+// Copyright (c) 2012-2013 Rakuten, Inc.
+//
+// This file is provided to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file
+// except in compliance with the License.  You may obtain
+// a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+//
+//======================================================================
 (function() {
-  Ext.define("LeoTamer.model.Whereis", {
+  Ext.define("LeoCenter.model.Whereis", {
     extend: "Ext.data.Model",
     fields: [
-      "node", "vnode_id", "size", "clock", "checksum", 
+      "node", "vnode_id", "size", "clock", "checksum",
       { name: "timestamp", type: "date", dateFormat: "U" },
       "delete", "num_of_chunks"
     ]
   });
 
-  Ext.define("LeoTamer.Whereis", {
+  Ext.define("LeoCenter.Whereis", {
     extend: "Ext.panel.Panel",
     id: "whereis",
     title: "Assigned File",
@@ -20,8 +41,8 @@
     },
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Whereis",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      model: "LeoCenter.model.Whereis",
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "whereis/list.json"
       })
     }),
@@ -70,25 +91,25 @@
             }
           }
         },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            if (!self.path) return;
-            self.store.load({
-              params: {
-                path: self.path
-              },
-              callback: function() {
-                self.grid.getSelectionModel().select(0);
-              }
-            });
-          }
-        }],
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   if (!self.path) return;
+                   self.store.load({
+                     params: {
+                       path: self.path
+                     },
+                     callback: function() {
+                       self.grid.getSelectionModel().select(0);
+                     }
+                   });
+                 }
+               }],
         columns: {
           defaults: { resizable: false },
           items: [
-            { 
+            {
               dataIndex: "delete",
               width: 8,
               renderer: function(value) {
@@ -104,20 +125,20 @@
               renderer: function(size) {
                 var format_string = "0";
                 if (size < 1024) {
-                    return Ext.util.Format.number(size, format_string);
+                  return Ext.util.Format.number(size, format_string);
                 } else if (size < 1048576) {
-                    return Ext.util.Format.number(Math.round(((size * 100) / 1024)) / 100, format_string) + " KB";
+                  return Ext.util.Format.number(Math.round(((size * 100) / 1024)) / 100, format_string) + " KB";
                 } else if (size < 1073741824) {
-                    return Ext.util.Format.number(Math.round(((size * 100) / 1048576)) / 100, format_string) + " MB";
+                  return Ext.util.Format.number(Math.round(((size * 100) / 1048576)) / 100, format_string) + " MB";
                 } else if (size < 1099511627776) {
-                    return Ext.util.Format.number(Math.round(((size * 100) / 1073741824)) / 100, format_string) + " GB";
+                  return Ext.util.Format.number(Math.round(((size * 100) / 1073741824)) / 100, format_string) + " GB";
                 } else {
-                    return Ext.util.Format.number(Math.round(((size * 100) / 1099511627776)) / 100, format_string) + " TB";
+                  return Ext.util.Format.number(Math.round(((size * 100) / 1099511627776)) / 100, format_string) + " TB";
                 }
               }
             },
             { header: "Actual Size", dataIndex: "size", width: 40 },
-            { 
+            {
               header: "Timestamp",
               dataIndex: "timestamp",
               renderer: Ext.util.Format.dateRenderer("c")

@@ -1,5 +1,26 @@
+//======================================================================
+//
+// LeoFS
+//
+// Copyright (c) 2012-2013 Rakuten, Inc.
+//
+// This file is provided to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file
+// except in compliance with the License.  You may obtain
+// a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+//
+//======================================================================
 (function() {
-  Ext.define("LeoTamer.model.Endpoints", {
+  Ext.define("LeoCenter.model.Endpoints", {
     extend: "Ext.data.Model",
     fields: [
       "endpoint",
@@ -7,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoTamer.Endpoints", {
+  Ext.define("LeoCenter.Endpoints", {
     extend: "Ext.panel.Panel",
     id: "endpoints",
     title: "Endpoints",
@@ -25,8 +46,8 @@
     },
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Endpoints",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      model: "LeoCenter.model.Endpoints",
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "endpoints/list.json"
       })
     }),
@@ -45,7 +66,7 @@
               self.load();
             },
             failure: function(response) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
+              LeoCenter.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -57,7 +78,7 @@
       var title = "Delete Endpoint";
       var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
-        LeoTamer.Msg.alert("Error!", "Please select a endpoint.");
+        LeoCenter.Msg.alert("Error!", "Please select a endpoint.");
       }
       else {
         var endpoint = last_selected.data.endpoint;
@@ -75,7 +96,7 @@
                 self.load();
               },
               failure: function(response, opts) {
-                LeoTamer.Msg.alert("Error!", response.responseText);
+                LeoCenter.Msg.alert("Error!", response.responseText);
               }
             })
           }
@@ -104,13 +125,13 @@
             self.delete_endpoint(self);
           }
         },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: { resizable: false },
           items: [{

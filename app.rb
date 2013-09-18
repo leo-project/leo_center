@@ -33,20 +33,20 @@ class LoggerEx < Logger
   alias write <<
 end
 
-class LeoTamer < Sinatra::Base
-  Version = "0.4.1"
+class LeoCenter < Sinatra::Base
+  Version = "0.4.2"
   Config = TamerHelpers.load_config
-  SessionKey = "leotamer_session"
+  SessionKey = "leofs_console_session"
 
   class Error < StandardError; end
 
-  use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
+  use Rack::CommonLogger, LoggerEx.new('leo_center.log')
 
   session_config = Config[:session]
   if session_config.has_key?(:local)
     local_config = session_config[:local]
     unless local_config.has_key?(:secret)
-      warn "session secret is not configured. please set it in config.yml. now LeoTamer uses random secret."
+      warn "session secret is not configured. please set it in config.yml. now LeoCenter uses random secret."
     end
     use Rack::Session::Cookie,
       key: SessionKey,
@@ -167,7 +167,7 @@ class LeoTamer < Sinatra::Base
     redirect "/login"
   end
 
-  get "/user_credential" do
+  post "/user_credential" do
     confirm_password
     <<-EOS
       AWS_ACCESS_KEY_ID: #{session[:access_key_id]}<br>
@@ -190,3 +190,4 @@ require_relative "lib/system_conf"
 require_relative "lib/whereis"
 require_relative "lib/growthforecast"
 require_relative "lib/snmp"
+TamerHelpers.load_plugins

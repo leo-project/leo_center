@@ -1,9 +1,9 @@
-LeoTamer
-=========
+LeoFS-Console
+=============
 
 **Copyright (c) 2013 Rakuten, Inc.**
 
-**LeoTamer** is more powerful and user-friendly LeoFS's Web GUI. You can easily operate LeoFS.
+**LeoFS-Console** is more powerful and user-friendly LeoFS's Web GUI. You can easily operate LeoFS.
 
 
 Install

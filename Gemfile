@@ -6,7 +6,7 @@ group :test do
   gem "rack-test"
 end
 
-# LeoTamer
+# LeoCenter
 gem "sinatra", "~> 1.3.5"
 gem "sinatra-contrib"
 gem "redis-rack"

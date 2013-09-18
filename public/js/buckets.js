@@ -1,5 +1,26 @@
+//======================================================================
+//
+// LeoFS
+//
+// Copyright (c) 2012-2013 Rakuten, Inc.
+//
+// This file is provided to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file
+// except in compliance with the License.  You may obtain
+// a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+//
+//======================================================================
 (function() {
-  Ext.define('LeoTamer.model.Buckets', {
+  Ext.define('LeoCenter.model.Buckets', {
     extend: 'Ext.data.Model',
     fields: [
       "name", "owner",
@@ -7,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoTamer.Buckets", {
+  Ext.define("LeoCenter.Buckets", {
     extend: "Ext.panel.Panel",
     id: "buckets",
     title: "Buckets",
@@ -43,7 +64,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
+              LeoCenter.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -64,9 +85,9 @@
     },
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Buckets",
+      model: "LeoCenter.model.Buckets",
       groupField: "owner",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "buckets/list.json"
       })
     }),
@@ -92,21 +113,21 @@
             }
           }
         },
-        "-",
-        {
-          text: "Add Bucket",
-          icon: "images/add.png",
-          handler: function() {
-            self.add_bucket(self);
-          }
-        },
-        "->",
-        {
-          icon: "images/reload.png",
-          handler: function() {
-            self.load();
-          }
-        }],
+               "-",
+               {
+                 text: "Add Bucket",
+                 icon: "images/add.png",
+                 handler: function() {
+                   self.add_bucket(self);
+                 }
+               },
+               "->",
+               {
+                 icon: "images/reload.png",
+                 handler: function() {
+                   self.load();
+                 }
+               }],
         columns: {
           defaults: {
             resizable: false
@@ -116,7 +137,7 @@
             dataIndex: "name",
             renderer: Ext.util.Format.htmlEncode,
             width: 30
-          }, { 
+          }, {
             header: "Created at",
             dataIndex: "created_at",
             renderer: Ext.util.Format.dateRenderer("c")
