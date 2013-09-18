@@ -34,7 +34,7 @@ class LoggerEx < Logger
 end
 
 class LeoCenter < Sinatra::Base
-  Version = "0.4.1"
+  Version = "0.4.2"
   Config = TamerHelpers.load_config
   SessionKey = "leofs_console_session"
 
