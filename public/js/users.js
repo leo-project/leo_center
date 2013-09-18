@@ -20,7 +20,7 @@
 //
 //======================================================================
 (function() {
-  Ext.define('LeoTamer.model.Users', {
+  Ext.define('LeoCenter.model.Users', {
     extend: 'Ext.data.Model',
     fields: [
       "user_id", "role", "access_key_id",
@@ -28,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoTamer.Users", {
+  Ext.define("LeoCenter.Users", {
     extend: "Ext.panel.Panel",
     id: "users",
     title: "Users",
@@ -54,9 +54,9 @@
     }),
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Users",
+      model: "LeoCenter.model.Users",
       groupField: "role",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "users/list.json"
       })
     }),
@@ -75,7 +75,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
+              LeoCenter.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -88,13 +88,13 @@
       var last_selected = self.grid.getSelectionModel().getLastSelected();
 
       if (!last_selected) {
-        LeoTamer.Msg.alert("Error!", "Please select a user.");
+        LeoCenter.Msg.alert("Error!", "Please select a user.");
         return;
       }
 
       var user_id_to_delete = last_selected.data.user_id;
 
-      LeoTamer.confirm_password(function(password) {
+      LeoCenter.confirm_password(function(password) {
         Ext.Ajax.request({
           url: "users/delete_user",
           method: "DELETE",
@@ -106,7 +106,7 @@
             self.load();
           },
           failure: function(response) {
-            LeoTamer.Msg.alert("Error!", response.responseText);
+            LeoCenter.Msg.alert("Error!", response.responseText);
           }
         });
       });
@@ -125,7 +125,7 @@
           self.load();
         },
         failure: function(response, opts) {
-          LeoTamer.Msg.alert("Error!", response.responseText);
+          LeoCenter.Msg.alert("Error!", response.responseText);
         }
       });
     },
@@ -134,7 +134,7 @@
       var self = this;
       var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
-        LeoTamer.Msg.alert("Error!", "Please select a user.");
+        LeoCenter.Msg.alert("Error!", "Please select a user.");
       }
       else {
         var user_id = last_selected.data.user_id;

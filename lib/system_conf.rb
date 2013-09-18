@@ -19,7 +19,7 @@
 # under the License.
 #
 #======================================================================
-class LeoTamer
+class LeoCenter
   module SystemConf; end
 
   namespace "/system_conf" do

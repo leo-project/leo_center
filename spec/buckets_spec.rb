@@ -21,7 +21,7 @@
 #======================================================================
 require_relative "spec_helper"
 
-describe LeoTamer do
+describe LeoCenter do
   describe "/buckets/list.json" do
     subject { get_json "/buckets/list.json" }
 

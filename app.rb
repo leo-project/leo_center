@@ -33,20 +33,20 @@ class LoggerEx < Logger
   alias write <<
 end
 
-class LeoTamer < Sinatra::Base
+class LeoCenter < Sinatra::Base
   Version = "0.4.1"
   Config = TamerHelpers.load_config
   SessionKey = "leofs_console_session"
 
   class Error < StandardError; end
 
-  use Rack::CommonLogger, LoggerEx.new('leo_tarmer.log')
+  use Rack::CommonLogger, LoggerEx.new('leo_center.log')
 
   session_config = Config[:session]
   if session_config.has_key?(:local)
     local_config = session_config[:local]
     unless local_config.has_key?(:secret)
-      warn "session secret is not configured. please set it in config.yml. now LeoTamer uses random secret."
+      warn "session secret is not configured. please set it in config.yml. now LeoCenter uses random secret."
     end
     use Rack::Session::Cookie,
       key: SessionKey,

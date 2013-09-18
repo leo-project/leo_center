@@ -35,7 +35,7 @@
             login_form_submit();
           },
           failure: function(form, action) {
-            LeoTamer.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
+            LeoCenter.Msg.alert("Sign Up Faild!", "reason: " + action.result.errors.reason);
           }
         });
       };
@@ -103,7 +103,7 @@
           window.location = "/"
         },
         failure: function(form, action) {
-          LeoTamer.Msg.alert("Login Faild!", action.result.errors.reason);
+          LeoCenter.Msg.alert("Login Faild!", action.result.errors.reason);
           login_form.getForm().findField("password").reset();
         }
       });
@@ -148,7 +148,7 @@
     });
 
     var login = Ext.create("Ext.window.Window", {
-      title: "login",
+      title: "LeoCenter - Login",
       id: "login",
       layout: {
         type: "vbox",
@@ -163,24 +163,26 @@
         {
           xtype: "image",
           width: 500,
-          height: 174,
+          height: 117,
           padding: "12 12 0",
           border: false,
           src: "images/logo_login.png"
         },
-        login_form,
-        {
-          width: "100%",
-          id: "link_to_sign_up",
-          html: "Have an account? <a href='#' style=\"text-decoration:none\">Sign Up</a>",
-          listeners: {
-            render: function(component) {
-              component.getEl().on('click', function(e) {
-                sign_up();
-              });
-            }
-          }
-        }
+        login_form
+
+        // @TODO - Sign Up
+        // {
+        //   width: "100%",
+        //   id: "link_to_sign_up",
+        //   html: "Have an account? <a href='#' style=\"text-decoration:none\">Sign Up</a>",
+        //   listeners: {
+        //     render: function(component) {
+        //       component.getEl().on('click', function(e) {
+        //         sign_up();
+        //       });
+        //     }
+        //   }
+        // }
       ]
     }).show();
   });

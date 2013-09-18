@@ -19,7 +19,7 @@
 # under the License.
 #
 #======================================================================
-class LeoTamer
+class LeoCenter
   namespace "/user_group" do
 =begin
     before do

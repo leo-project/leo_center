@@ -20,12 +20,12 @@
 //
 //======================================================================
 (function() {
-  Ext.define('LeoTamer.model.UserGroup', {
+  Ext.define('LeoCenter.model.UserGroup', {
     extend: 'Ext.data.Model',
     fields: ["user_id", "role", "group", "access_key_id", "created_at"]
   });
 
-  Ext.define("LeoTamer.UserGroup", {
+  Ext.define("LeoCenter.UserGroup", {
     extend: "Ext.panel.Panel",
     id: "user_group",
     title: "User Group",
@@ -59,7 +59,7 @@
     }),
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.UserGroup",
+      model: "LeoCenter.model.UserGroup",
       groupField: "group",
       proxy: {
         type: 'ajax',
@@ -76,7 +76,7 @@
         startParam: undefined,
         listeners: {
           exception: function(store, response) {
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            LeoCenter.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }
@@ -96,7 +96,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
+              LeoCenter.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -144,7 +144,7 @@
               },
               failure: function(form, action) {
                 alert("foo");
-                LeoTamer.Msg.alert("Add User Faild!", "reason: " + action.result.errors.reason);
+                LeoCenter.Msg.alert("Add User Faild!", "reason: " + action.result.errors.reason);
               }
             });
           }
@@ -163,7 +163,7 @@
       var title = "Delete User";
       var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
-        LeoTamer.Msg.alert("Error!", "Please select a user.");
+        LeoCenter.Msg.alert("Error!", "Please select a user.");
       }
       else {
         var user_id = last_selected.data.user_id;
@@ -181,7 +181,7 @@
                 self.load();
               },
               failure: function(response) {
-                LeoTamer.Msg.alert("Error!", response.responseText);
+                LeoCenter.Msg.alert("Error!", response.responseText);
               }
             });
           }

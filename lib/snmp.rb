@@ -19,7 +19,7 @@
 # under the License.
 #
 #======================================================================
-class LeoTamer
+class LeoCenter
   namespace "/snmp" do
     before do
       check_admin

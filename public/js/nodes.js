@@ -20,7 +20,7 @@
 //
 //======================================================================
 (function() {
-  Ext.define("LeoTamer.model.Nodes", {
+  Ext.define("LeoCenter.model.Nodes", {
     extend: "Ext.data.Model",
     fields: [
       "type", "node", "status", "ring_hash_current", "ring_hash_previous",
@@ -28,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoTamer.SNMP.Chart", {
+  Ext.define("LeoCenter.SNMP.Chart", {
     extend: "Ext.panel.Panel",
 
     // 2013-02-20 17:04:15 +0900 //=> 2013-02-20 17:00:00 +0900
@@ -54,7 +54,7 @@
           "procs",
           "sys"
         ],
-        proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
           url: "snmp/chart.json",
           extraParams: {
             node: self.node
@@ -151,7 +151,7 @@
     }
   });
 
-  Ext.define("LeoTamer.Nodes", {
+  Ext.define("LeoCenter.Nodes", {
     extend: "Ext.panel.Panel",
 
     title: "Node Status",
@@ -197,9 +197,9 @@
     }),
 
     detail_store: Ext.create("Ext.data.ArrayStore", {
-      model: "LeoTamer.model.NameValue",
+      model: "LeoCenter.model.NameValue",
       groupField: "group",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "nodes/detail.json"
       })
     }),
@@ -217,7 +217,7 @@
         },
         success: self.store.load.bind(self.store),
         failure: function(response) {
-          LeoTamer.Msg.alert("Error!", response.responseText);
+          LeoCenter.Msg.alert("Error!", response.responseText);
         }
       });
     },
@@ -230,7 +230,7 @@
       var msg = 'Are you sure to change status from <b>"' + node.status + '" to "' + future_status + '"</b> ?';
 
       // confirm user's password before dangerous action
-      LeoTamer.confirm_password(function(password) {
+      LeoCenter.confirm_password(function(password) {
         self.do_send_command(password, node_name, command);
       }, msg);
     },
@@ -472,11 +472,11 @@
                   error_text += key + ": " + value;
                 });
 
-                LeoTamer.Msg.alert("Error!", error_text);
+                LeoCenter.Msg.alert("Error!", error_text);
                 return;
               }
 
-              LeoTamer.confirm_password(function(password) {
+              LeoCenter.confirm_password(function(password) {
                 form.submit({
                   url: "/nodes/compact_" + command.toLowerCase(),
                   params: { node: node },
@@ -486,7 +486,7 @@
                   },
                   failure: function(form, action) {
                     var response = action.response;
-                    LeoTamer.Msg.alert("Error!", response.responseText);
+                    LeoCenter.Msg.alert("Error!", response.responseText);
                   }
                 });
               });
@@ -601,8 +601,8 @@
       }
 
       self.store = Ext.create("Ext.data.Store", {
-        model: "LeoTamer.model.Nodes",
-        proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        model: "LeoCenter.model.Nodes",
+        proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
           url: "nodes/status.json"
         }),
         listeners: {
@@ -700,7 +700,7 @@
         cls: "bold_button",
         icon: "images/rebalance.png",
         handler: function() {
-          LeoTamer.confirm_password(function(password) {
+          LeoCenter.confirm_password(function(password) {
             Ext.Ajax.request({
               url: "nodes/rebalance",
               method: "POST",
@@ -709,7 +709,7 @@
                 self.store.load();
               },
               failure: function(response) {
-                LeoTamer.Msg.alert("Error!", response.responseText);
+                LeoCenter.Msg.alert("Error!", response.responseText);
               }
             });
           }, "Are you sure to execute rebalance?");
@@ -768,7 +768,7 @@
       });
 
       /*
-        self.erlang_vm_chart = Ext.create("LeoTamer.SNMP.Chart", {
+        self.erlang_vm_chart = Ext.create("LeoCenter.SNMP.Chart", {
         height: 300,
         node: "storage_0@127.0.0.1"
         });

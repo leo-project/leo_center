@@ -20,7 +20,7 @@
 //
 //======================================================================
 (function() {
-  Ext.define("LeoTamer.Msg", {
+  Ext.define("LeoCenter.Msg", {
     statics: {
       // alert with ERROR icon
       alert: function(title, msg, fn, scope) {
@@ -41,12 +41,12 @@
   });
 
   // model for { name: "hoge", value: "fuga" }
-  Ext.define("LeoTamer.model.NameValue", {
+  Ext.define("LeoCenter.model.NameValue", {
     extend: "Ext.data.Model",
     fields: ["name", "value", "group"]
   });
 
-  LeoTamer.confirm_password = function(callback, msg) {
+  LeoCenter.confirm_password = function(callback, msg) {
     var msg = msg || "";
 
     if (msg !== "") msg += "<br><br>";
@@ -73,7 +73,7 @@
     }
   };
 
-  Ext.define("LeoTamer.proxy.Ajax.noParams", {
+  Ext.define("LeoCenter.proxy.Ajax.noParams", {
     extend: "Ext.data.proxy.Ajax",
 
     config: {
@@ -91,17 +91,17 @@
         exception: function(store, response, operation) {
           console.log(response.status);
           if (response.status === 401) { // session timeout
-            LeoTamer.Msg.alert("Session Timeout", "Your session is expired.", function() {
+            LeoCenter.Msg.alert("Session Timeout", "Your session is expired.", function() {
               Ext.util.Cookies.clear("user_id");
               Ext.util.Cookies.clear("admin");
               location = "/";
             });
           }
           else if (response.responseText === "") {
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", "An Error Occurred");
+            LeoCenter.Msg.alert("Error on: \'" + store.url + "\'", "An Error Occurred");
           }
           else {
-            LeoTamer.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
+            LeoCenter.Msg.alert("Error on: \'" + store.url + "\'", response.responseText);
           }
         }
       }

@@ -20,7 +20,7 @@
 //
 //======================================================================
 (function() {
-  Ext.define("LeoTamer.model.Endpoints", {
+  Ext.define("LeoCenter.model.Endpoints", {
     extend: "Ext.data.Model",
     fields: [
       "endpoint",
@@ -28,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoTamer.Endpoints", {
+  Ext.define("LeoCenter.Endpoints", {
     extend: "Ext.panel.Panel",
     id: "endpoints",
     title: "Endpoints",
@@ -46,8 +46,8 @@
     },
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Endpoints",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      model: "LeoCenter.model.Endpoints",
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "endpoints/list.json"
       })
     }),
@@ -66,7 +66,7 @@
               self.load();
             },
             failure: function(response) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
+              LeoCenter.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -78,7 +78,7 @@
       var title = "Delete Endpoint";
       var last_selected = self.grid.getSelectionModel().getLastSelected();
       if (!last_selected) {
-        LeoTamer.Msg.alert("Error!", "Please select a endpoint.");
+        LeoCenter.Msg.alert("Error!", "Please select a endpoint.");
       }
       else {
         var endpoint = last_selected.data.endpoint;
@@ -96,7 +96,7 @@
                 self.load();
               },
               failure: function(response, opts) {
-                LeoTamer.Msg.alert("Error!", response.responseText);
+                LeoCenter.Msg.alert("Error!", response.responseText);
               }
             })
           }

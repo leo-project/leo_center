@@ -28,14 +28,14 @@
   */
 
   Ext.onReady(function() {
-    var bucket_status = Ext.create("LeoTamer.BucketStatus");
-    var user_group = Ext.create("LeoTamer.UserGroup");
+    var bucket_status = Ext.create("LeoCenter.BucketStatus");
+    var user_group = Ext.create("LeoCenter.UserGroup");
     var user_id = Ext.String.htmlEncode(Ext.util.Cookies.get("user_id"));
 
     // items for only administrator
     if (Ext.util.Cookies.get("admin") === "true") {
-      var node_status = Ext.create("LeoTamer.Nodes");
-      var admin = Ext.create("LeoTamer.Admin");
+      var node_status = Ext.create("LeoCenter.Nodes");
+      var admin = Ext.create("LeoCenter.Admin");
     }
 
     var tabs = Ext.create("Ext.TabPanel", {
@@ -50,7 +50,7 @@
     });
 
     var get_credential = function() {
-      LeoTamer.confirm_password(function(password) {
+      LeoCenter.confirm_password(function(password) {
         Ext.Ajax.request({
           url: "user_credential",
           method: "POST",
@@ -62,16 +62,16 @@
             var response_text = response.responseText;
 
             if (response.status === 401) {
-              LeoTamer.Msg.alert("Session Timeout", "Your session is expired.", function() {
+              LeoCenter.Msg.alert("Session Timeout", "Your session is expired.", function() {
                 location = "/";
               });
             }
             else if (response_text === "Invalid User ID or Password.") {
               // "Invalid User ID or Password." is confusing
-              LeoTamer.Msg.alert("Error!", "Invalid Password");
+              LeoCenter.Msg.alert("Error!", "Invalid Password");
             }
             else {
-              LeoTamer.Msg.alert("Error!", response_text);
+              LeoCenter.Msg.alert("Error!", response_text);
             }
           }
         });

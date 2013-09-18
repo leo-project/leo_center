@@ -27,7 +27,7 @@ ENV['RACK_ENV'] = "test"
 require_relative "../app"
 
 def app
-  LeoTamer.new
+  LeoCenter.new
 end
 
 def get_json(url)

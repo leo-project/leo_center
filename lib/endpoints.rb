@@ -19,7 +19,7 @@
 # under the License.
 #
 #======================================================================
-class LeoTamer
+class LeoCenter
   namespace "/endpoints" do
     before do
       check_admin

@@ -20,7 +20,7 @@
 //
 //======================================================================
 (function() {
-  Ext.define("LeoTamer.model.Whereis", {
+  Ext.define("LeoCenter.model.Whereis", {
     extend: "Ext.data.Model",
     fields: [
       "node", "vnode_id", "size", "clock", "checksum",
@@ -29,7 +29,7 @@
     ]
   });
 
-  Ext.define("LeoTamer.Whereis", {
+  Ext.define("LeoCenter.Whereis", {
     extend: "Ext.panel.Panel",
     id: "whereis",
     title: "Assigned File",
@@ -41,8 +41,8 @@
     },
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.Whereis",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      model: "LeoCenter.model.Whereis",
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "whereis/list.json"
       })
     }),

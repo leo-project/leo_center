@@ -20,17 +20,17 @@
 //
 //======================================================================
 (function() {
-  Ext.define("LeoTamer.Admin", {
+  Ext.define("LeoCenter.Admin", {
     extend: "Ext.panel.Panel",
     id: "admin",
     title: "Admin Tools",
     layout: "border",
 
-    system_conf: Ext.create("LeoTamer.SystemConf"),
-    users: Ext.create("LeoTamer.Users"),
-    buckets: Ext.create("LeoTamer.Buckets"),
-    endpoints: Ext.create("LeoTamer.Endpoints"),
-    whereis: Ext.create("LeoTamer.Whereis"),
+    system_conf: Ext.create("LeoCenter.SystemConf"),
+    users: Ext.create("LeoCenter.Users"),
+    buckets: Ext.create("LeoCenter.Buckets"),
+    endpoints: Ext.create("LeoCenter.Endpoints"),
+    whereis: Ext.create("LeoCenter.Whereis"),
 
     admin_store: Ext.create("Ext.data.Store", {
       fields: ["name"],

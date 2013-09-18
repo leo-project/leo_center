@@ -19,7 +19,7 @@
 # under the License.
 #
 #======================================================================
-class LeoTamer
+class LeoCenter
   namespace "/whereis" do
     before do
       halt 401 unless session[:admin]

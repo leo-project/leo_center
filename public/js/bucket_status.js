@@ -20,7 +20,7 @@
 //
 //======================================================================
 (function() {
-  Ext.define('LeoTamer.model.BucketStatus', {
+  Ext.define('LeoCenter.model.BucketStatus', {
     extend: 'Ext.data.Model',
     fields: [
       "name", "owner",
@@ -28,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoTamer.BucketStatus", {
+  Ext.define("LeoCenter.BucketStatus", {
     extend: "Ext.panel.Panel",
     id: "bucket_status",
     title: "Bucket Status",
@@ -65,7 +65,7 @@
               self.load();
             },
             failure: function(response, opts) {
-              LeoTamer.Msg.alert("Error!", response.responseText);
+              LeoCenter.Msg.alert("Error!", response.responseText);
             }
           })
         }
@@ -86,9 +86,9 @@
     },
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoTamer.model.BucketStatus",
+      model: "LeoCenter.model.BucketStatus",
       groupField: "owner",
-      proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "bucket_status/list.json"
       })
     }),

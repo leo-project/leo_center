@@ -20,7 +20,7 @@
 //
 //======================================================================
 (function() {
-  Ext.define("LeoTamer.SystemConf", {
+  Ext.define("LeoCenter.SystemConf", {
     extend: "Ext.panel.Panel",
     id: "system_conf",
     title: "System Conf",
@@ -41,8 +41,8 @@
       var self = this;
 
       self.store = Ext.create("Ext.data.ArrayStore", {
-        model: "LeoTamer.model.NameValue",
-        proxy: Ext.create("LeoTamer.proxy.Ajax.noParams", {
+        model: "LeoCenter.model.NameValue",
+        proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
           url: "system_conf/list.json"
         })
       }),

@@ -24,4 +24,4 @@
 
 #require_relative "app"
 require "./app"
-LeoTamer.run!(:port => (ARGV[0] || 80))
+LeoCenter.run!(:port => (ARGV[0] || 80))
