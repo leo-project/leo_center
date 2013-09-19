@@ -25,8 +25,8 @@ gem "sinatra", "~> 1.3.6"
 require "sinatra/base"
 require "sinatra/namespace"
 require "logger"
-gem "leofs_manager_client", "~> 0.4.2"
-require "leofs_manager_client"
+gem "leo_manager_client", "~> 0.4.7"
+require "leo_manager_client"
 require_relative "lib/helpers"
 
 class LoggerEx < Logger
@@ -87,18 +87,18 @@ class LeoCenter < Sinatra::Base
   set :show_exceptions, environment == :test
 
   module Role
-    roles = LeoFSManager::Client::USER_ROLES
+    roles = LeoManager::Client::USER_ROLES
     Admin = roles[:admin]
     Normal = roles[:normal]
   end
 
   configure :test do
     #TODO: user dummy server
-    @@manager = LeoFSManager::Client.new(*Config[:managers])
+    @@manager = LeoManager::Client.new(*Config[:managers])
   end
 
   configure :production, :development do
-    @@manager = LeoFSManager::Client.new(*Config[:managers])
+    @@manager = LeoManager::Client.new(*Config[:managers])
 
     before do
       debug "params: #{params}"
