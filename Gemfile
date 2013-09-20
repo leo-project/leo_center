@@ -7,8 +7,8 @@ group :test do
 end
 
 # LeoCenter
-gem "sinatra", "~> 1.3.5"
+#gem "sinatra"
+gem "sinatra", "~> 1.3.6"
 gem "sinatra-contrib"
-gem "redis-rack"
 gem "haml"
-gem "leo_manager_client", "~> 0.4.7"
+gem "leo_manager_client", "~> 0.4.8"
