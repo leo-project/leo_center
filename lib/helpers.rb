@@ -22,7 +22,7 @@
 require "json"
 require "yaml"
 
-module TamerHelpers
+module CenterHelpers
   def debug(str)
     puts str if $DEBUG
   end
