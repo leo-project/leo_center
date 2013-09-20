@@ -45,14 +45,12 @@ class LeoCenter
           raise Error, "unknown node type: #{node.type}"
         end
 
-        {
-          type: type,
+        { type: type,
           node: node.node,
           status: node.state,
           ring_hash_current: node.ring_cur,
           ring_hash_previous: node.ring_prev,
-          joined_at: Integer(node.joined_at)
-        }
+          joined_at: Integer(node.joined_at) }
       end
 
       { data: data }.to_json
@@ -60,36 +58,38 @@ class LeoCenter
 
     module Nodes
       module LeoFSRelatedConfig
-        Group = "1. LeoFS related Items"
+        Group = "1. Applicaion"
         Properties = {
-          version:   "App Version",
-          log_dir:   "Log Directory",
-          ring_cur:  "Current Ring-hash",
-          ring_prev: "Previous Ring-hash"
+          version:   "App version",
+          log_dir:   "Log directory",
+          ring_cur:  "Current ring-hash",
+          ring_prev: "Previous ring-hash"
         }
       end
 
+      ## ErlangVM-related items
       module ErlangRelatedItems
-        Group = "2. Erlang related Items"
+        Group = "2. Erlang VM"
         Properties = {
-          vm_version:       "VM Version",
-          total_mem_usage:  "Total Memory Usage",
-          system_mem_usage: "System Memory Usage",
-          procs_mem_usage:  "Procs Memory Usage",
-          ets_mem_usage:    "ETS Memory Usage",
-          num_of_procs:     "# of Procs",
-          limit_of_procs:   "Limit of Procs",
-          thread_pool_size: "Thread Pool Size"
+          vm_version:       "VM version",
+          total_mem_usage:  "Total memory usage",
+          system_mem_usage: "System memory usage",
+          procs_mem_usage:  "Procs memory usage",
+          ets_mem_usage:    "ETS memory usage",
+          num_of_procs:     "# of procs",
+          limit_of_procs:   "Limit of procs",
+          thread_pool_size: "Thread pool size"
         }
       end
 
+      ## Storage-related items
       module StorageStatus
-        Group = "3. Storage related Items"
+        Group = "3. Storage"
         Properties = {
-          active_num_of_objects:  "Active # of Objects",
-          total_num_of_objects:   "Total # of Objects",
-          active_size_of_objects: "Active Size of Objects",
-          total_size_of_objects:  "Total Size of Objects"
+          active_num_of_objects:  "# of active objects",
+          total_num_of_objects:   "Total # of objects",
+          active_size_of_objects: "Active size of objects",
+          total_size_of_objects:  "Total size of objects"
         }
       end
 
@@ -97,19 +97,66 @@ class LeoCenter
         Group = "4. Compaction Status"
         Properties = {
           status: "Current Status",
-          total_targets:          "Total Targets",
-          num_of_pending_targets: "# of Pending Targets",
-          num_of_ongoing_targets: "# of Ongoing Targets",
-          num_of_out_of_targets:  "# of Out of Targets"
+          total_targets:          "Total # of targets",
+          num_of_pending_targets: "# of pending targets",
+          num_of_ongoing_targets: "# of ongoing targets",
+          num_of_out_of_targets:  "# of out of targets"
+        }
+      end
+
+      module Messages
+        Group = "5. Total # of Messages"
+        Properties = {
+          replication_msgs: "# of replication messages",
+          sync_vnode_msgs:  "# of sync-vnode messages",
+          rebalance_msgs:   "# of rebalance messages"
+        }
+      end
+
+      ## Gateway-related items
+      module GatewayWebServerConfig
+        Group = "3. Http Server"
+        Properties = {
+          handler: "API",
+          port: "Port",
+          ssl_port: "SSL port",
+          num_of_acceptors: "# of acceptors"
+        }
+      end
+
+      module GatewayCacheConfig
+        Group = "4. Cache"
+        Properties = {
+          http_cache: "Use HTTP cahce?",
+          cache_workers: "# of cache workers",
+          cache_expire:  "Cache expire in sec",
+          cache_ram_capacity: "Memory-cache capacity",
+          cache_disc_capacity: "Disc-cache capacity",
+          cache_disc_threshold_len: "Threshold of size of disc-cache",
+          cache_disc_dir_data: "Disc-cache's data directory",
+          cache_disc_dir_journal: "Disc-cache journal directory",
+          cache_max_content_len: "Max size of an object"
+        }
+      end
+
+      module GatewayLargeObjConfig
+        Group = "5. Large object"
+        Properties = {
+          max_chunked_objs: "Max # of chunked objects",
+          max_len_for_obj: "Max size of an object",
+          chunked_obj_len: "Size of a chunked object",
+          threshold_obj_len: "Threshold of size of an object"
         }
       end
     end
 
     get "/detail.json" do
       node, type = required_params(:node, :type)
+      node_stat  = @@manager.status(node).node_stat
+      storage_stat = @@manager.status(node).storage_stat
+      gateway_stat = @@manager.status(node).gateway_stat
 
-      node_stat = @@manager.status(node).node_stat
-
+      ## Common property/status
       result = Nodes::LeoFSRelatedConfig::Properties.map do |property, text|
         {
           name: text,
@@ -126,49 +173,82 @@ class LeoCenter
         }
       end)
 
-      if type == "Storage"
+      case type
+        when "Storage" then
         begin
-          compact_status = @@manager.compact_status(node)
-          storage_stat = @@manager.du(node)
+          file_stat = @@manager.du(node)
+          compact_stat = @@manager.compact_status(node)
         rescue => ex
           warn ex.message
         else
-          result.concat(Nodes::CompactStatus::Properties.map do |property, text|
-            {
-              name: text,
-              value: compact_status.__send__(property),
-              id: property,
-              group: Nodes::CompactStatus::Group
-            }
-          end)
-
-          result.push({
-            name: "Last Compaction Start",
-            value: compact_status.last_compaction_start.to_i,
-            id: "last_compaction_start",
-            group: Nodes::StorageStatus::Group
-          })
-
+          ## storage staus
           result.concat(Nodes::StorageStatus::Properties.map do |property, text|
-            {
-              name: text,
-              value: storage_stat.__send__(property),
-              id: property,
-              group: Nodes::StorageStatus::Group
-            }
-          end)
+                          { name: text,
+                            value: file_stat.__send__(property),
+                            id: property,
+                            group: Nodes::StorageStatus::Group
+                          } end)
 
-          result.push({
-            name: "Ratio of Active Size",
-            value: "#{storage_stat.ratio_of_active_size}%",
-            id: "ratio_of_active_size",
-            group: Nodes::StorageStatus::Group
-          })
+          result.push({ name: "Ratio of Active Size",
+                        value: "#{file_stat.ratio_of_active_size}%",
+                        id: "ratio_of_active_size",
+                        group: Nodes::StorageStatus::Group
+                      })
+
+          ## compaction status
+          result.concat(Nodes::CompactStatus::Properties.map do |property, text|
+                          { name: text,
+                            value: compact_stat.__send__(property),
+                            id: property,
+                            group: Nodes::CompactStatus::Group
+                          } end)
+
+          result.push({ name: "Last Compaction Start",
+                        value: compact_stat.last_compaction_start.to_i,
+                        id: "last_compaction_start",
+                        group: Nodes::StorageStatus::Group
+                      })
+
+          ## # of messages in the queue
+          result.concat(Nodes::Messages::Properties.map do |property, text|
+                          { name: text,
+                            value: storage_stat.__send__(property),
+                            id: property,
+                            group: Nodes::Messages::Group
+                          } end)
+        end
+
+        when "Gateway" then
+        begin
+          ## http-server config
+          result.concat(Nodes::GatewayWebServerConfig::Properties.map do |property, text|
+                          { name: text,
+                            value: gateway_stat.__send__(property),
+                            id: property,
+                            group: Nodes::GatewayWebServerConfig::Group
+                          } end)
+
+          ## cache config
+          result.concat(Nodes::GatewayCacheConfig::Properties.map do |property, text|
+                          { name: text,
+                            value: gateway_stat.__send__(property),
+                            id: property,
+                            group: Nodes::GatewayCacheConfig::Group
+                          } end)
+
+          ## large-object config
+          result.concat(Nodes::GatewayLargeObjConfig::Properties.map do |property, text|
+                          { name: text,
+                            value: gateway_stat.__send__(property),
+                            id: property,
+                            group: Nodes::GatewayLargeObjConfig::Group
+                          } end)
         end
       end
 
       { data: result }.to_json
     end
+
 
     post "/execute" do
       node, command = required_params(:node, :command)

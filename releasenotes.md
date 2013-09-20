@@ -1,3 +1,12 @@
+v0.4.3 (Sep 20, 2013)
+=====================
+
+* Improvements
+    * Add properties in the node-pane
+        * Gateway: HTTP-Server config, Cache config, Large object config
+        * Storage: Total number of messages in the Queue
+
+
 v0.4.2 (Sep 18, 2013)
 =====================
 

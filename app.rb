@@ -1,8 +1,8 @@
 # ======================================================================
 #
-#  Leo Tamer
+#  Leo Center
 #
-#  Copyright (c) 2012 Rakuten, Inc.
+#  Copyright (c) 2012-2013 Rakuten, Inc.
 #
 #  This file is provided to you under the Apache License,
 #  Version 2.0 (the "License"); you may not use this file
@@ -21,12 +21,13 @@
 # ======================================================================
 require "json"
 require "haml"
+#gem "sinatra"
 gem "sinatra", "~> 1.3.6"
 require "sinatra/base"
 require "sinatra/namespace"
 require "logger"
-gem "leofs_manager_client", "~> 0.4.2"
-require "leofs_manager_client"
+gem "leo_manager_client", "~> 0.4.8"
+require "leo_manager_client"
 require_relative "lib/helpers"
 
 class LoggerEx < Logger
@@ -34,8 +35,8 @@ class LoggerEx < Logger
 end
 
 class LeoCenter < Sinatra::Base
-  Version = "0.4.2"
-  Config = TamerHelpers.load_config
+  Version = "0.4.3"
+  Config = CenterHelpers.load_config
   SessionKey = "leofs_console_session"
 
   class Error < StandardError; end
@@ -67,7 +68,7 @@ class LeoCenter < Sinatra::Base
   end
 
   register Sinatra::Namespace
-  helpers TamerHelpers
+  helpers CenterHelpers
 
   helpers do
     def confirm_password
@@ -87,18 +88,18 @@ class LeoCenter < Sinatra::Base
   set :show_exceptions, environment == :test
 
   module Role
-    roles = LeoFSManager::Client::USER_ROLES
+    roles = LeoManager::Client::USER_ROLES
     Admin = roles[:admin]
     Normal = roles[:normal]
   end
 
   configure :test do
     #TODO: user dummy server
-    @@manager = LeoFSManager::Client.new(*Config[:managers])
+    @@manager = LeoManager::Client.new(*Config[:managers])
   end
 
   configure :production, :development do
-    @@manager = LeoFSManager::Client.new(*Config[:managers])
+    @@manager = LeoManager::Client.new(*Config[:managers])
 
     before do
       debug "params: #{params}"
@@ -148,10 +149,10 @@ class LeoCenter < Sinatra::Base
     end
     admin = credential.role_id == Role::Admin # bool
     user_id = credential.id
-    group = ["hoge", "fuga"].sample #XXX: FAKE
-    session[:admin] = admin
+    group = ["group_1", "group_2"].sample # @TODO
+    session[:admin]   = admin
     session[:user_id] = user_id
-    session[:group] = group
+    session[:group]   = group
     session[:access_key_id] = credential.access_key_id # used in buckets/add_bucket
     session[:secret_access_key] = credential.secret_key
 
@@ -190,4 +191,4 @@ require_relative "lib/system_conf"
 require_relative "lib/whereis"
 require_relative "lib/growthforecast"
 require_relative "lib/snmp"
-TamerHelpers.load_plugins
+CenterHelpers.load_plugins
