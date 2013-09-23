@@ -5,9 +5,6 @@
   :access_key_id: "05236"
   :secret_access_key: "802562235"
 :session:
-#  :redis:
-#    :url: "redis://localhost:6379/0"
-#    #:expire_after: 600
   :local:
     :secret: ""
     :expire_after: 300

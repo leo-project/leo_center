@@ -19,9 +19,5 @@
 #  under the License.
 #
 # ======================================================================
-# version: 0.2.10
-# ======================================================================
-
 require File.expand_path("app", File.dirname(__FILE__)) # for unicorn
-
 run LeoCenter
