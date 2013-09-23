@@ -53,16 +53,6 @@ class LeoCenter < Sinatra::Base
       key: SessionKey,
       secret: local_config[:secret] || Random.new.bytes(40),
       expire_after: local_config[:expire_after] || 300 # 5 minutes in seconds
-  elsif session_config.has_key?(:redis)
-    redis_config = session_config[:redis]
-    unless url = redis_config[:url]
-      raise Error, "redis url is required in session config. please set it in config.yml"
-    end
-    require "redis-rack"
-    use Rack::Session::Redis,
-      key: SessionKey,
-      redis_server: url,
-      expire_after: redis_config[:expire_after] || 300 # 5 minutes in seconds
   else
     raise Error, "invalid session config: #{session_config}"
   end
