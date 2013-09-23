@@ -19,5 +19,5 @@
 #  under the License.
 #
 # ======================================================================
-require File.expand_path("app", File.dirname(__FILE__)) # for unicorn
-run LeoCenter
+require "./app"
+LeoCenter.run!(:port => (ARGV[0] || 80))
