@@ -14,3 +14,7 @@
   - System memory usage (1-min Averages)
 :plugins:
 #  - "disable_sign_up.rb"
+:ssl:
+  :ssl_enable: true
+  :crt_path: "/etc/pki/tls/certs/leofs.crt"
+  :key_path: "/etc/pki/tls/certs/leofs.key"
