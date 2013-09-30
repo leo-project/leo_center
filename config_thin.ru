@@ -24,31 +24,4 @@ require 'webrick/https'
 
 require "./app"
 
-Config = CenterHelpers.load_config
-ssl_config = Config[:ssl]
- 
-# decide http or https
-if ssl_config.nil? || ssl_config[:ssl_enable].nil? ||
-   ssl_config[:crt_path].nil? || ssl_config[:key_path].nil? || !ssl_config[:ssl_enable]
- 
-  # start http
-  LeoCenter.run!(:port => (ARGV[0] || 80))
- 
-else
- 
-  # start https
-  webrick_options = {
-    :Port               => (ARGV[0] || 443),
-    :Logger             => WEBrick::Log::new($stdout, WEBrick::Log::DEBUG),
-    :DocumentRoot       => "./public",
-    :SSLEnable          => ssl_config[:ssl_enable],
-    :SSLCertificate     => OpenSSL::X509::Certificate.new(  File.open(ssl_config[:crt_path]).read),
-    :SSLPrivateKey      => OpenSSL::PKey::RSA.new(          File.open(ssl_config[:key_path]).read),
-    :SSLCertName        => [ [ "CN",WEBrick::Utils::getservername ] ]
-  }
-  Rack::Handler::WEBrick.run LeoCenter, webrick_options do |server|
-    shutdown_proc = ->( sig ){ server.shutdown() }
-    [ :INT, :TERM ].each{ |e| Signal.trap( e, &shutdown_proc ) }
-  end
- 
-end
+run LeoCenter
