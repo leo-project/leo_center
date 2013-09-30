@@ -24,14 +24,9 @@ require "haml"
 gem "sinatra", "~> 1.3.6"
 require "sinatra/base"
 require "sinatra/namespace"
-require "logger"
 gem "leo_manager_client", "~> 0.4.8"
 require "leo_manager_client"
 require_relative "lib/helpers"
-
-class LoggerEx < Logger
-  alias write <<
-end
 
 class LeoCenter < Sinatra::Base
   Version = "0.4.3"
@@ -39,8 +34,6 @@ class LeoCenter < Sinatra::Base
   SessionKey = "leofs_console_session"
 
   class Error < StandardError; end
-
-  use Rack::CommonLogger, LoggerEx.new('leo_center.log')
 
   session_config = Config[:session]
   if session_config.has_key?(:local)
@@ -89,6 +82,11 @@ class LeoCenter < Sinatra::Base
 
   configure :production, :development do
     @@manager = LeoManager::Client.new(*Config[:managers])
+
+    enable :logging
+    access_log = File.new("#{settings.root}/log/#{settings.environment}_access.log", 'a+')
+    access_log.sync = true
+    use Rack::CommonLogger, access_log
 
     before do
       debug "params: #{params}"
