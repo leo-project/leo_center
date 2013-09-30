@@ -21,7 +21,6 @@
 # ======================================================================
 require "json"
 require "haml"
-#gem "sinatra"
 gem "sinatra", "~> 1.3.6"
 require "sinatra/base"
 require "sinatra/namespace"

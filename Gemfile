@@ -7,7 +7,6 @@ group :test do
 end
 
 # LeoCenter
-#gem "sinatra"
 gem "sinatra", "~> 1.3.6"
 gem "sinatra-contrib"
 gem "haml"
