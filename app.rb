@@ -19,23 +19,25 @@
 #  under the License.
 #
 # ======================================================================
+gem "sinatra", "~> 1.4.3"
+gem "leo_manager_client", "~> 0.4.8"
+
 require "json"
 require "haml"
-#gem "sinatra"
-gem "sinatra", "~> 1.3.6"
 require "sinatra/base"
 require "sinatra/namespace"
 require "logger"
-gem "leo_manager_client", "~> 0.4.8"
 require "leo_manager_client"
 require_relative "lib/helpers"
+
 
 class LoggerEx < Logger
   alias write <<
 end
 
 class LeoCenter < Sinatra::Base
-  Version = "0.4.3"
+  Version = "0.4.4"
+  set :environment, :production
   Config = CenterHelpers.load_config
   SessionKey = "leofs_console_session"
 
