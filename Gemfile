@@ -8,7 +8,7 @@ end
 
 # LeoCenter
 #gem "sinatra"
-gem "sinatra", "~> 1.3.6"
+gem "sinatra", "~> 1.4.3"
 gem "sinatra-contrib"
 gem "haml"
 gem "thin"
