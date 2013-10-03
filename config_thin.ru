@@ -20,4 +20,5 @@
 #
 # ======================================================================
 require "./app"
-LeoCenter.run!(:host => ARGV[0], :port => (ARGV[1] || 8888))
+#LeoCenter.run!(:host => ARGV[0], :port => (ARGV[1] || 8888))
+LeoCenter.run!(:port => (ARGV[0] || 8888))
