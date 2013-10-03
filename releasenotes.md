@@ -1,4 +1,10 @@
-v0.4.3 (Sep 23, 2013)
+0.4.4 (Oct 3, 2013)
+=====================
+* Improvements
+    * Supported Sinatra-1.4.3
+
+
+0.4.3 (Sep 23, 2013)
 =====================
 
 * Improvements
@@ -7,7 +13,7 @@ v0.4.3 (Sep 23, 2013)
         * Storage: Total number of messages in the Queue
 
 
-v0.4.2 (Sep 18, 2013)
+0.4.2 (Sep 18, 2013)
 =====================
 
 * Improvements
@@ -16,14 +22,14 @@ v0.4.2 (Sep 18, 2013)
     * Cannot launch the application
 
 
- v0.4.1 (Mar 23, 2013)
+ 0.4.1 (Mar 23, 2013)
 ======================
 
 * Improvements/Fixed bugs
     * Fix incorrect any details
 
 
- v0.4.0 (Mar 19, 2013)
+ 0.4.0 (Mar 19, 2013)
 ======================
 
 * Improvements/Fixed bugs
@@ -32,7 +38,7 @@ v0.4.2 (Sep 18, 2013)
     * Fix incorrect any details
 
 
- v0.2.10 (Feb 8, 2013)
+ 0.2.10 (Feb 8, 2013)
 ======================
 
 * New Feature
@@ -44,7 +50,7 @@ v0.4.2 (Sep 18, 2013)
     * Supported "ruckup"
 
 
- v0.2.8 (Jan 22, 2013)
+ 0.2.8 (Jan 22, 2013)
 ======================
 
 * New Feature
@@ -59,7 +65,7 @@ v0.4.2 (Sep 18, 2013)
     * Update theme - switch to LeoFS's color
     * Fix incorrect any details
 
- v0.2.6 (Jan 9, 2013)
+ 0.2.6 (Jan 9, 2013)
 =====================
 
 * New Feature
@@ -67,7 +73,7 @@ v0.4.2 (Sep 18, 2013)
 * Improvements/Fixed bugs
     * Fix incorrect any details
 
- v0.2.4 (Dec 26, 2013)
+ 0.2.4 (Dec 26, 2013)
 ======================
 
 * Initial import
