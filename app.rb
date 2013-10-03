@@ -36,7 +36,7 @@ class LoggerEx < Logger
 end
 
 class LeoCenter < Sinatra::Base
-  Version = "0.4.3"
+  Version = "0.4.4"
   set :environment, :production
   Config = CenterHelpers.load_config
   SessionKey = "leofs_console_session"
