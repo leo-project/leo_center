@@ -32,7 +32,7 @@ Run on Thin Web Server
 ======================
 
 ```
-$ ruby config_webrick.ru ${PORT}
+$ thin start
 ```
 
 Run on Unicorn
