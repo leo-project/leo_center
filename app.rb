@@ -43,8 +43,6 @@ class LeoCenter < Sinatra::Base
 
   class Error < StandardError; end
 
-  use Rack::CommonLogger, LoggerEx.new('leo_center.log')
-
   session_config = Config[:session]
   if session_config.has_key?(:local)
     local_config = session_config[:local]
@@ -92,6 +90,11 @@ class LeoCenter < Sinatra::Base
 
   configure :production, :development do
     @@manager = LeoManager::Client.new(*Config[:managers])
+
+    enable :logging
+    access_log = File.new("#{settings.root}/log/#{settings.environment}_access.log", 'a+')
+    access_log.sync = true
+    use Rack::CommonLogger, access_log
 
     before do
       debug "params: #{params}"

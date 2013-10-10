@@ -1,6 +1,7 @@
 *.gem
 *.rbc
 *.swp
+*.log
 .bundle
 .config
 coverage
