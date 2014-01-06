@@ -1,0 +1,23 @@
+---
+## default config parameter ##
+#chdir: /path/to/app/root
+environment: development
+address: 0.0.0.0
+port: 9000
+timeout: 30
+log: log/thin.log
+pid: tmp/pids/thin.pid
+max_conns: 1024
+max_persistent_conns: 100
+require: []
+wait: 30
+
+## add config parameter ##
+#user: leofs
+#group: leofs
+#servers: 1
+#threaded: true
+#no-epoll: true
+#daemonize: true
+#socket: tmp/sockets/thin.sock
+#tag: a-name-to-show-up-in-ps aux

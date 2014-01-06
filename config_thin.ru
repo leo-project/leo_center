@@ -2,7 +2,7 @@
 #
 #  Leo Center
 #
-#  Copyright (c) 2012 Rakuten, Inc.
+#  Copyright (c) 2012-2014 Rakuten, Inc.
 #
 #  This file is provided to you under the Apache License,
 #  Version 2.0 (the "License"); you may not use this file
@@ -21,4 +21,5 @@
 # ======================================================================
 require "./app"
 #LeoCenter.run!(:host => ARGV[0], :port => (ARGV[1] || 8888))
-LeoCenter.run!(:port => (ARGV[0] || 8888))
+#LeoCenter.run!(:port => (ARGV[0] || 8888))
+run LeoCenter

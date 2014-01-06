@@ -2,7 +2,7 @@
 #
 # LeoFS
 #
-# Copyright (c) 2012-2013 Rakuten, Inc.
+# Copyright (c) 2012-2014 Rakuten, Inc.
 #
 # This file is provided to you under the Apache License,
 # Version 2.0 (the "License"); you may not use this file
@@ -145,7 +145,7 @@ class LeoCenter
           max_chunked_objs: "Max # of chunked objects",
           max_len_for_obj: "Max size of an object",
           chunked_obj_len: "Size of a chunked object",
-          threshold_obj_len: "Threshold of size of an object"
+          threshold_of_chunk_len: "Threshold of size of an object"
         }
       end
     end

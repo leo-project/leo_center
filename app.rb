@@ -2,7 +2,7 @@
 #
 #  Leo Center
 #
-#  Copyright (c) 2012-2013 Rakuten, Inc.
+#  Copyright (c) 2012-2014 Rakuten, Inc.
 #
 #  This file is provided to you under the Apache License,
 #  Version 2.0 (the "License"); you may not use this file
@@ -20,7 +20,7 @@
 #
 # ======================================================================
 gem "sinatra", "~> 1.4.3"
-gem "leo_manager_client", "~> 0.4.8"
+gem "leo_manager_client", "~> 0.4.9"
 
 require "json"
 require "haml"
@@ -36,14 +36,12 @@ class LoggerEx < Logger
 end
 
 class LeoCenter < Sinatra::Base
-  Version = "0.4.4"
+  Version = "0.4.5"
   set :environment, :production
   Config = CenterHelpers.load_config
   SessionKey = "leofs_console_session"
 
   class Error < StandardError; end
-
-  use Rack::CommonLogger, LoggerEx.new('leo_center.log')
 
   session_config = Config[:session]
   if session_config.has_key?(:local)
@@ -52,9 +50,9 @@ class LeoCenter < Sinatra::Base
       warn "session secret is not configured. please set it in config.yml. now LeoCenter uses random secret."
     end
     use Rack::Session::Cookie,
-      key: SessionKey,
-      secret: local_config[:secret] || Random.new.bytes(40),
-      expire_after: local_config[:expire_after] || 300 # 5 minutes in seconds
+    key: SessionKey,
+    secret: local_config[:secret] || Random.new.bytes(40),
+    expire_after: local_config[:expire_after] || 300 # 5 minutes in seconds
   else
     raise Error, "invalid session config: #{session_config}"
   end
@@ -92,6 +90,11 @@ class LeoCenter < Sinatra::Base
 
   configure :production, :development do
     @@manager = LeoManager::Client.new(*Config[:managers])
+
+    enable :logging
+    access_log = File.new("#{settings.root}/log/#{settings.environment}_access.log", 'a+')
+    access_log.sync = true
+    use Rack::CommonLogger, access_log
 
     before do
       debug "params: #{params}"
