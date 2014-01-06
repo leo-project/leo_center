@@ -1,3 +1,10 @@
+
+0.4.5 (Jan 6, 2014)
+=====================
+* Improvements
+    * Upgraded leo_manager_client to 0.4.9
+
+
 0.4.4 (Oct 3, 2013)
 =====================
 * Improvements
