@@ -1,13 +1,13 @@
 LeoCenter
 ==========
 
-**Copyright (c) 2013 Rakuten, Inc.**
+**Copyright (c) 2013-2014 Rakuten, Inc.**
 
-**LeoCenter** is more powerful and user-friendly LeoFS's Web GUI Tool. You can easily operate LeoFS.
+**LeoCenter** is more powerful and user-friendly LeoFS's Web GUI Tool, the documentation of which is [here](http://www.leofs.org/docs/leo_center.html).
 
 
-Install
-========
+Getting Started
+===============
 
 ```
 $ git clone
@@ -32,18 +32,12 @@ Run on Thin Web Server
 ======================
 
 ```
-$ thin start
+$ thin start -a ${HOST} -p ${PORT}
 ```
 
-Run on Unicorn
-==============
 
-```
-$ unicorn -c unicorn.conf config_unicorn.ru
-```
-
-Icons
-=====
+Using Icons
+===========
 
 * [Database](http://barrymieny.deviantart.com/art/Database-104013446): Barry Mieny (CC BY-NC-SA 3.0)
 * [Tango Icon Library](http://tango.freedesktop.org/Tango_Icon_Library): Tango project (Public Domain)
