@@ -22,135 +22,21 @@
 (function() {
   Ext.define("LeoCenter.model.Nodes", {
     extend: "Ext.data.Model",
-    fields: [
-      "type", "node", "status", "ring_hash_current", "ring_hash_previous",
-      { name: "joined_at", type: "date", dateFormat: "U" }
-    ]
+    fields: ["type",
+             "node",
+             "status",
+             "ring_hash_current",
+             "ring_hash_previous",
+             { name: "joined_at",
+               type: "date",
+               dateFormat: "U" }
+            ]
   });
 
-  Ext.define("LeoCenter.SNMP.Chart", {
-    extend: "Ext.panel.Panel",
-
-    // 2013-02-20 17:04:15 +0900 //=> 2013-02-20 17:00:00 +0900
-    just_date: function() {
-      var date, just_date;
-      date = new Date();
-      just_date = new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate(),
-        date.getMinutes() > 30 ? date.getHours() + 1 : date.getHours()
-      );
-      return just_date;
-    },
-
-    initComponent: function() {
-      var self = this;
-
-      self.store = Ext.create("Ext.data.Store", {
-        fields: [
-          { name: "time", type: "date", dateFormat: "U" }, // dateFormat "U" means unix time
-          "ets",
-          "procs",
-          "sys"
-        ],
-        proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
-          url: "snmp/chart.json",
-          extraParams: {
-            node: self.node
-          }
-        }),
-        listeners: {
-          beforeload: function(store, operation) {
-            operation.params = {
-              node: self.node,
-              period: self.chart.period
-            }
-          }
-        }
-      });
-
-      self.chart = Ext.create("Ext.chart.Chart", {
-        margin: 12,
-        store: self.store,
-        legend: true,
-        period: "8h", // default period
-        axes: [{
-          type: "Numeric",
-          grid: true,
-          position: "left",
-          fields: ["ets", "procs", "sys"],
-          label: {
-            renderer: Ext.util.Format.SI
-          }
-        }, {
-          type: "Time",
-          grid: true,
-          position: "bottom",
-          //constrain: true,
-          step: [Ext.Date.MINUTE, 30],
-          dateFormat: "H:i",
-          //fromDate: Ext.Date.add(self.just_date(), Ext.Date.HOUR, -7), // 7 hours ago
-          //toDate: Ext.Date.add(self.just_date(), Ext.Date.MINUTE, 30),
-          fields: "time"
-        }],
-        series: [{
-          type: "area",
-          xField: "time",
-          yField: ["ets", "procs", "sys"],
-          title: [
-            "ETS memory usage",
-            "Processes memory usage",
-            "System memory usage"
-          ],
-          style: {
-            opacity: 0.6
-          }
-        }]
-      });
-
-      Ext.apply(self, {
-        title: "Erlang VM Status of " + self.node,
-        layout: "fit",
-        /*
-          tbar: [{
-          text: "8 Hours",
-          pressed: true,
-          toggleGroup: "chart_period",
-          handler: function() {
-          self.chart.period = "8h";
-          var time_axis = self.chart.axes.get("bottom");
-          time_axis.step = [Ext.Date.MINUTE, 30];
-          self.store.load();
-          }
-          }, {
-          text: "Day",
-          toggleGroup: "chart_period",
-          handler: function() {
-          self.chart.period = "d";
-          var time_axis = self.chart.axes.get("bottom");
-          time_axis.step = [Ext.Date.HOUR, 1];
-          self.store.load();
-          }
-          }, {
-          text: "Week",
-          toggleGroup: "chart_period",
-          handler: function() {
-          self.chart.period = "w";
-          var time_axis = self.chart.axes.get("bottom");
-          time_axis.step = [Ext.Date.DAY, 1];
-          time_axis.dateFormat = "hoge";
-          self.store.load();
-          }
-          }],
-        */
-        items: self.chart
-      });
-
-      return self.callParent(arguments);
-    }
-  });
-
+  /**
+   * the pane of node-status
+   *
+   */
   Ext.define("LeoCenter.Nodes", {
     extend: "Ext.panel.Panel",
 
@@ -341,12 +227,6 @@
           }
         });
       }
-
-      /*
-        self.erlang_vm_chart.setTitle("Erlang VM Status of " + node);
-        self.erlang_vm_chart.node = node;
-        self.erlang_vm_chart.store.load();
-      */
     },
 
     // what status the command make nodes to be
@@ -358,33 +238,21 @@
 
     // it shows what commands are available on each state
     available_commands_table: {
-      running: {
-        suspend: true,
-        detach: true
-      },
-      suspend: {
-        resume: true
-      },
-      detached: {
-        // no available commands
-      },
-      restarted: {
-        resume: true
-      },
-      stop: {
-        detach: true
-      }
+      running:   {suspend: true,
+                  detach: true},
+      suspend:   {resume: true},
+      detached:  {},
+      restarted: {resume: true},
+      stop:      {detach: true}
     },
 
-    status_sort_table: {
-      attached: 1,
-      running: 2,
-      suspend: 3,
-      restarted: 4,
-      detached: 5,
-      stop: 6,
-      downed: 6
-    },
+    status_sort_table: {attached:  1,
+                        running:   2,
+                        suspend:   3,
+                        restarted: 4,
+                        detached:  5,
+                        stop:      6
+                       },
 
     // compaction status and available compaction command
     // status: command
@@ -767,13 +635,6 @@
         }
       });
 
-      /*
-        self.erlang_vm_chart = Ext.create("LeoCenter.SNMP.Chart", {
-        height: 300,
-        node: "storage_0@127.0.0.1"
-        });
-      */
-
       self.left_container = Ext.create("Ext.Container", {
         flex: 2,
         layout: {
@@ -781,11 +642,7 @@
           pack: "start",
           align: "stretch"
         },
-        items: [
-          self.grid,
-          // Ext.create("Ext.resizer.Splitter", { autoShow: true }),
-          // self.erlang_vm_chart
-        ]
+        items: [self.grid]
       });
 
       Ext.apply(self, {
@@ -798,5 +655,4 @@
       return self.callParent(arguments);
     }
   });
-
 }).call(this);
