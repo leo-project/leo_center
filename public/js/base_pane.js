@@ -20,13 +20,6 @@
 //
 //======================================================================
 (function() {
-  /* config for logs
-     Highcharts.setOptions({
-     credits: { enabled: false },
-     global: { useUTC: false }
-     });
-  */
-
   Ext.onReady(function() {
     var bucket_status = Ext.create("LeoCenter.BucketStatus");
     var user_group = Ext.create("LeoCenter.UserGroup");
