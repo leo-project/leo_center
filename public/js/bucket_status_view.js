@@ -30,7 +30,7 @@
 
   Ext.define("LeoCenter.BucketStatus", {
     extend: "Ext.panel.Panel",
-    id: "bucket_status",
+    id: "bucket_status_view",
     title: "Bucket Status",
     layout: "border",
     border: false,

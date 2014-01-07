@@ -30,7 +30,7 @@
 
   Ext.define("LeoCenter.Users", {
     extend: "Ext.panel.Panel",
-    id: "users",
+    id: "user_sub_view",
     title: "Users",
     layout: "border",
     border: false,

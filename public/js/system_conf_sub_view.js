@@ -22,7 +22,7 @@
 (function() {
   Ext.define("LeoCenter.SystemConf", {
     extend: "Ext.panel.Panel",
-    id: "system_conf",
+    id: "system_conf_sub_view",
     title: "System Conf",
     layout: "border",
     border: false,

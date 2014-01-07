@@ -21,27 +21,32 @@
 //======================================================================
 (function() {
   Ext.onReady(function() {
+    // Load the panes
     var bucket_status = Ext.create("LeoCenter.BucketStatus");
-    var user_group = Ext.create("LeoCenter.UserGroup");
+    var node_status = Ext.create("LeoCenter.Nodes");
+    var admin_view = Ext.create("LeoCenter.AdminView");
+
+    // Able to see panes for administrators
     var user_id = Ext.String.htmlEncode(Ext.util.Cookies.get("user_id"));
+    var panes = (Ext.util.Cookies.get("admin") === "true")
+      ? [bucket_status, node_status, admin_view]
+      : [bucket_status];
 
-    // items for only administrator
-    if (Ext.util.Cookies.get("admin") === "true") {
-      var node_status = Ext.create("LeoCenter.Nodes");
-      var admin = Ext.create("LeoCenter.Admin");
-    }
-
+    // Prefer the tab-panes
+    //    selected tab is 'bucket-status'
     var tabs = Ext.create("Ext.TabPanel", {
       region: "center",
-      activeTab: 0, // first tab
+      activeTab: 0,
       tabBar: {
         defaults: { height: 30 },
         height: 28
       },
       defaults: { bodyPadding: 5 },
-      items: [bucket_status, node_status, admin]
+      items: panes
     });
 
+    // User-Info-Pane's on-click event handler
+    //   Retrieve user credential keys by user-id
     var get_credential = function() {
       LeoCenter.confirm_password(function(password) {
         Ext.Ajax.request({
@@ -59,10 +64,6 @@
                 location = "/";
               });
             }
-            else if (response_text === "Invalid User ID or Password.") {
-              // "Invalid User ID or Password." is confusing
-              LeoCenter.Msg.alert("Error!", "Invalid Password");
-            }
             else {
               LeoCenter.Msg.alert("Error!", response_text);
             }
@@ -71,8 +72,11 @@
       });
     };
 
-    var header = Ext.create("Ext.toolbar.Toolbar", {
-      id: "viewport_header",
+    //
+    // User Info Pane
+    //
+    var user_info = Ext.create("Ext.toolbar.Toolbar", {
+      id: "viewport_user_info",
       region: "north",
       border: false,
       items: [{
@@ -83,7 +87,7 @@
         src: "images/leocenter-logo-w.png"},
               "->",
               { id: "user_menu",
-                text: user_id, // raw cookie from server
+                text: user_id,
                 icon: "images/admin_user.png",
                 menu: {
                   xtype: "menu",
@@ -101,7 +105,7 @@
 
     return Ext.create("Ext.Viewport", {
       layout: "border",
-      items: [header, tabs]
+      items: [user_info, tabs]
     });
   });
 }).call(this);

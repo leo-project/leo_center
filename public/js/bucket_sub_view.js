@@ -30,7 +30,7 @@
 
   Ext.define("LeoCenter.Buckets", {
     extend: "Ext.panel.Panel",
-    id: "buckets",
+    id: "bucket_sub_view",
     title: "Buckets",
     layout: "border",
     border: false,

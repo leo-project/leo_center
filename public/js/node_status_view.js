@@ -41,7 +41,7 @@
     extend: "Ext.panel.Panel",
 
     title: "Node Status",
-    id: "nodes_panel",
+    id: "node_status_view",
     reload_interval: 30000,
 
     layout: {

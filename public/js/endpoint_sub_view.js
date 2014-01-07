@@ -30,7 +30,7 @@
 
   Ext.define("LeoCenter.Endpoints", {
     extend: "Ext.panel.Panel",
-    id: "endpoints",
+    id: "endpoint_sub_view",
     title: "Endpoints",
     layout: "border",
     border: false,

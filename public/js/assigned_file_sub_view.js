@@ -31,7 +31,7 @@
 
   Ext.define("LeoCenter.Whereis", {
     extend: "Ext.panel.Panel",
-    id: "whereis",
+    id: "assigned_file_sub_view",
     title: "Assigned File",
     layout: "border",
     border: false,
