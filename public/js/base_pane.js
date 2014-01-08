@@ -22,7 +22,7 @@
 (function() {
   Ext.onReady(function() {
     // Load the panes
-    var bucket_status = Ext.create("LeoCenter.BucketStatus");
+    var bucket_status = Ext.create(PANE_BUCKET_STATUS);
     var node_status = Ext.create("LeoCenter.Nodes");
     var admin_view = Ext.create("LeoCenter.AdminView");
 

@@ -19,6 +19,33 @@
 // under the License.
 //
 //======================================================================
+
+// @doc onclick "Add a bucket"
+// @private
+function onclick_add_bucket(self) {
+  var title = "Add New Bucket";
+  var msg = "Please input bucket name";
+
+  Ext.Msg.prompt(title, msg, function(btn, value) {
+    if (btn == "ok") {
+      Ext.Ajax.request({
+        url: "buckets/add_bucket",
+        method: "POST",
+        params: { bucket: value },
+        success: function(response, opts) {
+          self.store.load();
+          // self.load();
+        },
+        failure: function(response, opts) {
+          LeoCenter.Msg.alert("Error!", response.responseText);
+        }
+      })
+    }
+  })
+}
+
+// @doc Setup the status_view
+//
 (function() {
   Ext.define('LeoCenter.model.BucketStatus', {
     extend: 'Ext.data.Model',
@@ -28,131 +55,89 @@
     ]
   });
 
-  Ext.define("LeoCenter.BucketStatus", {
-    extend: "Ext.panel.Panel",
-    id: "bucket_status_view",
-    title: "Bucket Status",
-    layout: "border",
-    border: false,
+  Ext.define(
+    PANE_BUCKET_STATUS,
+    { extend: "Ext.panel.Panel",
+      id: "bucket_status_view",
+      title: "Bucket Status",
+      layout: "border",
+      border: false,
 
-    listeners: {
-      // fires when tab open
-      activate: function(self) {
-        self.load();
-      }
-    },
-
-    grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
-      groupHeaderTpl: "{name} [{rows.length}]",
-      collapsible: false
-    }),
-
-    load: function() {
-      this.store.load();
-    },
-
-    add_bucket: function(self) {
-      var title = "Add New Bucket";
-      var msg = "Please input bucket name";
-
-      Ext.Msg.prompt(title, msg, function(btn, value) {
-        if (btn == "ok") {
-          Ext.Ajax.request({
-            url: "buckets/add_bucket",
-            method: "POST",
-            params: { bucket: value },
-            success: function(response, opts) {
-              self.load();
-            },
-            failure: function(response, opts) {
-              LeoCenter.Msg.alert("Error!", response.responseText);
-            }
-          })
+      // on_load
+      listeners: {
+        activate: function(self) {
+          self.store.load();
         }
-      })
-    },
+      },
 
-    render_progress_bar: function(value, sum) {
-      var id = Ext.id();
-      Ext.defer(function () {
-        Ext.widget('progressbar', {
-          text: value,
-          border: false,
-          renderTo: id,
-          value: value / sum,
+      // setup the grid
+      grid_grouping: Ext.create("Ext.grid.feature.Grouping", {
+        groupHeaderTpl: "{name} [{rows.length}]",
+        collapsible: false
+      }),
+
+      // setup the data-store
+      store: Ext.create("Ext.data.Store", {
+        model: "LeoCenter.model.BucketStatus",
+        groupField: "owner",
+        proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
+          url: "bucket_status/list.json"
+        })
+      }),
+
+      // initialize the component
+      initComponent: function() {
+        var self = this;
+        self.grid = Ext.create("Ext.grid.Panel", {
+          region: "center",
+          forceFit: true,
+          features: [ self.grid_grouping ],
+          store: self.store,
+
+          // Toolbar: ["Filter", "Add a bucket"]
+          tbar: [{ xtype: "textfield",
+                   fieldLabel: "<img src='images/filter.png'> Filter:",
+                   labelWidth: 60,
+                   listeners: {
+                     change: function(text_field, new_value) {
+                       var store = self.store;
+                       store.clearFilter();
+                       store.filter("name", new RegExp(new_value));
+                     }
+                   }
+                 },
+                 "-",
+                 {
+                   text: "Add Bucket",
+                   icon: "images/add.png",
+                   handler: function() {
+                     onclick_add_bucket(self);
+                   }
+                 },
+                 "->",
+                 {
+                   icon: "images/reload.png",
+                   handler: function() {
+                     self.store.load();
+                   }
+                 }],
+          columns: { defaults: { resizable: false },
+                     items: [{ header: "Bucket",
+                               dataIndex: "name",
+                               renderer: Ext.htmlEncode,
+                               width: 30
+                             },
+                             { header: "Created at",
+                               dataIndex: "created_at",
+                               renderer: Ext.util.Format.dateRenderer("c")
+                             }]
+                   }
         });
-      }, 50);
-      return Ext.String.format('<div id="{0}"></div>', id);
-    },
 
-    store: Ext.create("Ext.data.Store", {
-      model: "LeoCenter.model.BucketStatus",
-      groupField: "owner",
-      proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
-        url: "bucket_status/list.json"
-      })
-    }),
-
-    initComponent: function() {
-      var self = this;
-
-      self.grid = Ext.create("Ext.grid.Panel", {
-        region: "center",
-        forceFit: true,
-        features: [ self.grid_grouping ],
-        store: self.store,
-        tbar: [{
-          xtype: "textfield",
-          fieldLabel: "<img src='images/filter.png'> Filter:",
-          labelWidth: 60,
-          listeners: {
-            change: function(text_field, new_value) {
-              var store = self.store;
-              store.clearFilter();
-              store.filter("name", new RegExp(new_value));
-            }
-          }
-        },
-               "-",
-               {
-                 text: "Add Bucket",
-                 icon: "images/add.png",
-                 handler: function() {
-                   self.add_bucket(self);
-                 }
-               },
-               "->",
-               {
-                 icon: "images/reload.png",
-                 handler: function() {
-                   self.load();
-                 }
-               }],
-        columns: {
-          defaults: {
-            resizable: false
-          },
-          items: [
-            {
-              header: "Bucket",
-              dataIndex: "name",
-              renderer: Ext.htmlEncode,
-              width: 30
-            },
-            {
-              header: "Created at",
-              dataIndex: "created_at",
-              renderer: Ext.util.Format.dateRenderer("c")
-            }
-          ]
-        }
-      });
-
-      Ext.apply(self, {
-        items: self.grid
-      });
-
-      return self.callParent(arguments);
-    }
-  });
+        Ext.apply(self, {
+          items: self.grid
+        });
+        return self.callParent(arguments);
+      }
+    });
 }).call(this);
