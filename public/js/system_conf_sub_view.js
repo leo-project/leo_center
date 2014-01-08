@@ -19,64 +19,62 @@
 // under the License.
 //
 //======================================================================
+// @doc SUB VIEW - System Conf in AdminView
+//
 (function() {
-  Ext.define("LeoCenter.SystemConf", {
-    extend: "Ext.panel.Panel",
-    id: "system_conf_sub_view",
-    title: "System Conf",
-    layout: "border",
-    border: false,
+  Ext.define(
+    "LeoCenter.SystemConf",
+    { extend: "Ext.panel.Panel",
+      id: "system_conf_sub_view",
+      title: "System Conf",
+      layout: "border",
+      border: false,
 
-    listeners: {
-      activate: function(self) {
-        self.load();
+      listeners: {
+        activate: function(self) {
+          self.store.load();
+        }
+      },
+
+      initComponent: function() {
+        var self = this;
+
+        self.store = Ext.create(
+          "Ext.data.ArrayStore",
+          { model: "LeoCenter.model.NameValue",
+            proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
+              url: "system_conf/list.json"
+            })
+          }),
+
+        self.grid = Ext.create(
+          "Ext.grid.Panel",
+          { region: "center",
+            forceFit: true,
+            store: self.store,
+            border: false,
+            tbar: [ "->",
+                    { xtype: "button",
+                      icon: "images/reload.png",
+                      handler: function() {
+                        self.store.load();
+                      }
+                    }
+                  ],
+            columns: [{ dataIndex: "name",
+                        text: "Name",
+                        width: 30
+                      },
+                      { dataIndex: "value",
+                        text: "Value"
+                      }
+                     ]
+          });
+
+        Ext.apply(self, {
+          items: self.grid
+        });
+        return self.callParent(arguments);
       }
-    },
-
-    load: function() {
-      this.store.load();
-    },
-
-    initComponent: function() {
-      var self = this;
-
-      self.store = Ext.create("Ext.data.ArrayStore", {
-        model: "LeoCenter.model.NameValue",
-        proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
-          url: "system_conf/list.json"
-        })
-      }),
-
-      self.grid = Ext.create("Ext.grid.Panel", {
-        region: "center",
-        forceFit: true,
-        store: self.store,
-        border: false,
-        tbar: [
-          "->",
-          {
-            xtype: "button",
-            icon: "images/reload.png",
-            handler: function() {
-              self.store.load();
-            }
-          }
-        ],
-        columns: [{
-          dataIndex: "name",
-          text: "Name",
-          width: 30
-        }, {
-          dataIndex: "value",
-          text: "Value"
-        }]
-      });
-
-      Ext.apply(self, {
-        items: self.grid
-      });
-
-      return self.callParent(arguments);
-    }
-  });
+    });
 }).call(this);
