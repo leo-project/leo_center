@@ -20,4 +20,11 @@
 //
 //======================================================================
 var PANE_BUCKET_STATUS = "LeoCenter.BucketStatus";
+var PANE_NODE_STATUS   = "LeoCenter.NodeStatus";
+var PANE_ADMIN_VIEW    = "LeoCenter.AdminView";
 
+var PANE_SUB_SYSTEM_CONF   = "LeoCenter.SystemConf";
+var PANE_SUB_USERS         = "LeoCenter.Users";
+var PANE_SUB_BUCKETS       = "LeoCenter.Buckets";
+var PANE_SUB_ENDPOINTS     = "LeoCenter.Endpoints";
+var PANE_SUB_ASSIGNED_FILE = "LeoCenter.AssignedFile";

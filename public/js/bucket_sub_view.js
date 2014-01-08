@@ -28,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoCenter.Buckets", {
+  Ext.define(PANE_SUB_BUCKETS, {
     extend: "Ext.panel.Panel",
     id: "bucket_sub_view",
     title: "Buckets",

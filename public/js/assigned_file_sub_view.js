@@ -20,7 +20,7 @@
 //
 //======================================================================
 (function() {
-  Ext.define("LeoCenter.model.Whereis", {
+  Ext.define("LeoCenter.model.AssignedFile", {
     extend: "Ext.data.Model",
     fields: [
       "node", "vnode_id", "size", "clock", "checksum",
@@ -29,7 +29,7 @@
     ]
   });
 
-  Ext.define("LeoCenter.Whereis", {
+  Ext.define(PANE_SUB_ASSIGNED_FILE, {
     extend: "Ext.panel.Panel",
     id: "assigned_file_sub_view",
     title: "Assigned File",
@@ -41,7 +41,7 @@
     },
 
     store: Ext.create("Ext.data.Store", {
-      model: "LeoCenter.model.Whereis",
+      model: "LeoCenter.model.AssignedFile",
       proxy: Ext.create("LeoCenter.proxy.Ajax.noParams", {
         url: "whereis/list.json"
       })

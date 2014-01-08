@@ -36,17 +36,17 @@ var SUB_MENU_ITEMS = [SUB_MENU_INDEX];
 
 
 (function() {
-  Ext.define("LeoCenter.AdminView", {
+  Ext.define(PANE_ADMIN_VIEW, {
     extend: "Ext.panel.Panel",
     id: "admin_view",
     title: "Admin Tools",
     layout: "border",
 
-    system_conf_sub_view:   Ext.create("LeoCenter.SystemConf"),
-    user_sub_view:          Ext.create("LeoCenter.Users"),
-    bucket_sub_view:        Ext.create("LeoCenter.Buckets"),
-    endpoint_sub_view:      Ext.create("LeoCenter.Endpoints"),
-    assigned_file_sub_view: Ext.create("LeoCenter.Whereis"),
+    system_conf_sub_view:   Ext.create(PANE_SUB_SYSTEM_CONF),
+    user_sub_view:          Ext.create(PANE_SUB_USERS),
+    bucket_sub_view:        Ext.create(PANE_SUB_BUCKETS),
+    endpoint_sub_view:      Ext.create(PANE_SUB_ENDPOINTS),
+    assigned_file_sub_view: Ext.create(PANE_SUB_ASSIGNED_FILE),
 
     //
     // Set up the menu

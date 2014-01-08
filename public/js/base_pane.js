@@ -23,8 +23,8 @@
   Ext.onReady(function() {
     // Load the panes
     var bucket_status = Ext.create(PANE_BUCKET_STATUS);
-    var node_status = Ext.create("LeoCenter.Nodes");
-    var admin_view = Ext.create("LeoCenter.AdminView");
+    var node_status   = Ext.create(PANE_NODE_STATUS);
+    var admin_view    = Ext.create(PANE_ADMIN_VIEW);
 
     // Able to see panes for administrators
     var user_id = Ext.String.htmlEncode(Ext.util.Cookies.get("user_id"));

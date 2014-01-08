@@ -28,7 +28,7 @@
     ]
   });
 
-  Ext.define("LeoCenter.Endpoints", {
+  Ext.define(PANE_SUB_ENDPOINTS, {
     extend: "Ext.panel.Panel",
     id: "endpoint_sub_view",
     title: "Endpoints",
