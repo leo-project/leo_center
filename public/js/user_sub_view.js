@@ -19,6 +19,8 @@
 // under the License.
 //
 //======================================================================
+// @doc SUB VIEW - Users in AdminView
+//
 (function() {
   Ext.define('LeoCenter.model.Users', {
     extend: 'Ext.data.Model',
