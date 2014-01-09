@@ -47,13 +47,14 @@ function onclick_add_bucket(self) {
 // @doc Setup the status_view
 //
 (function() {
-  Ext.define('LeoCenter.model.BucketStatus', {
-    extend: 'Ext.data.Model',
-    fields: [
-      "name", "owner",
-      { name: "created_at", type: "date", dateFormat: "U" }
-    ]
-  });
+  Ext.define("LeoCenter.model.BucketStatus",
+             { extend: "Ext.data.Model",
+               fields: ["name",
+                        "owner",
+                        "permissions",
+                        { name: "created_at", type: "date", dateFormat: "U" }
+                       ]
+             });
 
   Ext.define(
     PANE_BUCKET_STATUS,
@@ -124,6 +125,11 @@ function onclick_add_bucket(self) {
           columns: { defaults: { resizable: false },
                      items: [{ header: "Bucket",
                                dataIndex: "name",
+                               renderer: Ext.htmlEncode,
+                               width: 30
+                             },
+                             { header: "Permissions",
+                               dataIndex: "permissions",
                                renderer: Ext.htmlEncode,
                                width: 30
                              },

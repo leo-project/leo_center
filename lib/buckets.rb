@@ -21,13 +21,14 @@
 #======================================================================
 class LeoCenter
   namespace "/buckets" do
+    ## GET
     get "/list.json" do
       check_admin
 
       begin
         buckets = @@manager.get_buckets
       rescue RuntimeError => ex
-        return { data: [] }.to_json if ex.message == "not found" # empty
+        return { data: [] }.to_json if ex.message == "not found"
         raise ex
       end
 
@@ -35,6 +36,7 @@ class LeoCenter
         {
           name: bucket.name,
           owner: bucket.owner,
+          permissions: bucket.permissions,
           created_at: Integer(bucket.created_at)
         }
       end
@@ -42,6 +44,7 @@ class LeoCenter
       { data: result }.to_json
     end
 
+    ## POST
     post "/add_bucket" do
       bucket_name = required_params(:bucket)
       access_key = required_sessions(:access_key_id)

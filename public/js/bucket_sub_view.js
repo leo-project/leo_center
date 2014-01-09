@@ -24,9 +24,10 @@
 (function() {
   Ext.define("LeoCenter.model.Buckets",
              { extend: "Ext.data.Model",
-               fields: [
-                 "name", "owner",
-                 { name: "created_at", type: "date", dateFormat: "U" }
+               fields: ["name",
+                        "owner",
+                        "permissions",
+                        { name: "created_at", type: "date", dateFormat: "U" }
                ]
              });
 
@@ -122,6 +123,11 @@
               },
               items: [{ header: "Bucket",
                         dataIndex: "name",
+                        renderer: Ext.util.Format.htmlEncode,
+                        width: 30
+                      },
+                      { header: "Permissions",
+                        dataIndex: "permissions",
                         renderer: Ext.util.Format.htmlEncode,
                         width: 30
                       },
