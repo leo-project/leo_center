@@ -4,7 +4,7 @@
   vertical-align: middle;
 }
 
-#viewport_header-innerCt {
+#viewport_user_info-innerCt {
   background-color: #5682AD;
 }
 
@@ -41,7 +41,7 @@
   font-size: 13px;
 }
 
-#admin_grid .x-grid-row td {
+#menu_container .x-grid-row td {
   height: 20px;
   padding: 5px;
 }

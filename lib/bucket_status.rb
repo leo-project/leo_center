@@ -21,11 +21,12 @@
 #======================================================================
 class LeoCenter
   namespace "/bucket_status" do
+    ## GET
     get "/list.json" do
       begin
         buckets = @@manager.get_buckets
       rescue RuntimeError => ex
-        return { data: [] }.to_json if ex.message == "not found" # empty
+        return { data: [] }.to_json if ex.message == "not found"
         raise ex
       end
 
@@ -35,6 +36,7 @@ class LeoCenter
         {
           name: bucket.name,
           owner: bucket.owner,
+          permissions: bucket.permissions,
           created_at: Integer(bucket.created_at)
         }
       end
