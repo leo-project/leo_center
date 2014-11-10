@@ -251,9 +251,9 @@
 
       // compaction status and available compaction command
       // status: command
-      available_compact_command: { idle: "Start",
-                                   running: "Suspend",
-                                   suspend: "Resume"
+      available_compact_command: { idling:     "Start",
+                                   running:    "Suspend",
+                                   suspending: "Resume"
                                  },
 
       initComponent: function() {
