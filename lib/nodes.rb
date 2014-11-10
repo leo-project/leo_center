@@ -104,8 +104,28 @@ class LeoCenter
         }
       end
 
+      module StorageWatchdog
+        Group = "5. Watchdog"
+        Properties = {
+          wd_rex_interval: "rex - Watch interval(sec)",
+          wd_rex_threshold_mem_capacity: "rex - Threshold mem capacity",
+          wd_cpu_enabled:  "cpu - watchdog enabled?",
+          wd_cpu_interval: "cpu - watch interval(sec)",
+          wd_cpu_threshold_cpu_load_avg: "cpu - threshold cpu load AVG",
+          wd_cpu_threshold_cpu_util: "cpu - threshold cpu uiil(%)",
+          wd_io_enabled:  "io - watchdog enabled?",
+          wd_io_interval: "io - watch interval(sec)",
+          wd_io_threshold_input_per_sec:  "io - threshold input/sec",
+          wd_io_threshold_output_per_sec: "io - threshold output/sec",
+          wd_disk_enabled:  "disk - watchdog enabled?",
+          wd_disk_interval: "disk - watch interval(sec)",
+          wd_disk_threshold_disk_use:  "disk - threshold disk use(%)",
+          wd_disk_threshold_disk_util: "disk - threshold disk util(%)"
+        }
+      end
+
       module Messages
-        Group = "5. Total # of Messages"
+        Group = "6. Total # of Messages"
         Properties = {
           replication_msgs: "# of replication messages",
           sync_vnode_msgs:  "# of sync-vnode messages",
@@ -146,6 +166,22 @@ class LeoCenter
           max_len_for_obj: "Max size of an object",
           chunked_obj_len: "Size of a chunked object",
           threshold_of_chunk_len: "Threshold of size of an object"
+        }
+      end
+
+      module GatewayWatchdog
+        Group = "6. Watchdog"
+        Properties = {
+          wd_rex_interval: "rex - Watch interval(sec)",
+          wd_rex_threshold_mem_capacity: "rex - Threshold mememory capacity",
+          wd_cpu_enabled:  "cpu - watchdog enabled?",
+          wd_cpu_interval: "cpu - watch interval(sec)",
+          wd_cpu_threshold_cpu_load_avg: "cpu - threshold cpu load AVG",
+          wd_cpu_threshold_cpu_util: "cpu - threshold cpu uiil(%)",
+          wd_io_enabled:  "io - watchdog enabled?",
+          wd_io_interval: "io - watch interval(sec)",
+          wd_io_threshold_input_per_sec:  "io - threshold input/sec",
+          wd_io_threshold_output_per_sec: "io - threshold output/sec"
         }
       end
     end
@@ -216,6 +252,14 @@ class LeoCenter
                             id: property,
                             group: Nodes::Messages::Group
                           } end)
+
+          ## watchdog-settings
+          result.concat(Nodes::StorageWatchdog::Properties.map do |property, text|
+                          { name: text,
+                            value: node_stat.__send__(property),
+                            id: property,
+                            group: Nodes::StorageWatchdog::Group
+                          } end)
         end
 
         when "Gateway" then
@@ -242,6 +286,14 @@ class LeoCenter
                             value: gateway_stat.__send__(property),
                             id: property,
                             group: Nodes::GatewayLargeObjConfig::Group
+                          } end)
+
+          ## watchdog-settings
+          result.concat(Nodes::GatewayWatchdog::Properties.map do |property, text|
+                          { name: text,
+                            value: node_stat.__send__(property),
+                            id: property,
+                            group: Nodes::GatewayWatchdog::Group
                           } end)
         end
       end
