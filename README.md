@@ -2,7 +2,7 @@
 
 **Copyright (c) 2013-2014 Rakuten, Inc.**
 
-**LeoCenter** is more powerful and user-friendly LeoFS's Web GUI Tool, the documentation of which is [here](http://www.leofs.org/docs/leo_center.html).
+**LeoCenter** is more powerful and user-friendly LeoFS's Web GUI Tool, the documentation of which is [here](http://leo-project.net/leofs/docs-1.4/leo_center/leo_center.html).
 
 
 ## Getting Started
